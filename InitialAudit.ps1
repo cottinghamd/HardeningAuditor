@@ -393,3 +393,104 @@ foreach($_ in 1..50)
     }
 }
 }
+
+
+
+
+
+
+#Check Network Access: Do not allow storage of passwords and credentials for network authentication
+$networkaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\" -Name disabledomaincreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabledomaincreds
+
+if ($networkaccess -eq $null)
+{
+write-host "Do not allow storage of passwords and credentials for network authentication is not configured" -ForegroundColor Yellow
+}
+    elseif ($networkaccess -eq '1')
+    {
+        write-host "Do not allow storage of passwords and credentials for network authentication is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Do not allow storage of passwords and credentials for network authentication is disabled" -ForegroundColor Red
+    }
+
+#Check WDigestAuthentication is disabled
+$wdigest = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\Wdigest\" -Name uselogoncredential -ErrorAction SilentlyContinue|Select-Object -ExpandProperty uselogoncredential
+
+if ($wdigest -eq $null)
+{
+write-host "WDigest is not configured" -ForegroundColor Yellow
+}
+    elseif ($wdigest -eq '0')
+    {
+        write-host "WDigest is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "WDigest is enabled" -ForegroundColor Red
+    }
+
+#Check Turn on Virtualisation Based Security
+$vbsecurity = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard\" -Name EnableVirtualizationBasedSecurity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableVirtualizationBasedSecurity
+
+if ($vbsecurity -eq $null)
+{
+write-host "Virtualisation Based Security is not configured" -ForegroundColor Yellow
+}
+    elseif ($vbsecurity -eq '1')
+    {
+        write-host "Virtualisation Based security is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Virtualisation Based security is disabled" -ForegroundColor Red
+    }
+
+#Check Secure Boot and DMA Protection
+$sbdmaprot = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" -Name RequirePlatformSecurityFeatures -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequirePlatformSecurityFeatures
+
+if ($sbdmaprot -eq $null)
+{
+write-host "Secure Boot and DMA Protection is not configured" -ForegroundColor Yellow
+}
+    elseif ($sbdmaprot -eq '3')
+    {
+        write-host "Secure Boot and DMA Protection is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Secure Boot and DMA Protection is set to something non compliant" -ForegroundColor Red
+    }
+
+#Check UEFI Lock is enabled for device guard
+$uefilock = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" -Name LsaCfgFlags -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LsaCfgFlags
+
+if ($uefilock -eq $null)
+{
+write-host "Virtualisation Based Protection of Code Integrity with UEFI lock is not configured" -ForegroundColor Yellow
+}
+    elseif ($uefilock -eq '1')
+    {
+        write-host "Virtualisation Based Protection of Code Integrity with UEFI lock is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Virtualisation Based Protection of Code Integrity with UEFI lock is set to something non compliant" -ForegroundColor Red
+    }
+
+#Check Controlled Folder Access for Exploit Guard is Enabled
+$cfaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access" -Name EnableControlledFolderAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableControlledFolderAccess
+
+if ($cfaccess -eq $null)
+{
+write-host "Controlled Folder Access for Exploit Guard is not configured" -ForegroundColor Yellow
+}
+    elseif ($cfaccess -eq '1')
+    {
+        write-host "Controlled Folder Access for Exploit Guard is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Controlled Folder Access for Exploit Guard is disabled" -ForegroundColor Red
+    }
