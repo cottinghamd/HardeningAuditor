@@ -291,98 +291,42 @@ process {
 $officetemp = Get-OfficeVersion | select -ExpandProperty version
 $officeversion = $officetemp.Substring(0,4)
 
-$officetemp = Get-OfficeVersion | select -ExpandProperty version
-$officeversion = $officetemp.Substring(0,4)
+#This registry paths assume that policies have been applied in group policy
+$installedoffice = Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name
 
-#MS Word
-$macroword = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Word\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
+Get-Content $installedoffice | ForEach-Object{
 
+
+$appsetting = Get-ItemProperty -Path $installedoffice\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
+$appname = 
+
+$pos = $appsetting.IndexOf("\")
+$leftPart = $name.Substring(0, $pos)
+$rightPart = $name.Substring($pos+1)
+
+If ($appsetting -eq $null)
+{
+write-host "Macro settings have not been configured in $rightpart"
+}
+elseif ($appsetting -eq "4"){
+    write-host "Macros are disabled in $rightpart" -ForegroundColor Green
+    }
+    else
+    {
+    write-host "Macros are not disabled in $rightpart, value is $appsetting" -ForegroundColor Red
+      }
+      if ($appsetting -eq"1")
+      {Write-Host "Enable all Macros"}
+      elseif ($appsetting -eq"2")
+      {Write-Host "Disable all Macros with notification"}
+      elseif ($appsetting -eq"3")
+      {Write-Host "Disable all Macros except those digitally signed"}
+
+$appsetting = $null
+}
 
 #This is an example of querying a service status with powershell
 
-If ($macroword -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Word"
-}
-elseif ($macroword -eq "4"){
-    write-host "Macros are disabled in Microsoft Word" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Word, value is $macroword" -ForegroundColor Red
-      }
-      if ($macroword -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macroword -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macroword -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
-
-#MS PowerPoint
-$macroppt = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\PowerPoint\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macroppt -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft PowerPoint"
-}
-elseif ($macroppt -eq "4"){
-    write-host "Macros are disabled in Microsoft PowerPoint" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft PowerPoint, value is $macroppt" -ForegroundColor Red
-    }
-       if ($macroppt -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macroppt -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macroppt -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
- 
- #MS Excel
-$macroexcel = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Excel\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macroexcel -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Excel"
-}
-elseif ($macroexcel -eq "4"){
-    write-host "Macros are disabled in Microsoft Excel" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Excel, value is $macroexcel" -ForegroundColor Red
-    }
-       if ($macroexcel -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macroexcel -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macroexcel -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
-   
-     #MS Access
-$macroaccess = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\access\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macroaccess -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Access"
-}
-elseif ($macroaccess -eq "4"){
-    write-host "Macros are disabled in Microsoft Access" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Access, value is $macroaccess" -ForegroundColor Red
-    }
-       if ($macroaccess -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macroaccess -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macroaccess -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
 
      #MS Outlook
 $macrooutlook = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\outlook\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty level -ErrorAction SilentlyContinue
@@ -405,73 +349,6 @@ elseif ($macrooutlook -eq "4"){
       {Write-Host "Disable all Macros with notification"}
       elseif ($macrooutlook -eq"3")
       {Write-Host "Disable all Macros except those digitally signed"}
-
-     #MS Project
-$macroproject = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\ms project\Security" -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macroproject -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Project"
-}
-elseif ($macroproject -eq "4"){
-    write-host "Macros are disabled in Microsoft Project" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Project, value is $macroproject" -ForegroundColor Red
-    }
-       if ($macroproject -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macroproject -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macroproject -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
-     
-     #MS Publisher
-$macropublisher = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\publisher\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macropublisher -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Publisher"
-}
-elseif ($macropublisher -eq "4"){
-    write-host "Macros are disabled in Microsoft Publisher" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Publisher, value is $macropublisher" -ForegroundColor Red
-    }
-   if ($macropublisher -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macropublisher -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macropublisher -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
-
-         #MS Visio
-$macrovisio = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\visio\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-
-
-If ($macrovisio -eq $null)
-{
-write-host "Macro settings have not been configured in Microsoft Visio"
-}
-elseif ($macrovisio -eq "4"){
-    write-host "Macros are disabled in Microsoft Visio" -ForegroundColor Green
-    }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Visio, value is $macrovisio" -ForegroundColor Red
-    }
-       if ($macrovisio -eq"1")
-      {Write-Host "Enable all Macros"}
-      elseif ($macrovisio -eq"2")
-      {Write-Host "Disable all Macros with notification"}
-      elseif ($macrovisio -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
-
 
 #returns trusted locations
 
