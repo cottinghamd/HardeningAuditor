@@ -1,4 +1,4 @@
-﻿[CmdletBinding(SupportsShouldProcess=$true)]
+[CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [string[]]$ComputerName = $env:COMPUTERNAME,
     [switch]$ShowAllInstalledProducts,
@@ -291,46 +291,40 @@ process {
 $officetemp = Get-OfficeVersion | select -ExpandProperty version
 $officeversion = $officetemp.Substring(0,4)
 
-#This registry paths assume that policies have been applied in group policy
-$installedoffice = Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name
+#This registry paths assume that policies have been applied in group policy in user preferences
+Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name | ForEach-Object{
 
-Get-Content $installedoffice | ForEach-Object{
+$officename = ($_).Split('\')[6]
 
-
-$appsetting = Get-ItemProperty -Path $installedoffice\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
-$appname = 
-
-$pos = $appsetting.IndexOf("\")
-$leftPart = $name.Substring(0, $pos)
-$rightPart = $name.Substring($pos+1)
+if ($officename.Contains("outlook") -or $officename.Contains("common") -or $officename.Contains("firstrun") -or $officename.Contains("onenote") -or $officename.Contains("Registration"))
+{
+#donothing
+}
+else
+{
+$appsetting = Get-ItemProperty -Path Registry::$_\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
 
 If ($appsetting -eq $null)
 {
-write-host "Macro settings have not been configured in $rightpart"
+write-host "Macro settings have not been configured in $officename"
 }
 elseif ($appsetting -eq "4"){
-    write-host "Macros are disabled in $rightpart" -ForegroundColor Green
+    write-host "Macros are disabled in $officename" -ForegroundColor Green
     }
-    else
-    {
-    write-host "Macros are not disabled in $rightpart, value is $appsetting" -ForegroundColor Red
-      }
-      if ($appsetting -eq"1")
-      {Write-Host "Enable all Macros"}
+    elseif ($appsetting -eq"1")
+      {Write-Host "Macros are not disabled in $officename, set to Enable all Macros ($appsetting)"}
       elseif ($appsetting -eq"2")
-      {Write-Host "Disable all Macros with notification"}
+      {Write-Host "Macros are not disabled in $officename, Disable all Macros with notification ($appsetting)"}
       elseif ($appsetting -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
+      {Write-Host "Macros are not disabled in $officename, Disable all Macros except those digitally signed ($appsetting)"}
+      else {write-host "Macros are not disabled in $officename, value is unknown and set to $appsetting" -ForegroundColor Red}
 
-$appsetting = $null
+}
 }
 
-#This is an example of querying a service status with powershell
 
-
-     #MS Outlook
+#Outlook has unique macro settings so we check them separately here
 $macrooutlook = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\outlook\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty level -ErrorAction SilentlyContinue
-
 
 If ($macrooutlook -eq $null)
 {
@@ -339,16 +333,13 @@ write-host "Macro settings have not been configured in Microsoft Outlook"
 elseif ($macrooutlook -eq "4"){
     write-host "Macros are disabled in Microsoft Outlook" -ForegroundColor Green
     }
-    else
-    {
-    write-host "Macros are not disabled in Microsoft Outlook, value is $macrooutlook" -ForegroundColor Red
-    }
-   if ($macrooutlook -eq"1")
-      {Write-Host "Enable all Macros"}
+    elseif ($macrooutlook -eq"1")
+      {Write-Host "Macros are not disabled in Microsoft Outlook, set to Enable all Macros" -ForegroundColor Red}
       elseif ($macrooutlook -eq"2")
-      {Write-Host "Disable all Macros with notification"}
+      {Write-Host "Macros are not disabled in Microsoft Outlook, set to Disable all Macros with notification" -ForegroundColor Red}
       elseif ($macrooutlook -eq"3")
-      {Write-Host "Disable all Macros except those digitally signed"}
+      {Write-Host "Macros are not disabled in Microsoft Outlook, set to Disable all Macros except those digitally signed" -ForegroundColor Red}
+      else {Write-host "Macros are not disabled in Microsoft Outlook, value is unknown and set to $macrooutlook" -ForegroundColor Red}
 
 #returns trusted locations
 
