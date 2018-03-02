@@ -873,3 +873,75 @@ write-host "Virtualize file and registry write failures to per-user locations is
     {
         write-host "Virtualize file and registry write failures to per-user locations is disabled" -ForegroundColor Red
     }
+
+
+write-host "`r`n####################### EXPLOIT PROTECTION #######################`r`n"
+
+
+
+# Use a common set of exploit protection settings (this has more settings need to research)
+#$ExploitProtectionSettings = Get-ItemProperty -Path "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender ExploitGuard\Exploit Protection" -Name ExploitProtectionSettings -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExploitProtectionSettings
+
+#if ($ExploitProtectionSettings -eq $null)
+#{
+#write-host "Use a common set of exploit protection settings is not configured" -ForegroundColor Yellow
+#}
+#    elseif ($ExploitProtectionSettings -eq '1')
+#    {
+#        write-host "Use a common set of exploit protection settings is enabled" -ForegroundColor Green
+#    }
+#    else
+#    {
+#        write-host "Use a common set of exploit protection settings is disabled" -ForegroundColor Red
+#    }
+
+# Prevent users from modifying settings
+$DisallowExploitProtectionOverride = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection" -Name DisallowExploitProtectionOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisallowExploitProtectionOverride
+
+if ($DisallowExploitProtectionOverride -eq $null)
+{
+write-host "Prevent users from modifying settings is not configured" -ForegroundColor Yellow
+}
+    elseif ($DisallowExploitProtectionOverride -eq '1')
+    {
+        write-host "Prevent users from modifying settings is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Prevent users from modifying settings is disabled" -ForegroundColor Red
+    }
+
+# Turn off Data Execution Prevention for Explorer
+$NoDataExecutionPrevention = Get-ItemProperty -Path "Registry::HKLM\Software\Policies\Microsoft\Windows\Explorer" -Name NoDataExecutionPrevention -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoDataExecutionPrevention
+
+if ($NoDataExecutionPrevention -eq $null)
+{
+write-host "Turn off Data Execution Prevention for Explorer is not configured" -ForegroundColor Yellow
+}
+    elseif ($NoDataExecutionPrevention -eq '0')
+    {
+        write-host "Turn off Data Execution Prevention for Explorer is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Turn off Data Execution Prevention for Explorer is enabled" -ForegroundColor Red
+    }
+
+# Enabled Structured Exception Handling Overwrite Protection (SEHOP)
+$DisableExceptionChainValidation = Get-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel\" -Name DisableExceptionChainValidation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableExceptionChainValidation
+
+if ($DisableExceptionChainValidation -eq $null)
+{
+write-host "Enabled Structured Exception Handling Overwrite Protection (SEHOP) is not configured" -ForegroundColor Yellow
+}
+    elseif ($DisableExceptionChainValidation -eq '0')
+    {
+        write-host "Enabled Structured Exception Handling Overwrite Protection (SEHOP) is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Enabled Structured Exception Handling Overwrite Protection (SEHOP) is disabled" -ForegroundColor Red
+    }
+
+
+write-host "`r`n####################### LOCAL ADMINISTRATOR ACCOUNTS #######################`r`n"
