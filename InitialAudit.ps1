@@ -293,32 +293,62 @@ $officeversion = $officetemp.Substring(0,4)
 
 #This registry paths assume that policies have been applied in group policy in user preferences
 Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name | ForEach-Object{
-
 $officename = ($_).Split('\')[6]
-
 if ($officename.Contains("outlook") -or $officename.Contains("common") -or $officename.Contains("firstrun") -or $officename.Contains("onenote") -or $officename.Contains("Registration"))
 {
-#donothing
+    #donothing
 }
 else
 {
-$appsetting = Get-ItemProperty -Path Registry::$_\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
+    $appsetting = Get-ItemProperty -Path Registry::$_\Security -ErrorAction SilentlyContinue| Select-Object -ExpandProperty VBAWarnings -ErrorAction SilentlyContinue
 
 If ($appsetting -eq $null)
 {
-write-host "Macro settings have not been configured in $officename"
+    write-host "Macro settings have not been configured in $officename"
 }
-elseif ($appsetting -eq "4"){
-    write-host "Macros are disabled in $officename" -ForegroundColor Green
+    elseif ($appsetting -eq "4")
+    {
+        write-host "Macros are disabled in $officename" -ForegroundColor Green
     }
-    elseif ($appsetting -eq"1")
-      {Write-Host "Macros are not disabled in $officename, set to Enable all Macros ($appsetting)"}
-      elseif ($appsetting -eq"2")
-      {Write-Host "Macros are not disabled in $officename, Disable all Macros with notification ($appsetting)"}
-      elseif ($appsetting -eq"3")
-      {Write-Host "Macros are not disabled in $officename, Disable all Macros except those digitally signed ($appsetting)"}
-      else {write-host "Macros are not disabled in $officename, value is unknown and set to $appsetting" -ForegroundColor Red}
+    elseif ($appsetting -eq "1")
+      {
+            Write-Host "Macros are not disabled in $officename, set to Enable all Macros ($appsetting)" -ForegroundColor Red
+      }
+      elseif ($appsetting -eq "2")
+      {
+            Write-Host "Macros are not disabled in $officename, Disable all Macros with notification ($appsetting)" -ForegroundColor Red
+      }
+      elseif ($appsetting -eq "3")
+      {
+            Write-Host "Macros are not disabled in $officename, Disable all Macros except those digitally signed ($appsetting)" -ForegroundColor Red
+      }
+      else 
+      {
+            Write-Host "Macros are not disabled in $officename, value is unknown and set to $appsetting" -ForegroundColor Red
+      }
 
+$apptoscan = $_
+
+$tldisable = Get-ItemProperty -Path "Registry::$apptoscan\Security\Trusted Locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+if ($tldisable -eq '1')
+{
+write-host "Trusted Locations for $officename are disabled" -ForegroundColor Green
+}
+else
+{
+
+write-host "Trusted Locations For $officename are enabled" -ForegroundColor Yellow
+foreach($_ in 1..50)
+{
+    $i++
+    $trustedlocation = Get-ItemProperty -Path "Registry::$apptoscan\Security\Trusted Locations\location$_" -Name path -ErrorAction SilentlyContinue|Select-Object -ExpandProperty path
+    If ($trustedlocation -ne $null)
+    {
+        write-host "$trustedlocation" -ForegroundColor Magenta
+    }
+}
+}
 }
 }
 
@@ -341,70 +371,25 @@ elseif ($macrooutlook -eq "4"){
       {Write-Host "Macros are not disabled in Microsoft Outlook, set to Disable all Macros except those digitally signed" -ForegroundColor Red}
       else {Write-host "Macros are not disabled in Microsoft Outlook, value is unknown and set to $macrooutlook" -ForegroundColor Red}
 
-#returns trusted locations
-
-#MS Word
-Write-Host "Trusted locations for Microsoft Word:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Word\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationWord = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Word\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationword -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Word"}
-
-
-
-#MS Powerpoint
-Write-Host "Trusted locations for Microsoft Powerpoint:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Powerpoint\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationppt = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Powerpoint\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationppt -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Powerpoint"}
-
-
-
-#MS Excel
-Write-Host "Trusted locations for Microsoft Excel:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Excel\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationexcel = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Excel\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationexcel -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Excel"}
-
-
-#MS Access
-Write-Host "Trusted locations for Microsoft Access:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Access\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationaccess = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Access\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationaccess -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Access"}
-
-
 #MS Outlook
-Write-Host "Trusted locations for Microsoft Outlook:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Outlook\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationoutlook = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Outlook\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationoutlook -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Outlook"}
 
+$tldisable = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Security\Trusted Locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
 
-#MS Project
-Write-Host "Trusted locations for Microsoft Project:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\MS Project\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationproject = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\MS Project\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationproject -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Project"}
+if ($tldisable -eq '1')
+{
+write-host "Trusted Locations for Outlook are disabled" -ForegroundColor Green
+}
+else
+{
 
-
-#MS Publisher
-Write-Host "Trusted locations for Microsoft Publisher:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Publisher\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationpublisher = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Publisher\Security\Trusted Locations"-ErrorAction SilentlyContinue
-If ($locationpublisher -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Publisher"}
-
-
-#MS Visio
-Write-Host "Trusted locations for Microsoft Visio:" -ForegroundColor Yellow
-Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Visio\Security\Trusted Locations" -ErrorAction SilentlyContinue
-$locationvisio = Get-ChildItem "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Visio\Security\Trusted Locations" -ErrorAction SilentlyContinue
-If ($locationvisio -eq $null)
-{write-host "No trusted locations have been configured in Microsoft Visio"}
-else {write-host $locationvisio}
+write-host "Trusted Locations For Outlook are enabled" -ForegroundColor Yellow
+foreach($_ in 1..50)
+{
+    $i++
+    $trustedlocation = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\Outlook\Security\Trusted Locations\location$_" -Name path -ErrorAction SilentlyContinue|Select-Object -ExpandProperty path
+    If ($trustedlocation -ne $null)
+    {
+        write-host "$trustedlocation" -ForegroundColor Magenta
+    }
+}
+}
