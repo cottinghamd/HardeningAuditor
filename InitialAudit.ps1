@@ -396,8 +396,8 @@ foreach($_ in 1..50)
 
 
 
-
-
+write-host "`r`n####################### CREDENTIAL CACHING #######################`r`n"
+write-host "Unable to check Number of Previous Logons to cache, due to setting being in the Security hive, look at setting in Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon"
 
 #Check Network Access: Do not allow storage of passwords and credentials for network authentication
 $networkaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\" -Name disabledomaincreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabledomaincreds
@@ -479,6 +479,8 @@ write-host "Virtualisation Based Protection of Code Integrity with UEFI lock is 
         write-host "Virtualisation Based Protection of Code Integrity with UEFI lock is set to something non compliant" -ForegroundColor Red
     }
 
+write-host "`r`n####################### CONTROLLED FOLDER ACCESS #######################`r`n"
+
 #Check Controlled Folder Access for Exploit Guard is Enabled
 $cfaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access" -Name EnableControlledFolderAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableControlledFolderAccess
 
@@ -493,4 +495,160 @@ write-host "Controlled Folder Access for Exploit Guard is not configured" -Foreg
     else
     {
         write-host "Controlled Folder Access for Exploit Guard is disabled" -ForegroundColor Red
+    }
+
+write-host "`r`n####################### CREDENTIAL ENTRY #######################`r`n"
+
+#Check Do not display network selection UI
+
+$netselectui = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" -Name DontDisplayNetworkSelectionUI -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DontDisplayNetworkSelectionUI
+
+if ($netselectui -eq $null)
+{
+write-host "Do not display network selection UI is not configured" -ForegroundColor Yellow
+}
+    elseif ($netselectui -eq '1')
+    {
+        write-host "Do not display network selection UI is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Do not display network selection UI is disabled" -ForegroundColor Red
+    }
+
+#Check Enumerate local users on domain joined computers
+
+$enumlocalusers = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" -Name EnumerateLocalUsers -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnumerateLocalUsers
+
+if ($enumlocalusers -eq $null)
+{
+write-host "Enumerate local users on domain joined computers is not configured" -ForegroundColor Yellow
+}
+    elseif ($enumlocalusers -eq '0')
+    {
+        write-host "Enumerate local users on domain joined computers is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Enumerate local users on domain joined computers is disabled" -ForegroundColor Red
+    }
+
+
+#Check Do not display the password reveal button
+
+$disablepassreveal = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredUI" -Name DisablePasswordReveal -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePasswordReveal
+
+if ($disablepassreveal -eq $null)
+{
+write-host "Do not display the password reveal button is not configured" -ForegroundColor Yellow
+}
+    elseif ($disablepassreveal -eq '1')
+    {
+        write-host "Do not display the password reveal button is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Do not display the password reveal button is disabled" -ForegroundColor Red
+    }
+
+#Check Enumerate administrator accounts on elevation
+
+$enumerateadmins = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredUI" -Name EnumerateAdministrators -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnumerateAdministrators
+
+if ($enumerateadmins -eq $null)
+{
+write-host "Enumerate administrator accounts on elevation is not configured" -ForegroundColor Yellow
+}
+    elseif ($enumerateadmins -eq '0')
+    {
+        write-host "Enumerate administrator accounts on elevation is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Enumerate administrator accounts on elevation is enabled" -ForegroundColor Red
+    }
+
+#Check Require trusted path for credential entry 
+
+$credentry = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredUI" -Name EnableSecureCredentialPrompting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSecureCredentialPrompting
+
+if ($credentry -eq $null)
+{
+write-host "Require trusted path for credential entry is not configured" -ForegroundColor Yellow
+}
+    elseif ($credentry -eq '1')
+    {
+        write-host "Require trusted path for credential entry is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Require trusted path for credential entry is disabled" -ForegroundColor Red
+    }
+
+#Check Disable or enable software Secure Attention Sequence  
+
+$sasgeneration = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name SoftwareSASGeneration -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SoftwareSASGeneration
+
+if ($sasgeneration -eq $null)
+{
+write-host "Disable or enable software Secure Attention Sequence is not configured" -ForegroundColor Yellow
+}
+    elseif ($sasgeneration -eq '0')
+    {
+        write-host "Disable or enable software Secure Attention Sequence is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Disable or enable software Secure Attention Sequence is enabled" -ForegroundColor Red
+    }
+
+#Check Sign-in last interactive user automatically after a system-initiated restart 
+
+$systeminitiated = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name DisableAutomaticRestartSignOn -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableAutomaticRestartSignOn
+
+if ($systeminitiated -eq $null)
+{
+write-host "Sign-in last interactive user automatically after a system-initiated restart is not configured" -ForegroundColor Yellow
+}
+    elseif ($systeminitiated -eq '0')
+    {
+        write-host "Sign-in last interactive user automatically after a system-initiated restart is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Sign-in last interactive user automatically after a system-initiated restart is enabled" -ForegroundColor Red
+    }
+
+#Check Interactive logon: Do not require CTRL+ALT+DEL 
+
+$ctrlaltdel = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name DisableCAD -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCAD
+
+if ($ctrlaltdel -eq $null)
+{
+write-host "Interactive logon: Do not require CTRL+ALT+DEL  is not configured" -ForegroundColor Yellow
+}
+    elseif ($ctrlaltdel -eq '0')
+    {
+        write-host "Interactive logon: Do not require CTRL+ALT+DEL is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Interactive logon: Do not require CTRL+ALT+DEL is enabled" -ForegroundColor Red
+    }
+
+#Check Interactive logon: Don’t display username at sign-in 
+
+$dontdisplaylastuser = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name DontDisplayLastUserName -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DontDisplayLastUserName
+
+if ($dontdisplaylastuser -eq $null)
+{
+write-host "Interactive logon: Don’t display username at sign-in is not configured" -ForegroundColor Yellow
+}
+    elseif ($dontdisplaylastuser -eq '1')
+    {
+        write-host "Interactive logon: Don’t display username at sign-in is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Interactive logon: Don’t display username at sign-in is disabled" -ForegroundColor Red
     }
