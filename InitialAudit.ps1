@@ -636,19 +636,240 @@ write-host "Interactive logon: Do not require CTRL+ALT+DEL  is not configured" -
         write-host "Interactive logon: Do not require CTRL+ALT+DEL is enabled" -ForegroundColor Red
     }
 
-#Check Interactive logon: Don’t display username at sign-in 
+#Check Interactive logon: Don't display username at sign-in 
 
 $dontdisplaylastuser = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name DontDisplayLastUserName -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DontDisplayLastUserName
 
 if ($dontdisplaylastuser -eq $null)
 {
-write-host "Interactive logon: Don’t display username at sign-in is not configured" -ForegroundColor Yellow
+write-host "Interactive logon: Don't display username at sign-in is not configured" -ForegroundColor Yellow
 }
     elseif ($dontdisplaylastuser -eq '1')
     {
-        write-host "Interactive logon: Don’t display username at sign-in is enabled" -ForegroundColor Green
+        write-host "Interactive logon: Don't display username at sign-in is enabled" -ForegroundColor Green
     }
     else
     {
-        write-host "Interactive logon: Don’t display username at sign-in is disabled" -ForegroundColor Red
+        write-host "Interactive logon: Don't display username at sign-in is disabled" -ForegroundColor Red
+    }
+
+
+write-host "`r`n####################### EARLY LAUNCH ANTI MALWARE #######################`r`n"
+
+#Check ELAM Configuration
+
+$elam = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\EarlyLaunch" -Name DriverLoadPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DriverLoadPolicy
+
+if ($elam -eq $null)
+{
+write-host "ELAM Boot-Start Driver Initialization Policy is not configured" -ForegroundColor Yellow
+}
+    elseif ($elam -eq '8')
+    {
+        write-host "ELAM Boot-Start Driver Initialization Policy is enabled and set to Good Only" -ForegroundColor Green
+    }
+    elseif ($elam -eq '2')
+    {
+        write-host "ELAM Boot-Start Driver Initialization Policy is enabled and set to Good and Unknown" -ForegroundColor Green
+    }
+    elseif ($elam -eq '3')
+    {
+        write-host "ELAM Boot-Start Driver Initialization Policy is enabled, but set to Good, Unknown, Bad but critical" -ForegroundColor Red
+    }
+    elseif ($elam -eq '7')
+    {
+        write-host "ELAM Boot-Start Driver Initialization Policy is enabled, but set allow All drivers" -ForegroundColor Red
+    }
+    else
+    {
+        write-host "ELAM Boot-Start Driver Initialization Policy is disabled" -ForegroundColor Red
+    }
+
+
+write-host "`r`n####################### ELEVATING PRIVILEGES #######################`r`n"
+
+
+
+#User Account Control: Admin Approval Mode for the Built-in Administrator account
+
+$adminapprovalmode = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name FilterAdministratorToken -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FilterAdministratorToken
+
+if ($adminapprovalmode -eq $null)
+{
+write-host "Admin Approval Mode for the Built-in Administrator account is not configured" -ForegroundColor Yellow
+}
+    elseif ($adminapprovalmode -eq '1')
+    {
+        write-host "Admin Approval Mode for the Built-in Administrator account is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Admin Approval Mode for the Built-in Administrator account is disabled" -ForegroundColor Red
+    }
+
+#User Account Control: Allow UIAccess applications to prompt for elevation without using the secure desktop
+$uiaccessapplications = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableUIADesktopToggle -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableUIADesktopToggle
+
+if ($uiaccessapplications -eq $null)
+{
+write-host "Allow UIAccess applications to prompt for elevation without using the secure desktop is not configured" -ForegroundColor Yellow
+}
+    elseif ($uiaccessapplications -eq '0')
+    {
+        write-host "Allow UIAccess applications to prompt for elevation without using the secure desktop is disabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Allow UIAccess applications to prompt for elevation without using the secure desktop is enabled" -ForegroundColor Red
+    }
+
+#User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode
+$elevationprompt = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name ConsentPromptBehaviorAdmin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ConsentPromptBehaviorAdmin
+
+if ($elevationprompt -eq $null)
+{
+write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is not configured" -ForegroundColor Yellow
+}
+    elseif ($elevationprompt -eq '0')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured, but set to Elevate without prompting" -ForegroundColor Red
+    }
+        elseif ($elevationprompt -eq '1')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured and set to Prompt for credentials on the secure desktop" -ForegroundColor Green
+    }
+        elseif ($elevationprompt -eq '2')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured, but set to Prompt for consent on the secure desktop" -ForegroundColor Red
+    }
+        elseif ($elevationprompt -eq '3')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured, but set to Prompt for credentials" -ForegroundColor Red
+    }
+        elseif ($elevationprompt -eq '4')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured, but set to Prompt for consent" -ForegroundColor Red
+    }
+        elseif ($elevationprompt -eq '5')
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is configured, but set to Prompt for consent for non-Windows binaries" -ForegroundColor Red
+    }
+    else
+    {
+        write-host "Behavior of the elevation prompt for administrators in Admin Approval Mode is not configured" -ForegroundColor Red
+    }
+
+
+#User Account Control: Behavior of the elevation prompt for standard users
+$standardelevationprompt = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name ConsentPromptBehaviorUser -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ConsentPromptBehaviorUser
+
+if ($standardelevationprompt -eq $null)
+{
+write-host "Behavior of the elevation prompt for standard users is not configured" -ForegroundColor Yellow
+}
+    elseif ($standardelevationprompt -eq '0')
+    {
+        write-host "Behavior of the elevation prompt for standard users is configured, but set to Automatically deny elevation requests" -ForegroundColor Yellow
+    }
+        elseif ($standardelevationprompt -eq '1')
+    {
+        write-host "Behavior of the elevation prompt for standard users is configured set to Prompt for credentials on the secure desktop" -ForegroundColor Green
+    }
+        elseif ($standardelevationprompt -eq '3')
+    {
+        write-host "Behavior of the elevation prompt for standard users is configured, but set to Prompt for credentials" -ForegroundColor Red
+    }
+    else
+    {
+        write-host "Behavior of the elevation prompt for administrators is not configured" -ForegroundColor Red
+    }
+
+
+
+
+
+#User Account Control: Detect application installations and prompt for elevation
+$detectinstallelevate = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableInstallerDetection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableInstallerDetection
+
+if ($detectinstallelevate -eq $null)
+{
+write-host "Detect application installations and prompt for elevation is not configured" -ForegroundColor Yellow
+}
+    elseif ($detectinstallelevate -eq '1')
+    {
+        write-host "Detect application installations and prompt for elevation is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Detect application installations and prompt for elevation is disabled" -ForegroundColor Red
+    }
+
+
+
+#User Account Control: Only elevate UIAccess applications that are installed in secure locations
+$onlyelevateapps = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableSecureUIAPaths -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSecureUIAPaths
+
+if ($onlyelevateapps -eq $null)
+{
+write-host "Only elevate UIAccess applications that are installed in secure locations is not configured" -ForegroundColor Yellow
+}
+    elseif ($onlyelevateapps -eq '1')
+    {
+        write-host "Only elevate UIAccess applications that are installed in secure locations is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Only elevate UIAccess applications that are installed in secure locations is disabled" -ForegroundColor Red
+    }
+
+
+
+#User Account Control: Run all administrators in Admin Approval Mode
+$adminapprovalmode = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableLUA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableLUA
+
+if ($adminapprovalmode -eq $null)
+{
+write-host "Run all administrators in Admin Approval Mode is not configured" -ForegroundColor Yellow
+}
+    elseif ($adminapprovalmode -eq '1')
+    {
+        write-host "Run all administrators in Admin Approval Mode is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Run all administrators in Admin Approval Mode is disabled" -ForegroundColor Red
+    }
+
+#User Account Control: Switch to the secure desktop when prompting for elevation
+$promptonsecuredesktop = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name PromptOnSecureDesktop -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PromptOnSecureDesktop
+
+if ($promptonsecuredesktop -eq $null)
+{
+write-host "Switch to the secure desktop when prompting for elevation is not configured" -ForegroundColor Yellow
+}
+    elseif ($promptonsecuredesktop -eq '1')
+    {
+        write-host "Switch to the secure desktop when prompting for elevation is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Switch to the secure desktop when prompting for elevation is disabled" -ForegroundColor Red
+    }
+
+
+
+# User Account Control: Virtualize file and registry write failures to per-user locations
+$EnableVirtualization = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableVirtualization -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableVirtualization
+
+if ($EnableVirtualization -eq $null)
+{
+write-host "Virtualize file and registry write failures to per-user locations is not configured" -ForegroundColor Yellow
+}
+    elseif ($EnableVirtualization -eq '1')
+    {
+        write-host "Virtualize file and registry write failures to per-user locations is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Virtualize file and registry write failures to per-user locations is disabled" -ForegroundColor Red
     }
