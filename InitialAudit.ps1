@@ -945,3 +945,164 @@ write-host "Enabled Structured Exception Handling Overwrite Protection (SEHOP) i
 
 
 write-host "`r`n####################### LOCAL ADMINISTRATOR ACCOUNTS #######################`r`n"
+
+# Accounts: Administrator account status
+# This is apparently not a registry key, need to implement a check using another method later
+
+
+#Apply UAC restrictions to local accounts on network logons 
+
+$LocalAccountTokenFilterPolicy = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\" -Name LocalAccountTokenFilterPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LocalAccountTokenFilterPolicy
+
+if ($LocalAccountTokenFilterPolicy -eq $null)
+{
+write-host "Apply UAC restrictions to local accounts on network logons is not configured" -ForegroundColor Yellow
+}
+    elseif ($LocalAccountTokenFilterPolicy -eq '0')
+    {
+        write-host "Apply UAC restrictions to local accounts on network logons is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Apply UAC restrictions to local accounts on network logons is disabled" -ForegroundColor Red
+    }
+
+
+write-host "`r`n####################### MICROSOFT EDGE #######################`r`n"
+
+
+#Allow Adobe Flash 
+
+$FlashPlayerEnabledLM = Get-ItemProperty -Path "Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\Addons\" -Name FlashPlayerEnabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FlashPlayerEnabled
+$FlashPlayerEnabledUP = Get-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\Addons\" -Name FlashPlayerEnabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FlashPlayerEnabled
+
+if ($FlashPlayerEnabledLM -eq $null -and $FlashPlayerEnabledUP -eq $null)
+{
+write-host "Flash Player is Not Configured" -ForegroundColor Yellow
+}
+
+if ($FlashPlayerEnabledLM -eq '0')
+    {
+        write-host "Flash Player is disabled in Local Machine GP" -ForegroundColor Green
+    }
+if ($FlashPlayerEnabledLM -eq '1')
+    {
+        write-host "Flash Player is enabled in Local Machine GP" -ForegroundColor Red
+    }   
+if ($FlashPlayerEnabledUP -eq '0')
+    {
+        write-host "Flash Player is disabled in User GP" -ForegroundColor Green
+    }
+if ($FlashPlayerEnabledUP -eq '1')
+    {
+        write-host "Flash Player is enabled in User GP" -ForegroundColor Red
+    }
+
+#Allow Developer Tools
+
+$AllowDeveloperToolsLM = Get-ItemProperty -Path "Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\F12\" -Name AllowDeveloperTools -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDeveloperTools
+$AllowDeveloperToolsUP = Get-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\F12\" -Name AllowDeveloperTools -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDeveloperTools
+
+if ($AllowDeveloperToolsLM -eq $null -and $AllowDeveloperToolsUP -eq $null)
+{
+write-host "Edge Developer Tools are Not Configured" -ForegroundColor Yellow
+}
+
+if ($AllowDeveloperToolsLM -eq '0')
+    {
+        write-host "Edge Developer Tools are disabled in Local Machine GP" -ForegroundColor Green
+    }
+if ($AllowDeveloperToolsLM -eq '1')
+    {
+        write-host "Edge Developer Tools are enabled in Local Machine GP" -ForegroundColor Red
+    }   
+if ($AllowDeveloperToolsUP -eq '0')
+    {
+        write-host "Edge Developer Tools are disabled in User GP" -ForegroundColor Green
+    }
+if ($AllowDeveloperToolsUP -eq '1')
+    {
+        write-host "Edge Developer Tools are enabled in User GP" -ForegroundColor Red
+    }
+
+
+#Configure Do Not Track
+
+$DoNotTrackLM = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name DoNotTrack -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DoNotTrack
+$DoNotTracksUP = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name DoNotTrack -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DoNotTrack
+
+if ($DoNotTrackLM -eq $null -and $DoNotTrackUP -eq $null)
+{
+write-host "Edge Do Not Track is Not Configured" -ForegroundColor Yellow
+}
+
+if ($AllowDeveloperToolsLM -eq '0')
+    {
+        write-host "Edge Do Not Track is disabled in Local Machine GP" -ForegroundColor Red
+    }
+if ($AllowDeveloperToolsLM -eq '1')
+    {
+        write-host "Edge Do Not Track is enabled in Local Machine GP" -ForegroundColor Green
+    }   
+if ($AllowDeveloperToolsUP -eq '0')
+    {
+        write-host "Edge Do Not Track is disabled in User GP" -ForegroundColor Red
+    }
+if ($AllowDeveloperToolsUP -eq '1')
+    {
+        write-host "Edge Do Not Track is enabled in User GP" -ForegroundColor Green
+    }
+
+#Configure Password Manager
+
+$FormSuggestPasswordsLM = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name 'FormSuggest Passwords' -ErrorAction SilentlyContinue|Select-Object -ExpandProperty 'FormSuggest Passwords'
+$FormSuggestPasswordsUP = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name 'FormSuggest Passwords' -ErrorAction SilentlyContinue|Select-Object -ExpandProperty 'FormSuggest Passwords'
+
+if ($FormSuggestPasswordsLM -eq $null -and $FormSuggestPasswordsUP -eq $null)
+{
+write-host "Edge Password Manager is Not Configured" -ForegroundColor Yellow
+}
+
+if ($FormSuggestPasswordsLM -eq 'no')
+    {
+        write-host "Edge Password Manager is disabled in Local Machine GP" -ForegroundColor Red
+    }
+if ($FormSuggestPasswordsLM -eq 'yes')
+    {
+        write-host "Edge Password Manager is enabled in Local Machine GP" -ForegroundColor Green
+    }   
+if ($FormSuggestPasswordsUP -eq 'no')
+    {
+        write-host "Edge Password Manager is disabled in User GP" -ForegroundColor Red
+    }
+if ($FormSuggestPasswordsUP -eq 'yes')
+    {
+        write-host "Edge Password Manager is enabled in User GP" -ForegroundColor Green
+    }
+
+#Configure Pop-up Blocker
+
+$AllowPopupsLM = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name AllowPopups -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowPopups
+$AllowPopupsUP = Get-ItemProperty -Path "Software\Policies\Microsoft\MicrosoftEdge\Main\" -Name AllowPopups -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowPopups
+
+if ($AllowPopupsLM -eq $null -and $AllowPopupsUP -eq $null)
+{
+write-host "Edge Pop-up Blocker is Not Configured" -ForegroundColor Yellow
+}
+
+if ($AllowPopupsLM -eq 'no')
+    {
+        write-host "Edge Pop-up Blocker is disabled in Local Machine GP" -ForegroundColor Red
+    }
+if ($AllowPopupsLM -eq 'yes')
+    {
+        write-host "Edge Pop-up Blocker is enabled in Local Machine GP" -ForegroundColor Green
+    }   
+if ($AllowPopupsUP -eq 'no')
+    {
+        write-host "Edge Pop-up Blocker is disabled in User GP" -ForegroundColor Red
+    }
+if ($AllowPopupsUP -eq 'yes')
+    {
+        write-host "Edge Pop-up Blocker is enabled in User GP" -ForegroundColor Green
+    }
