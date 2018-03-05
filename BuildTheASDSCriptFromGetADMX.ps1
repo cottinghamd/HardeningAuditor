@@ -37,6 +37,9 @@ write-host "The Registry Value is $Row3" -ForegroundColor Green
 write-host "The Enabled Value is $Row5" -ForegroundColor Green
 write-host "The Disabled Value is $Row6" -ForegroundColor Green
 
+if ($Row7 -eq $null)
+{
+
 $variablelm = '$LM'+$Row3
 $variableup = '$UP'+$Row3
 $variablestd = '$'+$Row3
@@ -153,4 +156,9 @@ write-host '}'
 
 }
 write-host "`r`n####################### END #######################`r`n"
+}
+else
+{
+write-host "An error was identified in table formatting from GetADMX.com, please check" -ForegroundColor Magenta
+}
 Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
