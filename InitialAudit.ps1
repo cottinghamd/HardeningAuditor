@@ -2355,3 +2355,318 @@ write-host "Unable to check WPD Devices: Deny read access"
 write-host "Unable to check WPD Devices: Deny write access"
 
 write-host "`r`n####################### FILE AND PRINT SHARING #######################`r`n"
+
+$DisableHomeGroup = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\HomeGroup\'  -Name DisableHomeGroup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableHomeGroup
+if ( $DisableHomeGroup -eq $null)
+{
+write-host " Prevent the computer from joining a homegroup is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableHomeGroup  -eq  '1' )
+{
+write-host " Prevent the computer from joining a homegroup is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableHomeGroup  -eq  '0' )
+{
+write-host " Prevent the computer from joining a homegroup is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent the computer from joining a homegroup is set to an unknown setting" -ForegroundColor Red
+}
+
+$NoInplaceSharing = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoInplaceSharing -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoInplaceSharing
+if ( $NoInplaceSharing -eq $null)
+{
+write-host " Prevent users from sharing files within their profile. is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoInplaceSharing  -eq  '1' )
+{
+write-host " Prevent users from sharing files within their profile. is enabled" -ForegroundColor Green
+}
+  elseif ( $NoInplaceSharing  -eq  '0' )
+{
+write-host " Prevent users from sharing files within their profile. is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent users from sharing files within their profile. is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### GROUP POLICY PROCESSING #######################`r`n"
+write-host "Unable to check Hardened UNC Paths"
+
+$NoBackgroundPolicy = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\'  -Name NoGPOListChanges -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoGPOListChanges
+if ( $NoBackgroundPolicy -eq $null)
+{
+write-host " Configure registry policy processing is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoBackgroundPolicy  -eq  '0' )
+{
+write-host " Configure registry policy processing is enabled" -ForegroundColor Green
+}
+  elseif ( $NoBackgroundPolicy  -eq  '1' )
+{
+write-host " Configure registry policy processing is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure registry policy processing is set to an unknown setting" -ForegroundColor Red
+}
+
+$NoBackgroundPolicy2 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy\{827D319E-6EAC-11D2-A4EA-00C04F79F83A}\'  -Name NoGPOListChanges -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoGPOListChanges
+if ( $NoBackgroundPolicy2 -eq $null)
+{
+write-host " Configure security policy processing is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoBackgroundPolicy2  -eq  '0' )
+{
+write-host " Configure security policy processing is enabled" -ForegroundColor Green
+}
+  elseif ( $NoBackgroundPolicy2  -eq  '1' )
+{
+write-host " Configure security policy processing is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure security policy processing is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableBkGndGroupPolicy = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name DisableBkGndGroupPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBkGndGroupPolicy
+if ( $DisableBkGndGroupPolicy -eq $null)
+{
+write-host " Turn off background refresh of Group Policy is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableBkGndGroupPolicy  -eq  '0' )
+{
+write-host " Turn off background refresh of Group Policy is disabled" -ForegroundColor Green
+}
+  elseif ( $DisableBkGndGroupPolicy  -eq  '1' )
+{
+write-host " Turn off background refresh of Group Policy is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off background refresh of Group Policy is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableLGPOProcessing = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name DisableLGPOProcessing -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLGPOProcessing
+if ( $DisableLGPOProcessing -eq $null)
+{
+write-host " Turn off Local Group Policy Objects processing is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableLGPOProcessing  -eq  '1' )
+{
+write-host " Turn off Local Group Policy Objects processing is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableLGPOProcessing  -eq  '0' )
+{
+write-host " Turn off Local Group Policy Objects processing is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Local Group Policy Objects processing is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### HARD DRIVE ENCRYPTION #######################`r`n"
+
+write-host "Unable to check Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later)"
+
+$DisableExternalDMAUnderLock = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name DisableExternalDMAUnderLock -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableExternalDMAUnderLock
+if ( $DisableExternalDMAUnderLock -eq $null)
+{
+write-host " Disable new DMA devices when this computer is locked is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableExternalDMAUnderLock  -eq  '1' )
+{
+write-host " Disable new DMA devices when this computer is locked is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableExternalDMAUnderLock  -eq  '0' )
+{
+write-host " Disable new DMA devices when this computer is locked is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Disable new DMA devices when this computer is locked is set to an unknown setting" -ForegroundColor Red
+}
+
+$MorBehavior = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name MorBehavior -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MorBehavior
+if ( $MorBehavior -eq $null)
+{
+write-host " Prevent memory overwrite on restart is not configured" -ForegroundColor Yellow
+}
+   elseif ( $MorBehavior  -eq  '0' )
+{
+write-host " Prevent memory overwrite on restart is disabled" -ForegroundColor Green
+}
+  elseif ( $MorBehavior  -eq  '1' )
+{
+write-host " Prevent memory overwrite on restart is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent memory overwrite on restart is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check Choose how BitLocker-protected fixed drives can be recovered "
+write-host "Unable to check Configure use of passwords for fixed data drives "
+
+$FDVDenyWriteAccess = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE\'  -Name FDVDenyWriteAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVDenyWriteAccess
+if ( $FDVDenyWriteAccess -eq $null)
+{
+write-host " Deny write access to fixed drives not protected by BitLocker is not configured" -ForegroundColor Yellow
+}
+   elseif ( $FDVDenyWriteAccess  -eq  '1' )
+{
+write-host " Deny write access to fixed drives not protected by BitLocker is enabled" -ForegroundColor Green
+}
+  elseif ( $FDVDenyWriteAccess  -eq  '0' )
+{
+write-host " Deny write access to fixed drives not protected by BitLocker is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Deny write access to fixed drives not protected by BitLocker is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "unable to check Enforce drive encryption type on fixed data drive "
+
+
+$OSEnablePreBootPinExceptionOnDECapableDevice = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name OSEnablePreBootPinExceptionOnDECapableDevice -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSEnablePreBootPinExceptionOnDECapableDevice
+if ( $OSEnablePreBootPinExceptionOnDECapableDevice -eq $null)
+{
+write-host " Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is not configured" -ForegroundColor Yellow
+}
+   elseif ( $OSEnablePreBootPinExceptionOnDECapableDevice  -eq  '0' )
+{
+write-host " Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is disabled" -ForegroundColor Green
+}
+  elseif ( $OSEnablePreBootPinExceptionOnDECapableDevice  -eq  '1' )
+{
+write-host " Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is set to an unknown setting" -ForegroundColor Red
+}
+
+$UseEnhancedPin = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name UseEnhancedPin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseEnhancedPin
+if ( $UseEnhancedPin -eq $null)
+{
+write-host " Allow enhanced PINs for startup is not configured" -ForegroundColor Yellow
+}
+   elseif ( $UseEnhancedPin  -eq  '1' )
+{
+write-host " Allow enhanced PINs for startup is enabled" -ForegroundColor Green
+}
+  elseif ( $UseEnhancedPin  -eq  '0' )
+{
+write-host " Allow enhanced PINs for startup is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow enhanced PINs for startup is set to an unknown setting" -ForegroundColor Red
+}
+
+$OSManageNKP = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE\'  -Name OSManageNKP -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSManageNKP
+if ( $OSManageNKP -eq $null)
+{
+write-host " Allow network unlock at startup is not configured" -ForegroundColor Yellow
+}
+   elseif ( $OSManageNKP  -eq  '1' )
+{
+write-host " Allow network unlock at startup is enabled" -ForegroundColor Green
+}
+  elseif ( $OSManageNKP  -eq  '0' )
+{
+write-host " Allow network unlock at startup is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow network unlock at startup is set to an unknown setting" -ForegroundColor Red
+}
+
+$OSAllowSecureBootForIntegrity = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name OSAllowSecureBootForIntegrity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSAllowSecureBootForIntegrity
+if ( $OSAllowSecureBootForIntegrity -eq $null)
+{
+write-host " Allow Secure Boot for integrity validation is not configured" -ForegroundColor Yellow
+}
+   elseif ( $OSAllowSecureBootForIntegrity  -eq  '1' )
+{
+write-host " Allow Secure Boot for integrity validation is enabled" -ForegroundColor Green
+}
+  elseif ( $OSAllowSecureBootForIntegrity  -eq  '0' )
+{
+write-host " Allow Secure Boot for integrity validation is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Secure Boot for integrity validation is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check Choose how BitLocker-protected operating system drives can be recovered"
+write-host "Unable to check Configure minimum PIN length for startup "
+write-host "Unable to check Configure use of passwords for operating system drives "
+
+$DisallowStandardUserPINReset = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name DisallowStandardUserPINReset -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisallowStandardUserPINReset
+if ( $DisallowStandardUserPINReset -eq $null)
+{
+write-host " Disallow standard users from changing the PIN or password is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisallowStandardUserPINReset  -eq  '0' )
+{
+write-host " Disallow standard users from changing the PIN or password is disabled" -ForegroundColor Green
+}
+  elseif ( $DisallowStandardUserPINReset  -eq  '1' )
+{
+write-host " Disallow standard users from changing the PIN or password is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Disallow standard users from changing the PIN or password is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Enforce drive encryption type on operating system drive unable to check "
+write-host "Unable to check Require additional authentication at startup"
+
+$TPMAutoReseal = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name TPMAutoReseal -ErrorAction SilentlyContinue|Select-Object -ExpandProperty TPMAutoReseal
+if ( $TPMAutoReseal -eq $null)
+{
+write-host " Reset platform validation data after BitLocker recovery is not configured" -ForegroundColor Yellow
+}
+   elseif ( $TPMAutoReseal  -eq  '1' )
+{
+write-host " Reset platform validation data after BitLocker recovery is enabled" -ForegroundColor Green
+}
+  elseif ( $TPMAutoReseal  -eq  '0' )
+{
+write-host " Reset platform validation data after BitLocker recovery is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Reset platform validation data after BitLocker recovery is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Choose how BitLocker-protected removable drives can be recovered"
+write-host "Configure use of passwords for removable data drives "
+write-host "Control use of BitLocker on removable drives"
+
+$RDVDenyWriteAccess = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE\'  -Name RDVDenyWriteAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVDenyWriteAccess
+if ( $RDVDenyWriteAccess -eq $null)
+{
+write-host " Deny write access to removable drives not protected by BitLocker is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RDVDenyWriteAccess  -eq  '1' )
+{
+write-host " Deny write access to removable drives not protected by BitLocker is enabled" -ForegroundColor Green
+}
+  elseif ( $RDVDenyWriteAccess  -eq  '0' )
+{
+write-host " Deny write access to removable drives not protected by BitLocker is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Deny write access to removable drives not protected by BitLocker is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "unable to check Enforce drive encryption type on removable data drive "
+
