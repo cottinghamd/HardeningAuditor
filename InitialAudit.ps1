@@ -1277,3 +1277,562 @@ write-host " Allow Automatic Updates immediate installation is disabled" -Foregr
 write-host " Allow Automatic Updates immediate installation is set to an unknown setting" -ForegroundColor Red
 }
 
+$NoAutoUpdate = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name NoAutoUpdate -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoUpdate
+if ( $NoAutoUpdate -eq $null)
+{
+write-host " Configure Automatic Updates is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoAutoUpdate  -eq  '0' )
+{
+write-host " Configure Automatic Updates is enabled" -ForegroundColor Green
+}
+  elseif ( $NoAutoUpdate  -eq  '1' )
+{
+write-host " Configure Automatic Updates is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure Automatic Updates is set to an unknown setting" -ForegroundColor Red
+}
+
+$ExcludeWUDriversInQualityUpdate = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\ -Name ExcludeWUDriversInQualityUpdate -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExcludeWUDriversInQualityUpdate
+if ( $ExcludeWUDriversInQualityUpdate -eq $null)
+{
+write-host " Do not include drivers with Windows Updates is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ExcludeWUDriversInQualityUpdate  -eq  '0' )
+{
+write-host " Do not include drivers with Windows Updates is disabled" -ForegroundColor Green
+}
+  elseif ( $ExcludeWUDriversInQualityUpdate  -eq  '1' )
+{
+write-host " Do not include drivers with Windows Updates is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not include drivers with Windows Updates is set to an unknown setting" -ForegroundColor Red
+}
+
+$NoAutoRebootWithLoggedOnUsers = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name NoAutoRebootWithLoggedOnUsers -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoRebootWithLoggedOnUsers
+if ( $NoAutoRebootWithLoggedOnUsers -eq $null)
+{
+write-host " No auto-restart with logged on users for scheduled automatic updates installations is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoAutoRebootWithLoggedOnUsers  -eq  '1' )
+{
+write-host " No auto-restart with logged on users for scheduled automatic updates installations is enabled" -ForegroundColor Green
+}
+  elseif ( $NoAutoRebootWithLoggedOnUsers  -eq  '0' )
+{
+write-host " No auto-restart with logged on users for scheduled automatic updates installations is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " No auto-restart with logged on users for scheduled automatic updates installations is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$SetDisableUXWUAccess = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\ -Name SetDisableUXWUAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SetDisableUXWUAccess
+if ( $SetDisableUXWUAccess -eq $null)
+{
+write-host " Remove access to use all Windows Update features is not configured" -ForegroundColor Yellow
+}
+   elseif ( $SetDisableUXWUAccess  -eq  '0' )
+{
+write-host " Remove access to use all Windows Update features is disabled" -ForegroundColor Green
+}
+  elseif ( $SetDisableUXWUAccess  -eq  '1' )
+{
+write-host " Remove access to use all Windows Update features is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Remove access to use all Windows Update features is set to an unknown setting" -ForegroundColor Red
+}
+
+$IncludeRecommendedUpdates = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name IncludeRecommendedUpdates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty IncludeRecommendedUpdates
+if ( $IncludeRecommendedUpdates -eq $null)
+{
+write-host " Turn on recommended updates via Automatic Updates is not configured" -ForegroundColor Yellow
+}
+   elseif ( $IncludeRecommendedUpdates  -eq  '1' )
+{
+write-host " Turn on recommended updates via Automatic Updates is enabled" -ForegroundColor Green
+}
+  elseif ( $IncludeRecommendedUpdates  -eq  '0' )
+{
+write-host " Turn on recommended updates via Automatic Updates is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on recommended updates via Automatic Updates is set to an unknown setting" -ForegroundColor Red
+}
+
+$UseWUServer = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name UseWUServer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseWUServer
+if ( $UseWUServer -eq $null)
+{
+write-host " Specify intranet Microsoft update service location is not configured" -ForegroundColor Yellow
+}
+   elseif ( $UseWUServer  -eq  '1' )
+{
+write-host " Specify intranet Microsoft update service location is enabled" -ForegroundColor Green
+}
+  elseif ( $UseWUServer  -eq  '0' )
+{
+write-host " Specify intranet Microsoft update service location is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Specify intranet Microsoft update service location is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### PASSWORD POLICY #######################`r`n"
+
+$BlockDomainPicturePassword = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\ -Name BlockDomainPicturePassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty BlockDomainPicturePassword
+if ( $BlockDomainPicturePassword -eq $null)
+{
+write-host " Turn off picture password sign-in is not configured" -ForegroundColor Yellow
+}
+   elseif ( $BlockDomainPicturePassword  -eq  '1' )
+{
+write-host " Turn off picture password sign-in is enabled" -ForegroundColor Green
+}
+  elseif ( $BlockDomainPicturePassword  -eq  '0' )
+{
+write-host " Turn off picture password sign-in is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off picture password sign-in is set to an unknown setting" -ForegroundColor Red
+}
+
+$AllowDomainPINLogon = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\ -Name AllowDomainPINLogon -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDomainPINLogon
+if ( $AllowDomainPINLogon -eq $null)
+{
+write-host " Turn on convenience PIN sign-in is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AllowDomainPINLogon  -eq  '0' )
+{
+write-host " Turn on convenience PIN sign-in is disabled" -ForegroundColor Green
+}
+  elseif ( $AllowDomainPINLogon  -eq  '1' )
+{
+write-host " Turn on convenience PIN sign-in is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on convenience PIN sign-in is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Enforce Password History Not Checked Yet"
+write-host "Maximum password age can't be checked yet"
+write-host "Minimum password age can't be checked yet"
+write-host "Minimum password length can't be checked yet"
+
+$UserPwdComplexityReqs = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Policies\Infineon\TPM Software\ -Name UserPwdComplexityReqs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UserPwdComplexityReqs
+if ( $UserPwdComplexityReqs -eq $null)
+{
+write-host " Password must meet complexity requirements is not configured" -ForegroundColor Yellow
+}
+   elseif ( $UserPwdComplexityReqs  -eq  '1' )
+{
+write-host " Password must meet complexity requirements is enabled" -ForegroundColor Green
+}
+  elseif ( $UserPwdComplexityReqs  -eq  '0' )
+{
+write-host " Password must meet complexity requirements is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Password must meet complexity requirements is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Store passwords using reversible encryption can't be checked yet"
+write-host "Accounts: Limit local account use of blank passwords to console logon only can't be checked yet"
+
+write-host "`r`n####################### RESTRICTING PRIVILEGED ACCOUNTS #######################`r`n"
+
+write-host "`r`n####################### SECURE BOOT #######################`r`n"
+
+write-host "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n"
+
+write-host "need to check Account lockout duration"
+write-host "Account lockout threshold"
+write-host "Reset account lockout counter after needs checking"
+
+write-host "`r`n####################### ANONYMOUS CONNECTIONS #######################`r`n"
+
+$AllowInsecureGuestAuth = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\LanmanWorkstation\ -Name AllowInsecureGuestAuth -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowInsecureGuestAuth
+if ( $AllowInsecureGuestAuth -eq $null)
+{
+write-host " Enable insecure guest logons is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AllowInsecureGuestAuth  -eq  '0' )
+{
+write-host " Enable insecure guest logons is disabled" -ForegroundColor Green
+}
+  elseif ( $AllowInsecureGuestAuth  -eq  '1' )
+{
+write-host " Enable insecure guest logons is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Enable insecure guest logons is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Network access: Allow anonymous SID/Name translation can't check"
+write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
+write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
+write-host "Network access: Let Everyone permissions apply to anonymous users"
+write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
+write-host "Network access: Restrict clients allowed to make remote calls to SAM "
+write-host "Network security: Allow Local System to use computer identity for NTLM"
+write-host "Network security: Allow LocalSystem NULL session fallback "
+write-host "Access this computer from the network"
+write-host "Deny access to this computer from the network"
+
+write-host "`r`n####################### ANTI-VIRUS SOFTWARE #######################`r`n"
+
+$DisableAntiSpyware = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\ -Name DisableAntiSpyware -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableAntiSpyware
+if ( $DisableAntiSpyware -eq $null)
+{
+write-host " Turn off Windows Defender Antivirus is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableAntiSpyware  -eq  '0' )
+{
+write-host " Turn off Windows Defender Antivirus is disabled" -ForegroundColor Green
+}
+  elseif ( $DisableAntiSpyware  -eq  '1' )
+{
+write-host " Turn off Windows Defender Antivirus is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Windows Defender Antivirus is set to an unknown setting" -ForegroundColor Red
+}
+
+$LocalSettingOverrideSpyNetReporting = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\SpyNet\ -Name LocalSettingOverrideSpyNetReporting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LocalSettingOverrideSpyNetReporting
+if ( $LocalSettingOverrideSpyNetReporting -eq $null)
+{
+write-host " Configure local setting override for reporting to Microsoft Active Protection Service (MAPS). is not configured" -ForegroundColor Yellow
+}
+   elseif ( $LocalSettingOverrideSpyNetReporting  -eq  '0' )
+{
+write-host " Configure local setting override for reporting to Microsoft Active Protection Service (MAPS). is disabled" -ForegroundColor Green
+}
+  elseif ( $LocalSettingOverrideSpyNetReporting  -eq  '1' )
+{
+write-host " Configure local setting override for reporting to Microsoft Active Protection Service (MAPS). is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure local setting override for reporting to Microsoft Active Protection Service (MAPS). is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableBlockAtFirstSeen = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Spynet\ -Name DisableBlockAtFirstSeen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBlockAtFirstSeen
+if ( $DisableBlockAtFirstSeen -eq $null)
+{
+write-host " Configure the 'Block at First Sight' feature is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableBlockAtFirstSeen  -eq  '0' )
+{
+write-host " Configure the 'Block at First Sight' feature is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableBlockAtFirstSeen  -eq  '1' )
+{
+write-host " Configure the 'Block at First Sight' feature is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure the 'Block at First Sight' feature is set to an unknown setting" -ForegroundColor Red
+}
+
+$SpyNetReporting = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\SpyNet\ -Name SpyNetReporting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SpyNetReporting
+if ( $SpyNetReporting -eq $null)
+{
+write-host " Join Microsoft Active Protection Service (MAPS). is not configured" -ForegroundColor Yellow
+}
+   elseif ( $SpyNetReporting  -eq  '1' )
+{
+write-host " Join Microsoft Active Protection Service (MAPS). is enabled" -ForegroundColor Green
+}
+  elseif ( $SpyNetReporting  -eq  '0' )
+{
+write-host " Join Microsoft Active Protection Service (MAPS). is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Join Microsoft Active Protection Service (MAPS). is set to an unknown setting" -ForegroundColor Red
+}
+
+$SubmitSamplesConsent = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Spynet\ -Name SubmitSamplesConsent -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SubmitSamplesConsent
+if ( $SubmitSamplesConsent -eq $null)
+{
+write-host " Send file samples when further analysis is required is not configured" -ForegroundColor Yellow
+}
+   elseif ( $SubmitSamplesConsent  -eq  '1' )
+{
+write-host " Send file samples when further analysis is required is enabled" -ForegroundColor Green
+}
+  elseif ( $SubmitSamplesConsent  -eq  '0' )
+{
+write-host " Send file samples when further analysis is required is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Send file samples when further analysis is required is set to an unknown setting" -ForegroundColor Red
+}
+
+$MpBafsExtendedTimeout = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\MpEngine\ -Name MpBafsExtendedTimeout -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MpBafsExtendedTimeout
+if ( $MpBafsExtendedTimeout -eq $null)
+{
+write-host " Configure extended cloud check is not configured" -ForegroundColor Yellow
+}
+   elseif ( $MpBafsExtendedTimeout  -eq  '1' )
+{
+write-host " Configure extended cloud check is enabled" -ForegroundColor Green
+}
+  elseif ( $MpBafsExtendedTimeout  -eq  '0' )
+{
+write-host " Configure extended cloud check is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure extended cloud check is set to an unknown setting" -ForegroundColor Red
+}
+
+$MpCloudBlockLevel = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\MpEngine\ -Name MpCloudBlockLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MpCloudBlockLevel
+if ( $MpCloudBlockLevel -eq $null)
+{
+write-host " Select cloud protection level is not configured" -ForegroundColor Yellow
+}
+   elseif ( $MpCloudBlockLevel  -eq  '1' )
+{
+write-host " Select cloud protection level is enabled" -ForegroundColor Green
+}
+  elseif ( $MpCloudBlockLevel  -eq  '0' )
+{
+write-host " Select cloud protection level is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Select cloud protection level is set to an unknown setting" -ForegroundColor Red
+}
+
+$LocalSettingOverrideDisableIOAVProtection = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\ -Name LocalSettingOverrideDisableIOAVProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LocalSettingOverrideDisableIOAVProtection
+if ( $LocalSettingOverrideDisableIOAVProtection -eq $null)
+{
+write-host " Configure local setting override for scanning all downloaded files and attachments is not configured" -ForegroundColor Yellow
+}
+   elseif ( $LocalSettingOverrideDisableIOAVProtection  -eq  '1' )
+{
+write-host " Configure local setting override for scanning all downloaded files and attachments is enabled" -ForegroundColor Green
+}
+  elseif ( $LocalSettingOverrideDisableIOAVProtection  -eq  '0' )
+{
+write-host " Configure local setting override for scanning all downloaded files and attachments is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure local setting override for scanning all downloaded files and attachments is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableRealtimeMonitoring = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\ -Name DisableRealtimeMonitoring -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRealtimeMonitoring
+if ( $DisableRealtimeMonitoring -eq $null)
+{
+write-host " Turn off real-time protection is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableRealtimeMonitoring  -eq  '0' )
+{
+write-host " Turn off real-time protection is disabled" -ForegroundColor Green
+}
+  elseif ( $DisableRealtimeMonitoring  -eq  '1' )
+{
+write-host " Turn off real-time protection is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off real-time protection is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableBehaviorMonitoring = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\ -Name DisableBehaviorMonitoring -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBehaviorMonitoring
+if ( $DisableBehaviorMonitoring -eq $null)
+{
+write-host " Turn on behavior monitoring is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableBehaviorMonitoring  -eq  '0' )
+{
+write-host " Turn on behavior monitoring is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableBehaviorMonitoring  -eq  '1' )
+{
+write-host " Turn on behavior monitoring is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on behavior monitoring is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableScanOnRealtimeEnable = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\ -Name DisableScanOnRealtimeEnable -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableScanOnRealtimeEnable
+if ( $DisableScanOnRealtimeEnable -eq $null)
+{
+write-host " Turn on process scanning whenever real-time protection is enabled is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableScanOnRealtimeEnable  -eq  '0' )
+{
+write-host " Turn on process scanning whenever real-time protection is enabled is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableScanOnRealtimeEnable  -eq  '1' )
+{
+write-host " Turn on process scanning whenever real-time protection is enabled is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on process scanning whenever real-time protection is enabled is set to an unknown setting" -ForegroundColor Red
+}
+
+$PurgeItemsAfterDelay = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Quarantine\ -Name PurgeItemsAfterDelay -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PurgeItemsAfterDelay
+if ( $PurgeItemsAfterDelay -eq $null)
+{
+write-host " Configure removal of items from Quarantine folder is not configured" -ForegroundColor Yellow
+}
+   elseif ( $PurgeItemsAfterDelay  -eq  '0' )
+{
+write-host " Configure removal of items from Quarantine folder is disabled" -ForegroundColor Green
+}
+  elseif ( $PurgeItemsAfterDelay  -eq  '1' )
+{
+write-host " Configure removal of items from Quarantine folder is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure removal of items from Quarantine folder is set to an unknown setting" -ForegroundColor Red
+}
+
+$AllowPause = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name AllowPause -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowPause
+if ( $AllowPause -eq $null)
+{
+write-host " Allow users to pause scan is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AllowPause  -eq  '0' )
+{
+write-host " Allow users to pause scan is disabled" -ForegroundColor Green
+}
+  elseif ( $AllowPause  -eq  '1' )
+{
+write-host " Allow users to pause scan is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow users to pause scan is set to an unknown setting" -ForegroundColor Red
+}
+
+$CheckForSignaturesBeforeRunningScan = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name CheckForSignaturesBeforeRunningScan -ErrorAction SilentlyContinue|Select-Object -ExpandProperty CheckForSignaturesBeforeRunningScan
+if ( $CheckForSignaturesBeforeRunningScan -eq $null)
+{
+write-host " Check for the latest virus and spyware definitions before running a scheduled scan is not configured" -ForegroundColor Yellow
+}
+   elseif ( $CheckForSignaturesBeforeRunningScan  -eq  '1' )
+{
+write-host " Check for the latest virus and spyware definitions before running a scheduled scan is enabled" -ForegroundColor Green
+}
+  elseif ( $CheckForSignaturesBeforeRunningScan  -eq  '0' )
+{
+write-host " Check for the latest virus and spyware definitions before running a scheduled scan is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Check for the latest virus and spyware definitions before running a scheduled scan is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableArchiveScanning = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name DisableArchiveScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableArchiveScanning
+if ( $DisableArchiveScanning -eq $null)
+{
+write-host " Scan archive files is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableArchiveScanning  -eq  '0' )
+{
+write-host " Scan archive files is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableArchiveScanning  -eq  '1' )
+{
+write-host " Scan archive files is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Scan archive files is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisablePackedExeScanning = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name DisablePackedExeScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePackedExeScanning
+if ( $DisablePackedExeScanning -eq $null)
+{
+write-host " Scan packed executables is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisablePackedExeScanning  -eq  '0' )
+{
+write-host " Scan packed executables is enabled" -ForegroundColor Green
+}
+  elseif ( $DisablePackedExeScanning  -eq  '1' )
+{
+write-host " Scan packed executables is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Scan packed executables is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableRemovableDriveScanning = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name DisableRemovableDriveScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRemovableDriveScanning
+if ( $DisableRemovableDriveScanning -eq $null)
+{
+write-host " Scan removable drives is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableRemovableDriveScanning  -eq  '0' )
+{
+write-host " Scan removable drives is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableRemovableDriveScanning  -eq  '1' )
+{
+write-host " Scan removable drives is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Scan removable drives is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableEmailScanning = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name DisableEmailScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableEmailScanning
+if ( $DisableEmailScanning -eq $null)
+{
+write-host " Turn on e-mail scanning is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableEmailScanning  -eq  '0' )
+{
+write-host " Turn on e-mail scanning is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableEmailScanning  -eq  '1' )
+{
+write-host " Turn on e-mail scanning is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on e-mail scanning is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableHeuristics = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\ -Name DisableHeuristics -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableHeuristics
+if ( $DisableHeuristics -eq $null)
+{
+write-host " Turn on heuristics is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableHeuristics  -eq  '0' )
+{
+write-host " Turn on heuristics is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableHeuristics  -eq  '1' )
+{
+write-host " Turn on heuristics is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on heuristics is set to an unknown setting" -ForegroundColor Red
+}
+
+
