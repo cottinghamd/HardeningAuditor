@@ -1106,3 +1106,174 @@ if ($AllowPopupsUP -eq 'yes')
     {
         write-host "Edge Pop-up Blocker is enabled in User GP" -ForegroundColor Green
     }
+
+$EnableSmartScreen = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\ -Name EnableSmartScreen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSmartScreen
+if ( $EnableSmartScreen -eq $null)
+{
+write-host " Configure Windows Defender SmartScreen is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableSmartScreen  -eq  '1' )
+{
+write-host " Configure Windows Defender SmartScreen is enabled" -ForegroundColor Green
+}
+  elseif ( $EnableSmartScreen  -eq  '0' )
+{
+write-host " Configure Windows Defender SmartScreen is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure Windows Defender SmartScreen is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$LMPreventAccessToAboutFlagsInMicrosoftEdge = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\Main\ -Name PreventAccessToAboutFlagsInMicrosoftEdge -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventAccessToAboutFlagsInMicrosoftEdge
+$UPPreventAccessToAboutFlagsInMicrosoftEdge = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\Main\ -Name PreventAccessToAboutFlagsInMicrosoftEdge -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventAccessToAboutFlagsInMicrosoftEdge
+if ( $LMPreventAccessToAboutFlagsInMicrosoftEdge -eq $null -and  $UPPreventAccessToAboutFlagsInMicrosoftEdge -eq $null)
+{
+write-host " Prevent access to the about:flags page in Microsoft Edge is not configured" -ForegroundColor Yellow
+}
+if ( $LMPreventAccessToAboutFlagsInMicrosoftEdge  -eq '1' )
+{
+write-host " Prevent access to the about:flags page in Microsoft Edge is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMPreventAccessToAboutFlagsInMicrosoftEdge  -eq '0' )
+{
+write-host " Prevent access to the about:flags page in Microsoft Edge is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPPreventAccessToAboutFlagsInMicrosoftEdge  -eq  '1' )
+{
+write-host " Prevent access to the about:flags page in Microsoft Edge is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPPreventAccessToAboutFlagsInMicrosoftEdge  -eq  '0' )
+{
+write-host " Prevent access to the about:flags page in Microsoft Edge is disabled in User GP" -ForegroundColor Red
+}
+
+$LMPreventOverride = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
+$UPPreventOverride = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
+if ( $LMPreventOverride -eq $null -and  $UPPreventOverride -eq $null)
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is not configured" -ForegroundColor Yellow
+}
+if ( $LMPreventOverride  -eq '1' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMPreventOverride  -eq '0' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPPreventOverride  -eq  '1' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPPreventOverride  -eq  '0' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in User GP" -ForegroundColor Red
+}
+
+$EnableNetworkProtection = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection\ -Name EnableNetworkProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableNetworkProtection
+if ( $EnableNetworkProtection -eq $null)
+{
+write-host " Prevent users and apps from accessing dangerous websites is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableNetworkProtection  -eq  '1' )
+{
+write-host " Prevent users and apps from accessing dangerous websites is enabled" -ForegroundColor Green
+}
+  elseif ( $EnableNetworkProtection  -eq  '0' )
+{
+write-host " Prevent users and apps from accessing dangerous websites is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent users and apps from accessing dangerous websites is set to an unknown setting" -ForegroundColor Red
+}
+
+$AllowAppHVSI_ProviderSet = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\AppHVSI\ -Name AllowAppHVSI_ProviderSet -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowAppHVSI_ProviderSet
+if ( $AllowAppHVSI_ProviderSet -eq $null)
+{
+write-host " Turn on Windows Defender Application Guard in Enterprise Mode is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AllowAppHVSI_ProviderSet  -eq  '1' )
+{
+write-host " Turn on Windows Defender Application Guard in Enterprise Mode is enabled" -ForegroundColor Green
+}
+  elseif ( $AllowAppHVSI_ProviderSet  -eq  '0' )
+{
+write-host " Turn on Windows Defender Application Guard in Enterprise Mode is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn on Windows Defender Application Guard in Enterprise Mode is set to an unknown setting" -ForegroundColor Red
+}
+
+$LMEnabledV9 = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name EnabledV9 -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnabledV9
+$UPEnabledV9 = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name EnabledV9 -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnabledV9
+if ( $LMEnabledV9 -eq $null -and  $UPEnabledV9 -eq $null)
+{
+write-host " Configure Windows Defender SmartScreen is not configured" -ForegroundColor Yellow
+}
+if ( $LMEnabledV9  -eq '1' )
+{
+write-host " Configure Windows Defender SmartScreen is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMEnabledV9  -eq '0' )
+{
+write-host " Configure Windows Defender SmartScreen is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPEnabledV9  -eq  '1' )
+{
+write-host " Configure Windows Defender SmartScreen is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPEnabledV9  -eq  '0' )
+{
+write-host " Configure Windows Defender SmartScreen is disabled in User GP" -ForegroundColor Red
+}
+
+$LMPreventOverride = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
+$UPPreventOverride = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
+if ( $LMPreventOverride -eq $null -and  $UPPreventOverride -eq $null)
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is not configured" -ForegroundColor Yellow
+}
+if ( $LMPreventOverride  -eq '1' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMPreventOverride  -eq '0' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPPreventOverride  -eq  '1' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPPreventOverride  -eq  '0' )
+{
+write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in User GP" -ForegroundColor Red
+}
+
+write-host "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n"
+write-host "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n"
+write-host "`r`n####################### OPERATING SYSTEM PATCHING #######################`r`n"
+
+
+$AutoInstallMinorUpdates = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name AutoInstallMinorUpdates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoInstallMinorUpdates
+if ( $AutoInstallMinorUpdates -eq $null)
+{
+write-host " Allow Automatic Updates immediate installation is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AutoInstallMinorUpdates  -eq  '1' )
+{
+write-host " Allow Automatic Updates immediate installation is enabled" -ForegroundColor Green
+}
+  elseif ( $AutoInstallMinorUpdates  -eq  '0' )
+{
+write-host " Allow Automatic Updates immediate installation is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Automatic Updates immediate installation is set to an unknown setting" -ForegroundColor Red
+}
+
