@@ -54,8 +54,8 @@ if ($ASDRecommended -eq 'e')
 if ($Row1 -eq 'HKEY_LOCAL_MACHINE or HKEY_CURRENT_USER')
 {
 
-write-host $variablelm '= Get-ItemProperty -Path' "Registry::HKLM\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
-write-host $variableup '= Get-ItemProperty -Path' "Registry::HKCU\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variablelm '= Get-ItemProperty -Path' ''"'Registry::HKLM\$Row2\'"'-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variableup '= Get-ItemProperty -Path' ''"'Registry::HKCU\$Row2\'"'-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
 write-host 'if ('$variablelm '-eq $null -and '$variableup '-eq $null)'
 write-host '{'
 write-host 'write-host "'$pagetitle 'is not configured" -ForegroundColor Yellow'
@@ -79,7 +79,7 @@ write-host '}'
 }
 else
 {
-write-host $variablestd '= Get-ItemProperty -Path' "Registry::$Row1\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variablestd '= Get-ItemProperty -Path' ''"'Registry::$Row1\$Row2\'"' -Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
 
 write-host 'if ('$variablestd '-eq $null)'
 write-host '{'
@@ -107,8 +107,8 @@ if ($ASDRecommended -eq 'd')
 if ($Row1 -eq 'HKEY_LOCAL_MACHINE or HKEY_CURRENT_USER')
 {
 
-write-host $variablelm '= Get-ItemProperty -Path' "Registry::HKLM\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
-write-host $variableup '= Get-ItemProperty -Path' "Registry::HKCU\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variablelm '= Get-ItemProperty -Path' ''"'Registry::HKLM\$Row2\'"' -Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variableup '= Get-ItemProperty -Path' ''"'Registry::HKCU\$Row2\'"' -Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
 write-host 'if ('$variablelm '-eq $null -and '$variableup '-eq $null)'
 write-host '{'
 write-host 'write-host "'$pagetitle 'is not configured" -ForegroundColor Yellow'
@@ -132,7 +132,7 @@ write-host '}'
 }
 else
 {
-write-host $variablestd '= Get-ItemProperty -Path' "Registry::$Row1\$Row2\" '-Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
+write-host $variablestd '= Get-ItemProperty -Path' ''"'Registry::$Row1\$Row2\'"' -Name' $Row3 '-ErrorAction SilentlyContinue|Select-Object -ExpandProperty' $Row3
 
 write-host 'if ('$variablestd '-eq $null)'
 write-host '{'
