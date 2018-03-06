@@ -1893,3 +1893,465 @@ write-host " Include command line in process creation events is disabled" -Foreg
 {
 write-host " Include command line in process creation events is set to an unknown setting" -ForegroundColor Red
 }
+
+write-host "Can't check Specify the maximum log file size (KB)"
+write-host "Can't check Manage auditing and security log"
+write-host "Check whole Audit Event Management Section, unable to do a lot of them"
+
+write-host "`r`n####################### AUTOPLAY AND AUTORUN #######################`r`n"
+
+$LMNoAutoplayfornonVolume = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\Explorer\' -Name NoAutoplayfornonVolume -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoplayfornonVolume
+$UPNoAutoplayfornonVolume = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\Explorer\' -Name NoAutoplayfornonVolume -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoplayfornonVolume
+if ( $LMNoAutoplayfornonVolume -eq $null -and  $UPNoAutoplayfornonVolume -eq $null)
+{
+write-host " Disallow Autoplay for non-volume devices is not configured" -ForegroundColor Yellow
+}
+if ( $LMNoAutoplayfornonVolume  -eq '1' )
+{
+write-host " Disallow Autoplay for non-volume devices is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMNoAutoplayfornonVolume  -eq '0' )
+{
+write-host " Disallow Autoplay for non-volume devices is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPNoAutoplayfornonVolume  -eq  '1' )
+{
+write-host " Disallow Autoplay for non-volume devices is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPNoAutoplayfornonVolume  -eq  '0' )
+{
+write-host " Disallow Autoplay for non-volume devices is disabled in User GP" -ForegroundColor Red
+}
+
+$LMNoAutorun = Get-ItemProperty -Path  'Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\' -Name NoAutorun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutorun
+$UPNoAutorun = Get-ItemProperty -Path  'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\' -Name NoAutorun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutorun
+if ( $LMNoAutorun -eq $null -and  $UPNoAutorun -eq $null)
+{
+write-host " Set the default behavior for AutoRun is not configured" -ForegroundColor Yellow
+}
+if ( $LMNoAutorun  -eq '1' )
+{
+write-host " Set the default behavior for AutoRun is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMNoAutorun  -eq '2' )
+{
+write-host " Set the default behavior for AutoRun is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPNoAutorun  -eq  '1' )
+{
+write-host " Set the default behavior for AutoRun is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPNoAutorun  -eq  '2' )
+{
+write-host " Set the default behavior for AutoRun is disabled in User GP" -ForegroundColor Red
+}
+
+$LMNoDriveTypeAutoRun = Get-ItemProperty -Path  'Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\' -Name NoDriveTypeAutoRun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoDriveTypeAutoRun
+$UPNoDriveTypeAutoRun = Get-ItemProperty -Path  'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\' -Name NoDriveTypeAutoRun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoDriveTypeAutoRun
+if ( $LMNoDriveTypeAutoRun -eq $null -and  $UPNoDriveTypeAutoRun -eq $null)
+{
+write-host " Turn off Autoplay is not configured" -ForegroundColor Yellow
+}
+if ( $LMNoDriveTypeAutoRun  -eq '255' )
+{
+write-host " Turn off Autoplay is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMNoDriveTypeAutoRun  -eq '181' )
+{
+write-host " Turn off Autoplay is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPNoDriveTypeAutoRun  -eq  '255' )
+{
+write-host " Turn off Autoplay is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPNoDriveTypeAutoRun  -eq  '181' )
+{
+write-host " Turn off Autoplay is disabled in User GP" -ForegroundColor Red
+}
+
+write-host "`r`n####################### BIOS AND UEFI PASSWORDS #######################`r`n"
+write-host "`r`n####################### BOOT DEVICES #######################`r`n"
+write-host "`r`n####################### BRIDGING NETWORKS #######################`r`n"
+
+$NC_AllowNetBridge_NLA = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Network Connections\'  -Name NC_AllowNetBridge_NLA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NC_AllowNetBridge_NLA
+if ( $NC_AllowNetBridge_NLA -eq $null)
+{
+write-host " Prohibit installation and configuration of Network Bridge on your DNS domain network is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NC_AllowNetBridge_NLA  -eq  '0' )
+{
+write-host " Prohibit installation and configuration of Network Bridge on your DNS domain network is enabled" -ForegroundColor Green
+}
+  elseif ( $NC_AllowNetBridge_NLA  -eq  '1' )
+{
+write-host " Prohibit installation and configuration of Network Bridge on your DNS domain network is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prohibit installation and configuration of Network Bridge on your DNS domain network is set to an unknown setting" -ForegroundColor Red
+}
+
+$Force_Tunneling = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\TCPIP\v6Transition\'  -Name Force_Tunneling -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Force_Tunneling
+if ( $Force_Tunneling -eq $null)
+{
+write-host " Route all traffic through the internal network is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Force_Tunneling  -eq  'Enabled' )
+{
+write-host " Route all traffic through the internal network is enabled" -ForegroundColor Green
+}
+  elseif ( $Force_Tunneling  -eq  'Disabled' )
+{
+write-host " Route all traffic through the internal network is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Route all traffic through the internal network is set to an unknown setting" -ForegroundColor Red
+}
+
+$fBlockNonDomain = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WcmSvc\GroupPolicy\'  -Name fBlockNonDomain -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fBlockNonDomain
+if ( $fBlockNonDomain -eq $null)
+{
+write-host " Prohibit connection to non-domain networks when connected to domain authenticated network is not configured" -ForegroundColor Yellow
+}
+   elseif ( $fBlockNonDomain  -eq  '1' )
+{
+write-host " Prohibit connection to non-domain networks when connected to domain authenticated network is enabled" -ForegroundColor Green
+}
+  elseif ( $fBlockNonDomain  -eq  '0' )
+{
+write-host " Prohibit connection to non-domain networks when connected to domain authenticated network is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prohibit connection to non-domain networks when connected to domain authenticated network is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### BUILT-IN GUEST ACCOUNTS #######################`r`n"
+
+write-host "Unable to check Accounts: Guest account status"
+write-host "Unable to Deny log on locally"
+
+write-host "`r`n####################### CASE LOCKS #######################`r`n"
+write-host "`r`n####################### CD BURNER ACCESS #######################`r`n"
+
+$NoCDBurning = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoCDBurning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoCDBurning
+if ( $NoCDBurning -eq $null)
+{
+write-host " Remove CD Burning features is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NoCDBurning  -eq  '1' )
+{
+write-host " Remove CD Burning features is enabled" -ForegroundColor Green
+}
+  elseif ( $NoCDBurning  -eq  '0' )
+{
+write-host " Remove CD Burning features is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Remove CD Burning features is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### CENTRALISED AUDIT EVENT LOGGING #######################`r`n"
+write-host "`r`n####################### COMMAND PROMPT #######################`r`n"
+
+$DisableCMD = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\'  -Name DisableCMD -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCMD
+if ( $DisableCMD -eq $null)
+{
+write-host " Prevent access to the command prompt is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableCMD  -eq  '1' )
+{
+write-host " Prevent access to the command prompt is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableCMD  -eq  '2' )
+{
+write-host " Prevent access to the command prompt is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent access to the command prompt is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### DIRECT MEMORY ACCESS #######################`r`n"
+write-host "Unable to check Prevent installation of devices that match any of these device IDs"
+write-host "Unable to check Prevent installation of devices using drivers that match these device setup classes"
+
+write-host "`r`n####################### ENDPOINT DEVICE CONTROL #######################`r`n"
+
+$Deny_All = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\'  -Name Deny_All -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_All
+if ( $Deny_All -eq $null)
+{
+write-host " All Removable Storage classes: Deny all access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_All  -eq  '1' )
+{
+write-host " All Removable Storage classes: Deny all access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_All  -eq  '0' )
+{
+write-host " All Removable Storage classes: Deny all access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " All Removable Storage classes: Deny all access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Execute = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
+if ( $Deny_Execute -eq $null)
+{
+write-host " CD and DVD: Deny execute access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Execute  -eq  '1' )
+{
+write-host " CD and DVD: Deny execute access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Execute  -eq  '0' )
+{
+write-host " CD and DVD: Deny execute access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " CD and DVD: Deny execute access is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$Deny_Read = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read -eq $null)
+{
+write-host " CD and DVD: Deny read access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read  -eq  '0' )
+{
+write-host " CD and DVD: Deny read access is disabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Read  -eq  '1' )
+{
+write-host " CD and DVD: Deny read access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " CD and DVD: Deny read access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Write = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write -eq $null)
+{
+write-host " CD and DVD: Deny write access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write  -eq  '1' )
+{
+write-host " CD and DVD: Deny write access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Write  -eq  '0' )
+{
+write-host " CD and DVD: Deny write access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " CD and DVD: Deny write access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Read2 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Read\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read2 -eq $null)
+{
+write-host " Custom Classes: Deny read access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read2  -eq  '0' )
+{
+write-host " Custom Classes: Deny read access is disabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Read2  -eq  '1' )
+{
+write-host " Custom Classes: Deny read access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Custom Classes: Deny read access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Write2 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Write\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write2 -eq $null)
+{
+write-host " Custom Classes: Deny write access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write2  -eq  '1' )
+{
+write-host " Custom Classes: Deny write access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Write2  -eq  '0' )
+{
+write-host " Custom Classes: Deny write access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Custom Classes: Deny write access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Execute3 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
+if ( $Deny_Execute3 -eq $null)
+{
+write-host " Floppy Drives: Deny execute access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Execute3  -eq  '1' )
+{
+write-host " Floppy Drives: Deny execute access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Execute3  -eq  '0' )
+{
+write-host " Floppy Drives: Deny execute access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Floppy Drives: Deny execute access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Read3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read3 -eq $null)
+{
+write-host " Floppy Drives: Deny read access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read3  -eq  '0' )
+{
+write-host " Floppy Drives: Deny read access is disabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Read3  -eq  '1' )
+{
+write-host " Floppy Drives: Deny read access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Floppy Drives: Deny read access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Write3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write3 -eq $null)
+{
+write-host " Floppy Drives: Deny write access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write3  -eq  '1' )
+{
+write-host " Floppy Drives: Deny write access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Write3  -eq  '0' )
+{
+write-host " Floppy Drives: Deny write access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Floppy Drives: Deny write access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Execute4 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
+if ( $Deny_Execute4 -eq $null)
+{
+write-host " Removable Disks: Deny execute access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Execute4  -eq  '1' )
+{
+write-host " Removable Disks: Deny execute access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Execute4  -eq  '0' )
+{
+write-host " Removable Disks: Deny execute access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Removable Disks: Deny execute access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Read4 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read4 -eq $null)
+{
+write-host " Removable Disks: Deny read access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read4  -eq  '0' )
+{
+write-host " Removable Disks: Deny read access is disabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Read4  -eq  '1' )
+{
+write-host " Removable Disks: Deny read access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Removable Disks: Deny read access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Write4 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write4 -eq $null)
+{
+write-host " Removable Disks: Deny write access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write4  -eq  '1' )
+{
+write-host " Removable Disks: Deny write access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Write4  -eq  '0' )
+{
+write-host " Removable Disks: Deny write access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Removable Disks: Deny write access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Execute5 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
+if ( $Deny_Execute5 -eq $null)
+{
+write-host " Tape Drives: Deny execute access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Execute5  -eq  '1' )
+{
+write-host " Tape Drives: Deny execute access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Execute5  -eq  '0' )
+{
+write-host " Tape Drives: Deny execute access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Tape Drives: Deny execute access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Read5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read5 -eq $null)
+{
+write-host " Tape Drives: Deny read access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read5  -eq  '0' )
+{
+write-host " Tape Drives: Deny read access is disabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Read5  -eq  '1' )
+{
+write-host " Tape Drives: Deny read access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Tape Drives: Deny read access is set to an unknown setting" -ForegroundColor Red
+}
+
+$Deny_Write5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write5 -eq $null)
+{
+write-host " Tape Drives: Deny write access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write5  -eq  '1' )
+{
+write-host " Tape Drives: Deny write access is enabled" -ForegroundColor Green
+}
+  elseif ( $Deny_Write5  -eq  '0' )
+{
+write-host " Tape Drives: Deny write access is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Tape Drives: Deny write access is set to an unknown setting" -ForegroundColor Red
+}
+write-host "Unable to check WPD Devices: Deny read access"
+write-host "Unable to check WPD Devices: Deny write access"
+
+write-host "`r`n####################### FILE AND PRINT SHARING #######################`r`n"
