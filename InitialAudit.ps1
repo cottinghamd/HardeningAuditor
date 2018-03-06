@@ -2670,3 +2670,4 @@ write-host " Deny write access to removable drives not protected by BitLocker is
 
 write-host "unable to check Enforce drive encryption type on removable data drive "
 
+write-host "`r`n####################### INSTALLING APPLICATIONS #######################`r`n"
