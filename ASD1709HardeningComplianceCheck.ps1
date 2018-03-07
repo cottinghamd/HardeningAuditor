@@ -1440,10 +1440,33 @@ write-host " Turn on convenience PIN sign-in is enabled" -ForegroundColor Red
 write-host " Turn on convenience PIN sign-in is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Enforce Password History Not Checked Yet"
-write-host "Maximum password age can't be checked yet"
-write-host "Minimum password age can't be checked yet"
-write-host "Minimum password length can't be checked yet"
+write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is stored in the user account SAM on a Domain Controller"
+write-host "Maximum password age can be checked"
+write-host "Minimum password age can be checked"
+
+
+$LMMinPwdLen = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Network\ -Name MinPwdLen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinPwdLen
+$UPMinPwdLen = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Network\ -Name MinPwdLen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinPwdLen
+if ( $LMMinPwdLen -eq $null -and $UPMinPwdLen -eq $null)
+{
+write-host "Minimum Password Length Is Not Configured" -ForegroundColor Yellow
+}
+if ( $LMMinPwdLen  -ge '10')
+{
+write-host "Minimum Password Length is set to 10 or highter in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMMinPwdLen  -le '9')
+{
+write-host "Minimum Password Length is set to 9 or lower in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPMinPwdLen  -ge  '10' )
+{
+write-host "Minimum Password Length is set to 10 or highter in User GP" -ForegroundColor Green
+}
+if ( $UPMinPwdLen  -le  '9' )
+{
+write-host "Minimum Password Length is set to 9 or lower in User GP" -ForegroundColor Red
+}
 
 $UserPwdComplexityReqs = Get-ItemProperty -Path 'Registry::HKEY_CURRENT_USER\Software\Policies\Infineon\TPM Software\' -Name UserPwdComplexityReqs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UserPwdComplexityReqs
 if ( $UserPwdComplexityReqs -eq $null)
