@@ -2988,3 +2988,238 @@ write-host "`r`n####################### NOLM HASH POLICY #######################
 write-host "Unable to check Network security: Do not store LAN Manager hash value on next password change"
 
 
+
+write-host "`r`n####################### OPERATING SYSTEM FUNCTIONALITY #######################`r`n"
+
+
+write-host "`r`n####################### POWER MANAGEMENT #######################`r`n"
+
+$p86A1e2VhcGQKas = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $p86A1e2VhcGQKas -eq $null)
+{
+write-host " Allow standby states (S1-S3) when sleeping (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $p86A1e2VhcGQKas  -eq  '0' )
+{
+write-host " Allow standby states (S1-S3) when sleeping (on battery) is disabled" -ForegroundColor Green
+}
+  elseif ( $p86A1e2VhcGQKas  -eq  '1' )
+{
+write-host " Allow standby states (S1-S3) when sleeping (on battery) is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow standby states (S1-S3) when sleeping (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+
+$w4PO3v6EaroqgUu = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $w4PO3v6EaroqgUu -eq $null)
+{
+write-host " Allow standby states (S1-S3) when sleeping (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $w4PO3v6EaroqgUu  -eq  '0' )
+{
+write-host " Allow standby states (S1-S3) when sleeping (plugged in) is disabled" -ForegroundColor Green
+}
+  elseif ( $w4PO3v6EaroqgUu  -eq  '1' )
+{
+write-host " Allow standby states (S1-S3) when sleeping (plugged in) is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow standby states (S1-S3) when sleeping (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$b9ePm1KdQUNf7tu = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $b9ePm1KdQUNf7tu -eq $null)
+{
+write-host " Require a password when a computer wakes (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $b9ePm1KdQUNf7tu  -eq  '1' )
+{
+write-host " Require a password when a computer wakes (on battery) is enabled" -ForegroundColor Green
+}
+  elseif ( $b9ePm1KdQUNf7tu  -eq  '0' )
+{
+write-host " Require a password when a computer wakes (on battery) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Require a password when a computer wakes (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+
+$GmlQKPgtw7i91Fx = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $GmlQKPgtw7i91Fx -eq $null)
+{
+write-host " Require a password when a computer wakes (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $GmlQKPgtw7i91Fx  -eq  '1' )
+{
+write-host " Require a password when a computer wakes (plugged in) is enabled" -ForegroundColor Green
+}
+  elseif ( $GmlQKPgtw7i91Fx  -eq  '0' )
+{
+write-host " Require a password when a computer wakes (plugged in) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Require a password when a computer wakes (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+$IDxPlKksMyvH3Xd = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\9D7815A6-7EE4-497E-8888-515A05F02364\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $IDxPlKksMyvH3Xd -eq $null)
+{
+write-host " Specify the system hibernate timeout (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $IDxPlKksMyvH3Xd  -eq  '0' )
+{
+write-host " Specify the system hibernate timeout (on battery) is enabled and set to 0 seconds" -ForegroundColor Green
+}
+   else
+{
+write-host " Specify the system hibernate timeout (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+
+$wqSbpksEI7retQd = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\9D7815A6-7EE4-497E-8888-515A05F02364\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $wqSbpksEI7retQd -eq $null)
+{
+write-host " Specify the system hibernate timeout (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $wqSbpksEI7retQd  -eq  '0' )
+{
+write-host " Specify the system hibernate timeout (plugged in) is enabled and set to 0 seconds" -ForegroundColor Green
+}
+ 
+  else
+{
+write-host " Specify the system hibernate timeout (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+$7QZf3kP5WXARGrt = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\29F6C1DB-86DA-48C5-9FDB-F2B67B1F44DA\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $7QZf3kP5WXARGrt -eq $null)
+{
+write-host " Specify the system sleep timeout (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $7QZf3kP5WXARGrt  -eq  '0' )
+{
+write-host " Specify the system sleep timeout (on battery) is enabled and set to 0 seconds" -ForegroundColor Green
+}
+ 
+  else
+{
+write-host " Specify the system sleep timeout (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+$r5kh6s8qULHTAfD = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\29F6C1DB-86DA-48C5-9FDB-F2B67B1F44DA\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $r5kh6s8qULHTAfD -eq $null)
+{
+write-host " Specify the system sleep timeout (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $r5kh6s8qULHTAfD  -eq  '0' )
+{
+write-host " Specify the system sleep timeout (plugged in) is enabled and set to 0 seconds" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the system sleep timeout (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+$BMbAhC2V4J0SpLD = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\7bc4a2f9-d8fc-4469-b07b-33eb785aaca0\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $BMbAhC2V4J0SpLD -eq $null)
+{
+write-host " Specify the unattended sleep timeout (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $BMbAhC2V4J0SpLD  -eq  '0' )
+{
+write-host " Specify the unattended sleep timeout (on battery) is enabled and set to 0 seconds" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the unattended sleep timeout (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+
+$4lhpjTxyb92RsKJ = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\7bc4a2f9-d8fc-4469-b07b-33eb785aaca0\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $4lhpjTxyb92RsKJ -eq $null)
+{
+write-host " Specify the unattended sleep timeout (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $4lhpjTxyb92RsKJ  -eq  '0' )
+{
+write-host " Specify the unattended sleep timeout (plugged in) is enabled" -ForegroundColor Green
+}
+    else
+{
+write-host " Specify the unattended sleep timeout (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+$bOEF2189wg3Dhzq = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
+if ( $bOEF2189wg3Dhzq -eq $null)
+{
+write-host " Turn off hybrid sleep (on battery) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $bOEF2189wg3Dhzq  -eq  '0' )
+{
+write-host " Turn off hybrid sleep (on battery) is enabled" -ForegroundColor Green
+}
+  elseif ( $bOEF2189wg3Dhzq  -eq  '1' )
+{
+write-host " Turn off hybrid sleep (on battery) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off hybrid sleep (on battery) is set to an unknown setting" -ForegroundColor Red
+}
+
+$xcyp78VGK9RYUs0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\94ac6d29-73ce-41a6-809f-6363ba21b47e\'  -Name ACSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ACSettingIndex
+if ( $xcyp78VGK9RYUs0 -eq $null)
+{
+write-host " Turn off hybrid sleep (plugged in) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $xcyp78VGK9RYUs0  -eq  '0' )
+{
+write-host " Turn off hybrid sleep (plugged in) is enabled" -ForegroundColor Green
+}
+  elseif ( $xcyp78VGK9RYUs0  -eq  '1' )
+{
+write-host " Turn off hybrid sleep (plugged in) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off hybrid sleep (plugged in) is set to an unknown setting" -ForegroundColor Red
+}
+
+$LXGISnrDvyTAdjE = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer\'  -Name ShowHibernateOption -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ShowHibernateOption
+if ( $LXGISnrDvyTAdjE -eq $null)
+{
+write-host " Show hibernate in the power options menu is not configured" -ForegroundColor Yellow
+}
+   elseif ( $LXGISnrDvyTAdjE  -eq  '0' )
+{
+write-host " Show hibernate in the power options menu is disabled" -ForegroundColor Green
+}
+  elseif ( $LXGISnrDvyTAdjE  -eq  '1' )
+{
+write-host " Show hibernate in the power options menu is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Show hibernate in the power options menu is set to an unknown setting" -ForegroundColor Red
+}
+
+$JwmcB8OLGS0loNP = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer\'  -Name ShowSleepOption -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ShowSleepOption
+if ( $JwmcB8OLGS0loNP -eq $null)
+{
+write-host " Show sleep in the power options menu is not configured" -ForegroundColor Yellow
+}
+   elseif ( $JwmcB8OLGS0loNP  -eq  '0' )
+{
+write-host " Show sleep in the power options menu is disabled" -ForegroundColor Green
+}
+  elseif ( $JwmcB8OLGS0loNP  -eq  '1' )
+{
+write-host " Show sleep in the power options menu is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Show sleep in the power options menu is set to an unknown setting" -ForegroundColor Red
+}
