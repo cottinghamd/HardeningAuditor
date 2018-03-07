@@ -3223,3 +3223,1357 @@ write-host " Show sleep in the power options menu is enabled" -ForegroundColor R
 {
 write-host " Show sleep in the power options menu is set to an unknown setting" -ForegroundColor Red
 }
+
+write-host "`r`n####################### POWERSHELL #######################`r`n"
+
+$LMCJtZgR8FhxmbGke = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockLogging
+$UPCJtZgR8FhxmbGke = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockLogging
+if ( $LMCJtZgR8FhxmbGke -eq $null -and  $UPCJtZgR8FhxmbGke -eq $null)
+{
+write-host " Turn on PowerShell Script Block Logging is not configured" -ForegroundColor Yellow
+}
+if ( $LMCJtZgR8FhxmbGke  -eq '1' )
+{
+write-host " Turn on PowerShell Script Block Logging is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMCJtZgR8FhxmbGke  -eq '0' )
+{
+write-host " Turn on PowerShell Script Block Logging is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPCJtZgR8FhxmbGke  -eq  '1' )
+{
+write-host " Turn on PowerShell Script Block Logging is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPCJtZgR8FhxmbGke  -eq  '0' )
+{
+write-host " Turn on PowerShell Script Block Logging is disabled in User GP" -ForegroundColor Red
+}
+
+$LMCJtZgR8FhxmbGked = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockInvocationLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockInvocationLogging
+$UPCJtZgR8FhxmbGked = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockInvocationLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockInvocationLogging
+if ( $LMCJtZgR8FhxmbGked -eq $null -and  $UPCJtZgR8FhxmbGked -eq $null)
+{
+write-host " Turn on PowerShell Script Block Invocation Logging is not configured" -ForegroundColor Yellow
+}
+if ( $LMCJtZgR8FhxmbGked  -eq '1' )
+{
+write-host " Turn on PowerShell Script Block Invocation Logging is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMCJtZgR8FhxmbGked  -eq '0' )
+{
+write-host " Turn on PowerShell Script Block Invocation Logging is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPCJtZgR8FhxmbGked  -eq  '1' )
+{
+write-host " Turn on PowerShell Script Block Invocation Logging is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPCJtZgR8FhxmbGked  -eq  '0' )
+{
+write-host " Turn on PowerShell Script Block Invocation Logging is disabled in User GP" -ForegroundColor Red
+}
+
+$LMbMRxhAX7jTCJI2S = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\PowerShell\' -Name EnableScripts -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScripts
+$UPbMRxhAX7jTCJI2S = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\PowerShell\' -Name EnableScripts -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScripts
+if ( $LMbMRxhAX7jTCJI2S -eq $null -and  $UPbMRxhAX7jTCJI2S -eq $null)
+{
+write-host " Turn on Script Execution is not configured" -ForegroundColor Yellow
+}
+if ( $LMbMRxhAX7jTCJI2S  -eq '1' )
+{
+write-host " Turn on Script Execution is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMbMRxhAX7jTCJI2S  -eq '0' )
+{
+write-host " Turn on Script Execution is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPbMRxhAX7jTCJI2S  -eq  '1' )
+{
+write-host " Turn on Script Execution is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPbMRxhAX7jTCJI2S  -eq  '0' )
+{
+write-host " Turn on Script Execution is disabled in User GP" -ForegroundColor Red
+}
+
+
+$LMbMRxhAX7jTCJI2 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\PowerShell\' -Name ExecutionPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExecutionPolicy
+$UPbMRxhAX7jTCJI2 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\PowerShell\' -Name ExecutionPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExecutionPolicy
+if ( $LMbMRxhAX7jTCJI2 -eq $null -and  $UPbMRxhAX7jTCJI2S -eq $null)
+{
+write-host " Script Execution is not configured" -ForegroundColor Yellow
+}
+if ( $LMbMRxhAX7jTCJI2  -eq '0' )
+{
+write-host " Allow only signed powershell scripts is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMbMRxhAX7jTCJI2  -eq '1' -or $LMbMRxhAX7jTCJI2  -eq '2' )
+{
+write-host " Powershell scripts are set to allow all scripts or allow local scripts and remote signed scripts in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPbMRxhAX7jTCJI2  -eq  '0' )
+{
+write-host " Allow only signed powershell scripts is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPbMRxhAX7jTCJI2  -eq '1' -or $UPbMRxhAX7jTCJI2  -eq '2')
+{
+write-host "Powershell scripts are set to allow all scripts or allow local scripts and remote signed scripts in User GP" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### REGISTRY EDITING TOOLS #######################`r`n"
+
+$ne3X0uL4lhqB1Ga = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name DisableRegistryTools -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRegistryTools
+if ( $ne3X0uL4lhqB1Ga -eq $null)
+{
+write-host " Prevent access to registry editing tools is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ne3X0uL4lhqB1Ga  -eq  '2' )
+{
+write-host " Prevent access to registry editing tools is enabled" -ForegroundColor Green
+}
+  elseif ( $ne3X0uL4lhqB1Ga  -eq  '1' )
+{
+write-host " Prevent access to registry editing tools is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent access to registry editing tools is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### REMOTE ASSISTANCE #######################`r`n"
+
+$4KQi6CmJpGgqVAs = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\policies\Microsoft\Windows NT\Terminal Services\'  -Name fAllowUnsolicited -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fAllowUnsolicited
+if ( $4KQi6CmJpGgqVAs -eq $null)
+{
+write-host " Configure Offer Remote Assistance is not configured" -ForegroundColor Yellow
+}
+   elseif ( $4KQi6CmJpGgqVAs  -eq  '0' )
+{
+write-host " Configure Offer Remote Assistance is disabled" -ForegroundColor Green
+}
+  elseif ( $4KQi6CmJpGgqVAs  -eq  '1' )
+{
+write-host " Configure Offer Remote Assistance is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure Offer Remote Assistance is set to an unknown setting" -ForegroundColor Red
+}
+
+$ostWYT0pIug5Qcb = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\policies\Microsoft\Windows NT\Terminal Services\'  -Name fAllowToGetHelp -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fAllowToGetHelp
+if ( $ostWYT0pIug5Qcb -eq $null)
+{
+write-host " Configure Solicited Remote Assistance is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ostWYT0pIug5Qcb  -eq  '0' )
+{
+write-host " Configure Solicited Remote Assistance is disabled" -ForegroundColor Green
+}
+  elseif ( $ostWYT0pIug5Qcb  -eq  '1' )
+{
+write-host " Configure Solicited Remote Assistance is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure Solicited Remote Assistance is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### REMOTE DESKTOP SERVICES #######################`r`n"
+
+$kQwHe03XYWy17KG = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDenyTSConnections -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDenyTSConnections
+if ( $kQwHe03XYWy17KG -eq $null)
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is not configured" -ForegroundColor Yellow
+}
+   elseif ( $kQwHe03XYWy17KG  -eq  '1' )
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is disabled" -ForegroundColor Green
+}
+  elseif ( $kQwHe03XYWy17KG  -eq  '0' )
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check allow log on through remote desktop services"
+write-host "Unable to check deny log on through remote desktop services"
+
+$NQV54zJaxh6nOE0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredentialsDelegation\'  -Name AllowProtectedCreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowProtectedCreds
+if ( $NQV54zJaxh6nOE0 -eq $null)
+{
+write-host " Remote host allows delegation of non-exportable credentials is not configured" -ForegroundColor Yellow
+}
+   elseif ( $NQV54zJaxh6nOE0  -eq  '1' )
+{
+write-host " Remote host allows delegation of non-exportable credentials is enabled" -ForegroundColor Green
+}
+  elseif ( $NQV54zJaxh6nOE0  -eq  '0' )
+{
+write-host " Remote host allows delegation of non-exportable credentials is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Remote host allows delegation of non-exportable credentials is set to an unknown setting" -ForegroundColor Red
+}
+
+$rhnwzd2NLqTAf8J = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name AuthenticationLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AuthenticationLevel
+if ( $rhnwzd2NLqTAf8J -eq $null)
+{
+write-host " Configure server authentication for client is not configured" -ForegroundColor Yellow
+}
+   elseif ( $rhnwzd2NLqTAf8J  -eq  '1' )
+{
+write-host " Configure server authentication for client is enabled" -ForegroundColor Green
+}
+  elseif ( $rhnwzd2NLqTAf8J  -eq  '2' -or $rhnwzd2NLqTAf8J  -eq  '0' )
+{
+write-host " Configure server authentication for client is set to a non-compliant setting" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure server authentication for client is set to an unknown setting" -ForegroundColor Red
+}
+
+$USPueEgdnK6yjIL = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name DisablePasswordSaving -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePasswordSaving
+if ( $USPueEgdnK6yjIL -eq $null)
+{
+write-host " Do not allow passwords to be saved is not configured" -ForegroundColor Yellow
+}
+   elseif ( $USPueEgdnK6yjIL  -eq  '1' )
+{
+write-host " Do not allow passwords to be saved is enabled" -ForegroundColor Green
+}
+  elseif ( $USPueEgdnK6yjIL  -eq  '0' )
+{
+write-host " Do not allow passwords to be saved is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not allow passwords to be saved is set to an unknown setting" -ForegroundColor Red
+}
+
+$7Zz8LPwJN6ky4gX = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDenyTSConnections -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDenyTSConnections
+if ( $7Zz8LPwJN6ky4gX -eq $null)
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is not configured" -ForegroundColor Yellow
+}
+   elseif ( $7Zz8LPwJN6ky4gX  -eq  '0' )
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is enabled" -ForegroundColor Green
+}
+  elseif ( $7Zz8LPwJN6ky4gX  -eq  '1' )
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow users to connect remotely by using Remote Desktop Services is set to an unknown setting" -ForegroundColor Red
+}
+
+$fYIVuDva8ER2A9M = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDisableForcibleLogoff -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDisableForcibleLogoff
+if ( $fYIVuDva8ER2A9M -eq $null)
+{
+write-host " Deny logoff of an administrator logged in to the console session is not configured" -ForegroundColor Yellow
+}
+   elseif ( $fYIVuDva8ER2A9M  -eq  '1' )
+{
+write-host " Deny logoff of an administrator logged in to the console session is enabled" -ForegroundColor Green
+}
+  elseif ( $fYIVuDva8ER2A9M  -eq  '0' )
+{
+write-host " Deny logoff of an administrator logged in to the console session is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Deny logoff of an administrator logged in to the console session is set to an unknown setting" -ForegroundColor Red
+}
+
+$RWGtm1iw4Pj0Mhs = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDisableClip -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDisableClip
+
+if ( $RWGtm1iw4Pj0Mhs -eq $null)
+{
+write-host " Do not allow Clipboard redirection is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RWGtm1iw4Pj0Mhs  -eq  '1' )
+{
+write-host " Do not allow Clipboard redirection is enabled" -ForegroundColor Green
+}
+  elseif ( $RWGtm1iw4Pj0Mhs  -eq  '0' )
+{
+write-host " Do not allow Clipboard redirection is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not allow Clipboard redirection is set to an unknown setting" -ForegroundColor Red
+}
+
+$MJ2WdIt7mlhbckR = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDisableCdm -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDisableCdm
+if ( $MJ2WdIt7mlhbckR -eq $null)
+{
+write-host " Do not allow drive redirection is not configured" -ForegroundColor Yellow
+}
+   elseif ( $MJ2WdIt7mlhbckR  -eq  '1' )
+{
+write-host " Do not allow drive redirection is enabled" -ForegroundColor Green
+}
+  elseif ( $MJ2WdIt7mlhbckR  -eq  '0' )
+{
+write-host " Do not allow drive redirection is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not allow drive redirection is set to an unknown setting" -ForegroundColor Red
+}
+
+$lRPQ5MjsugZpCAI = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fPromptForPassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fPromptForPassword
+if ( $lRPQ5MjsugZpCAI -eq $null)
+{
+write-host " Always prompt for password upon connection is not configured" -ForegroundColor Yellow
+}
+   elseif ( $lRPQ5MjsugZpCAI  -eq  '1' )
+{
+write-host " Always prompt for password upon connection is enabled" -ForegroundColor Green
+}
+  elseif ( $lRPQ5MjsugZpCAI  -eq  '0' )
+{
+write-host " Always prompt for password upon connection is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Always prompt for password upon connection is set to an unknown setting" -ForegroundColor Red
+}
+
+$CPoKihTNYQpqsBz = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fWritableTSCCPermTab -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fWritableTSCCPermTab
+if ( $CPoKihTNYQpqsBz -eq $null)
+{
+write-host " Do not allow local administrators to customize permissions is not configured" -ForegroundColor Yellow
+}
+   elseif ( $CPoKihTNYQpqsBz  -eq  '0' )
+{
+write-host " Do not allow local administrators to customize permissions is enabled" -ForegroundColor Green
+}
+  elseif ( $CPoKihTNYQpqsBz  -eq  '1' )
+{
+write-host " Do not allow local administrators to customize permissions is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not allow local administrators to customize permissions is set to an unknown setting" -ForegroundColor Red
+}
+
+$k2FQDrJen34MOVg = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fEncryptRPCTraffic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fEncryptRPCTraffic
+if ( $k2FQDrJen34MOVg -eq $null)
+{
+write-host " Require secure RPC communication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $k2FQDrJen34MOVg  -eq  '1' )
+{
+write-host " Require secure RPC communication is enabled" -ForegroundColor Green
+}
+  elseif ( $k2FQDrJen34MOVg  -eq  '0' )
+{
+write-host " Require secure RPC communication is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Require secure RPC communication is set to an unknown setting" -ForegroundColor Red
+}
+
+$ycroPUFjHk1l4aq = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name SecurityLayer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SecurityLayer
+if ( $ycroPUFjHk1l4aq -eq $null)
+{
+write-host " Require use of specific security layer for remote (RDP) connections is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ycroPUFjHk1l4aq  -eq  '2' )
+{
+write-host " Require use of specific security layer for remote (RDP) connections is set to SSL" -ForegroundColor Green
+}
+  elseif ( $ycroPUFjHk1l4aq  -eq  '1' -or $ycroPUFjHk1l4aq  -eq  '0' )
+{
+write-host " Require use of specific security layer for remote (RDP) connections set to Negotiate or RDP" -ForegroundColor Red
+}
+  else
+{
+write-host " Require use of specific security layer for remote (RDP) connections is set to an unknown setting" -ForegroundColor Red
+}
+
+$vYkIVXt8CZfzRT3 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name UserAuthentication -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UserAuthentication
+if ( $vYkIVXt8CZfzRT3 -eq $null)
+{
+write-host " Require user authentication for remote connections by using Network Level Authentication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $vYkIVXt8CZfzRT3  -eq  '1' )
+{
+write-host " Require user authentication for remote connections by using Network Level Authentication is enabled" -ForegroundColor Green
+}
+  elseif ( $vYkIVXt8CZfzRT3  -eq  '0' )
+{
+write-host " Require user authentication for remote connections by using Network Level Authentication is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Require user authentication for remote connections by using Network Level Authentication is set to an unknown setting" -ForegroundColor Red
+}
+
+$MXAzBSUFTGujfc1 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name MinEncryptionLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinEncryptionLevel
+if ( $MXAzBSUFTGujfc1 -eq $null)
+{
+write-host " Set client connection encryption level is not configured" -ForegroundColor Yellow
+}
+   elseif ( $MXAzBSUFTGujfc1  -eq  '3' )
+{
+write-host " Set client connection encryption level is set to high" -ForegroundColor Green
+}
+  elseif ( $MXAzBSUFTGujfc1  -eq  '1' -or $MXAzBSUFTGujfc1  -eq  '2' )
+{
+write-host " Set client connection encryption level is set to client compatible or a low level" -ForegroundColor Red
+}
+  else
+{
+write-host " Set client connection encryption level is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check allow log on through remote desktop services"
+write-host "Unable to check deny log on through remote desktop services"
+
+
+write-host "`r`n####################### REMOTE PROCEDURE CALL #######################`r`n"
+
+$HWPLG72S8TrAqKk = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Rpc\'  -Name RestrictRemoteClients -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictRemoteClients
+if ( $HWPLG72S8TrAqKk -eq $null)
+{
+write-host " Restrict Unauthenticated RPC clients is not configured" -ForegroundColor Yellow
+}
+   elseif ( $HWPLG72S8TrAqKk  -eq  '1' )
+{
+write-host " Restrict Unauthenticated RPC clients is enabled" -ForegroundColor Green
+}
+  elseif ( $HWPLG72S8TrAqKk  -eq  '0' -or $HWPLG72S8TrAqKk  -eq  '2'  )
+{
+write-host " Restrict Unauthenticated RPC clients is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Restrict Unauthenticated RPC clients is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### REPORTING SYSTEM INFORMATION #######################`r`n"
+
+$PNH7sOv6IUqTLd0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\ScriptedDiagnosticsProvider\Policy\'  -Name DisableQueryRemoteServer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableQueryRemoteServer
+if ( $PNH7sOv6IUqTLd0 -eq $null)
+{
+write-host " Microsoft Support Diagnostic Tool: Turn on MSDT interactive communication with support provider is not configured" -ForegroundColor Yellow
+}
+   elseif ( $PNH7sOv6IUqTLd0  -eq  '0' )
+{
+write-host " Microsoft Support Diagnostic Tool: Turn on MSDT interactive communication with support provider is disabled" -ForegroundColor Green
+}
+  elseif ( $PNH7sOv6IUqTLd0  -eq  '1' )
+{
+write-host " Microsoft Support Diagnostic Tool: Turn on MSDT interactive communication with support provider is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Microsoft Support Diagnostic Tool: Turn on MSDT interactive communication with support provider is set to an unknown setting" -ForegroundColor Red
+}
+
+$pB5HU3iuVdShzK9 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\AppCompat\'  -Name DisableInventory -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableInventory
+if ( $pB5HU3iuVdShzK9 -eq $null)
+{
+write-host " Turn off Inventory Collector is not configured" -ForegroundColor Yellow
+}
+   elseif ( $pB5HU3iuVdShzK9  -eq  '1' )
+{
+write-host " Turn off Inventory Collector is enabled" -ForegroundColor Green
+}
+  elseif ( $pB5HU3iuVdShzK9  -eq  '0' )
+{
+write-host " Turn off Inventory Collector is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Inventory Collector is set to an unknown setting" -ForegroundColor Red
+}
+
+$HhF0z6Ccr3LGPxd = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\AppCompat\'  -Name DisableUAR -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableUAR
+if ( $HhF0z6Ccr3LGPxd -eq $null)
+{
+write-host " Turn off Steps Recorder is not configured" -ForegroundColor Yellow
+}
+   elseif ( $HhF0z6Ccr3LGPxd  -eq  '1' )
+{
+write-host " Turn off Steps Recorder is enabled" -ForegroundColor Green
+}
+  elseif ( $HhF0z6Ccr3LGPxd  -eq  '0' )
+{
+write-host " Turn off Steps Recorder is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Steps Recorder is set to an unknown setting" -ForegroundColor Red
+}
+
+$LM8KSMxRACOWXwybq = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\DataCollection\' -Name AllowTelemetry -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowTelemetry
+$UP8KSMxRACOWXwybq = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\DataCollection\' -Name AllowTelemetry -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowTelemetry
+if ( $LM8KSMxRACOWXwybq -eq $null -and  $UP8KSMxRACOWXwybq -eq $null)
+{
+write-host " Allow Telemetry is not configured" -ForegroundColor Yellow
+}
+if ( $LM8KSMxRACOWXwybq  -eq '0' )
+{
+write-host " Allow Telemetry is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LM8KSMxRACOWXwybq  -eq '1' -or $LM8KSMxRACOWXwybq  -eq '2' -or $LM8KSMxRACOWXwybq  -eq '3' )
+{
+write-host " Allow Telemetry is set to a non-compliant setting in Local Machine GP" -ForegroundColor Red
+}
+if ( $UP8KSMxRACOWXwybq  -eq  '0' )
+{
+write-host " Allow Telemetry is enabled in User GP" -ForegroundColor Green
+}
+if ( $LM8KSMxRACOWXwybq  -eq '1' -or $LM8KSMxRACOWXwybq  -eq '2' -or $LM8KSMxRACOWXwybq  -eq '3' )
+{
+write-host " Allow Telemetry is set to a non-compliant setting in User GP" -ForegroundColor Red
+}
+
+write-host "Unable to check configure corporate windows error reporting"
+
+write-host "`r`n####################### SAFE MODE #######################`r`n"
+
+
+$HhF0z6Ccr3LGPx = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name SafeModeBlockNonAdmins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SafeModeBlockNonAdmins
+if ( $HhF0z6Ccr3LGPx -eq $null)
+{
+write-host "Block Non-Administrators in Safe Mode not configured" -ForegroundColor Yellow
+}
+   elseif ( $HhF0z6Ccr3LGPx  -eq  '1' )
+{
+write-host "Block Non-Administrators in Safe Mode is enabled" -ForegroundColor Green
+}
+  elseif ( $HhF0z6Ccr3LGPx  -eq  '0' )
+{
+write-host "Block Non-Administrators in Safe Mode is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Block Non-Administrators in Safe Mode is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### SECURE CHANNEL COMMUNICATIONS #######################`r`n"
+
+write-host "Can't check this whole section yet"
+
+
+write-host "`r`n####################### SECURITY POLICIES #######################`r`n"
+
+$ZCprfnJQOVLF4wT = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\wcmsvc\wifinetworkmanager\config\'  -Name AutoConnectAllowedOEM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoConnectAllowedOEM
+if ( $ZCprfnJQOVLF4wT -eq $null)
+{
+write-host " Allow Windows to automatically connect to suggested open hotspots, to networks shared by contacts, and to hotspots offering paid services is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ZCprfnJQOVLF4wT  -eq  '0' )
+{
+write-host " Allow Windows to automatically connect to suggested open hotspots, to networks shared by contacts, and to hotspots offering paid services is disabled" -ForegroundColor Green
+}
+  elseif ( $ZCprfnJQOVLF4wT  -eq  '1' )
+{
+write-host " Allow Windows to automatically connect to suggested open hotspots, to networks shared by contacts, and to hotspots offering paid services is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Windows to automatically connect to suggested open hotspots, to networks shared by contacts, and to hotspots offering paid services is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$x783w1bfW4nNCZV = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CloudContent\'  -Name DisableWindowsConsumerFeatures -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableWindowsConsumerFeatures
+if ( $x783w1bfW4nNCZV -eq $null)
+{
+write-host " Turn off Microsoft consumer experiences is not configured" -ForegroundColor Yellow
+}
+   elseif ( $x783w1bfW4nNCZV  -eq  '1' )
+{
+write-host " Turn off Microsoft consumer experiences is enabled" -ForegroundColor Green
+}
+  elseif ( $x783w1bfW4nNCZV  -eq  '0' )
+{
+write-host " Turn off Microsoft consumer experiences is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Microsoft consumer experiences is set to an unknown setting" -ForegroundColor Red
+}
+
+$PAch3CtoO9Ijfvr = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer\'  -Name NoHeapTerminationOnCorruption -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoHeapTerminationOnCorruption
+if ( $PAch3CtoO9Ijfvr -eq $null)
+{
+write-host " Turn off heap termination on corruption is not configured" -ForegroundColor Yellow
+}
+   elseif ( $PAch3CtoO9Ijfvr  -eq  '0' )
+{
+write-host " Turn off heap termination on corruption is disabled" -ForegroundColor Green
+}
+  elseif ( $PAch3CtoO9Ijfvr  -eq  '1' )
+{
+write-host " Turn off heap termination on corruption is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off heap termination on corruption is set to an unknown setting" -ForegroundColor Red
+}
+
+$X7bBFV0iTPk6rYj = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name PreXPSP2ShellProtocolBehavior -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreXPSP2ShellProtocolBehavior
+if ( $X7bBFV0iTPk6rYj -eq $null)
+{
+write-host " Turn off shell protocol protected mode is not configured" -ForegroundColor Yellow
+}
+   elseif ( $X7bBFV0iTPk6rYj  -eq  '0' )
+{
+write-host " Turn off shell protocol protected mode is disabled" -ForegroundColor Green
+}
+  elseif ( $X7bBFV0iTPk6rYj  -eq  '1' )
+{
+write-host " Turn off shell protocol protected mode is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off shell protocol protected mode is set to an unknown setting" -ForegroundColor Red
+}
+
+$LMwVsYrmNLSvR3156 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Internet Explorer\Feeds\' -Name DisableEnclosureDownload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableEnclosureDownload
+$UPwVsYrmNLSvR3156 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Internet Explorer\Feeds\' -Name DisableEnclosureDownload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableEnclosureDownload
+if ( $LMwVsYrmNLSvR3156 -eq $null -and  $UPwVsYrmNLSvR3156 -eq $null)
+{
+write-host " Prevent downloading of enclosures is not configured" -ForegroundColor Yellow
+}
+if ( $LMwVsYrmNLSvR3156  -eq '1' )
+{
+write-host " Prevent downloading of enclosures is enabled in Local Machine GP" -ForegroundColor Green
+}
+if ( $LMwVsYrmNLSvR3156  -eq '0' )
+{
+write-host " Prevent downloading of enclosures is disabled in Local Machine GP" -ForegroundColor Red
+}
+if ( $UPwVsYrmNLSvR3156  -eq  '1' )
+{
+write-host " Prevent downloading of enclosures is enabled in User GP" -ForegroundColor Green
+}
+if ( $UPwVsYrmNLSvR3156  -eq  '0' )
+{
+write-host " Prevent downloading of enclosures is disabled in User GP" -ForegroundColor Red
+}
+
+$g0OCVPTHarb4FiU = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search\'  -Name AllowIndexingEncryptedStoresOrItems -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowIndexingEncryptedStoresOrItems
+if ( $g0OCVPTHarb4FiU -eq $null)
+{
+write-host " Allow indexing of encrypted files is not configured" -ForegroundColor Yellow
+}
+   elseif ( $g0OCVPTHarb4FiU  -eq  '0' )
+{
+write-host " Allow indexing of encrypted files is disabled" -ForegroundColor Green
+}
+  elseif ( $g0OCVPTHarb4FiU  -eq  '1' )
+{
+write-host " Allow indexing of encrypted files is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow indexing of encrypted files is set to an unknown setting" -ForegroundColor Red
+}
+
+$OqU8k1BrR0gFnNz = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\GameDVR\'  -Name AllowGameDVR -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowGameDVR
+if ( $OqU8k1BrR0gFnNz -eq $null)
+{
+write-host " Enables or disables Windows Game Recording and Broadcasting is not configured" -ForegroundColor Yellow
+}
+   elseif ( $OqU8k1BrR0gFnNz  -eq  '0' )
+{
+write-host " Enables or disables Windows Game Recording and Broadcasting is disabled" -ForegroundColor Green
+}
+  elseif ( $OqU8k1BrR0gFnNz  -eq  '1' )
+{
+write-host " Enables or disables Windows Game Recording and Broadcasting is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Enables or disables Windows Game Recording and Broadcasting is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check some security options on page 41"
+
+write-host "`r`n####################### SERVER MESSAGE BLOCK SESSIONS #######################`r`n"
+
+
+$JZyMnHu1K3IXh40 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MrxSmb10\'  -Name Start -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Start
+if ( $JZyMnHu1K3IXh40 -eq $null)
+{
+write-host " Configure SMB v1 client driver is not configured" -ForegroundColor Yellow
+}
+   elseif ( $JZyMnHu1K3IXh40  -eq  '4' )
+{
+write-host " Configure SMB v1 client driver is disabled" -ForegroundColor Green
+}
+  elseif ( $JZyMnHu1K3IXh40  -eq  '2' -or $JZyMnHu1K3IXh40  -eq  '3' )
+{
+write-host " Configure SMB v1 client driver is set to manual or automatic start" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure SMB v1 client driver is set to an unknown setting" -ForegroundColor Red
+}
+
+$CJYvExedTmlj9OQ = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\'  -Name SMB1 -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SMB1
+if ( $CJYvExedTmlj9OQ -eq $null)
+{
+write-host " Configure SMB v1 server is not configured" -ForegroundColor Yellow
+}
+   elseif ( $CJYvExedTmlj9OQ  -eq  '0' )
+{
+write-host " Configure SMB v1 server is disabled" -ForegroundColor Green
+}
+  elseif ( $CJYvExedTmlj9OQ  -eq  '1' )
+{
+write-host " Configure SMB v1 server is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure SMB v1 server is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check for remaining microsoft network server settings"
+
+write-host "`r`n####################### SESSION LOCKING #######################`r`n"
+
+$tMm2f35wdzqlIkg = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization\'  -Name NoLockScreenCamera -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoLockScreenCamera
+if ( $tMm2f35wdzqlIkg -eq $null)
+{
+write-host " Prevent enabling lock screen camera is not configured" -ForegroundColor Yellow
+}
+   elseif ( $tMm2f35wdzqlIkg  -eq  '1' )
+{
+write-host " Prevent enabling lock screen camera is enabled" -ForegroundColor Green
+}
+  elseif ( $tMm2f35wdzqlIkg  -eq  '0' )
+{
+write-host " Prevent enabling lock screen camera is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent enabling lock screen camera is set to an unknown setting" -ForegroundColor Red
+}
+
+$9Ot0aqonKNiEm5b = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization\'  -Name NoLockScreenSlideshow -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoLockScreenSlideshow
+if ( $9Ot0aqonKNiEm5b -eq $null)
+{
+write-host " Prevent enabling lock screen slide show is not configured" -ForegroundColor Yellow
+}
+   elseif ( $9Ot0aqonKNiEm5b  -eq  '1' )
+{
+write-host " Prevent enabling lock screen slide show is enabled" -ForegroundColor Green
+}
+  elseif ( $9Ot0aqonKNiEm5b  -eq  '0' )
+{
+write-host " Prevent enabling lock screen slide show is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent enabling lock screen slide show is set to an unknown setting" -ForegroundColor Red
+}
+
+$cbGLB9V2Rhk7fq5 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name AllowDomainDelayLock -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDomainDelayLock
+if ( $cbGLB9V2Rhk7fq5 -eq $null)
+{
+write-host " Allow users to select when a password is required when resuming from connected standby is not configured" -ForegroundColor Yellow
+}
+   elseif ( $cbGLB9V2Rhk7fq5  -eq  '0' )
+{
+write-host " Allow users to select when a password is required when resuming from connected standby is disabled" -ForegroundColor Green
+}
+  elseif ( $cbGLB9V2Rhk7fq5  -eq  '1' )
+{
+write-host " Allow users to select when a password is required when resuming from connected standby is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow users to select when a password is required when resuming from connected standby is set to an unknown setting" -ForegroundColor Red
+}
+
+$jrSiA6Xq2mBVpCZ = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name DisableLockScreenAppNotifications -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLockScreenAppNotifications
+if ( $jrSiA6Xq2mBVpCZ -eq $null)
+{
+write-host " Turn off app notifications on the lock screen is not configured" -ForegroundColor Yellow
+}
+   elseif ( $jrSiA6Xq2mBVpCZ  -eq  '1' )
+{
+write-host " Turn off app notifications on the lock screen is enabled" -ForegroundColor Green
+}
+  elseif ( $jrSiA6Xq2mBVpCZ  -eq  '0' )
+{
+write-host " Turn off app notifications on the lock screen is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off app notifications on the lock screen is set to an unknown setting" -ForegroundColor Red
+}
+
+$aBGYEMCPVjRLeFc = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer\'  -Name ShowLockOption -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ShowLockOption
+if ( $aBGYEMCPVjRLeFc -eq $null)
+{
+write-host " Show lock in the user tile menu is not configured" -ForegroundColor Yellow
+}
+   elseif ( $aBGYEMCPVjRLeFc  -eq  '1' )
+{
+write-host " Show lock in the user tile menu is enabled" -ForegroundColor Green
+}
+  elseif ( $aBGYEMCPVjRLeFc  -eq  '0' )
+{
+write-host " Show lock in the user tile menu is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Show lock in the user tile menu is set to an unknown setting" -ForegroundColor Red
+}
+
+$oRJPdEy5i0DCqFX = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsInkWorkspace\'  -Name AllowWindowsInkWorkspace -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowWindowsInkWorkspace
+if ( $oRJPdEy5i0DCqFX -eq $null)
+{
+write-host " Allow Windows Ink Workspace is not configured" -ForegroundColor Yellow
+}
+   elseif ( $oRJPdEy5i0DCqFX  -eq  '1' )
+{
+write-host " Allow Windows Ink Workspace is on but dissalow access above lock" -ForegroundColor Green
+}
+  elseif ( $oRJPdEy5i0DCqFX  -eq  '0' -or $oRJPdEy5i0DCqFX  -eq  '2' )
+{
+write-host " Allow Windows Ink Workspace is disabled or turned on, both not recommended settings" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Windows Ink Workspace is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check machine inactivity limit"
+
+$nKErRNAU3b4k6hI = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop\'  -Name ScreenSaveActive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ScreenSaveActive
+if ( $nKErRNAU3b4k6hI -eq $null)
+{
+write-host " Enable screen saver is not configured" -ForegroundColor Yellow
+}
+   elseif ( $nKErRNAU3b4k6hI  -eq  '1' )
+{
+write-host " Enable screen saver is enabled" -ForegroundColor Green
+}
+  elseif ( $nKErRNAU3b4k6hI  -eq  '0' )
+{
+write-host " Enable screen saver is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Enable screen saver is set to an unknown setting" -ForegroundColor Red
+}
+
+$v692ozEayg53Lfs = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop\'  -Name ScreenSaverIsSecure -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ScreenSaverIsSecure
+if ( $v692ozEayg53Lfs -eq $null)
+{
+write-host " Password protect the screen saver is not configured" -ForegroundColor Yellow
+}
+   elseif ( $v692ozEayg53Lfs  -eq  '1' )
+{
+write-host " Password protect the screen saver is enabled" -ForegroundColor Green
+}
+  elseif ( $v692ozEayg53Lfs  -eq  '0' )
+{
+write-host " Password protect the screen saver is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Password protect the screen saver is set to an unknown setting" -ForegroundColor Red
+}
+
+$EWeBJdm8rjbwAo3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop\'  -Name ScreenSaveTimeOut -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ScreenSaveTimeOut
+if ( $EWeBJdm8rjbwAo3 -eq $null)
+{
+write-host " Screen saver timeout is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EWeBJdm8rjbwAo3  -eq  '900' )
+{
+write-host " Screen saver timeout is set compliant" -ForegroundColor Green
+}
+  elseif ( $EWeBJdm8rjbwAo3  -lt '900')
+{
+write-host " Screen saver timeout is lower than a compliant setting" -ForegroundColor Red
+}
+  elseif ( $EWeBJdm8rjbwAo3  -gt '900')
+{
+write-host " Screen saver timeout is higher than the compliant setting" -ForegroundColor Green
+}
+  else
+{
+write-host " Screen saver timeout is set to an unknown setting" -ForegroundColor Red
+}
+
+$7NdvQjghTrwKYW4 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications\'  -Name NoToastApplicationNotificationOnLockScreen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoToastApplicationNotificationOnLockScreen
+if ( $7NdvQjghTrwKYW4 -eq $null)
+{
+write-host " Turn off toast notifications on the lock screen is not configured" -ForegroundColor Yellow
+}
+   elseif ( $7NdvQjghTrwKYW4  -eq  '1' )
+{
+write-host " Turn off toast notifications on the lock screen is enabled" -ForegroundColor Green
+}
+  elseif ( $7NdvQjghTrwKYW4  -eq  '0' )
+{
+write-host " Turn off toast notifications on the lock screen is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off toast notifications on the lock screen is set to an unknown setting" -ForegroundColor Red
+}
+
+$YcLMvmzxA0X3tu6 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\CloudContent\'  -Name DisableThirdPartySuggestions -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableThirdPartySuggestions
+if ( $YcLMvmzxA0X3tu6 -eq $null)
+{
+write-host " Do not suggest third-party content in Windows spotlight is not configured" -ForegroundColor Yellow
+}
+   elseif ( $YcLMvmzxA0X3tu6  -eq  '1' )
+{
+write-host " Do not suggest third-party content in Windows spotlight is enabled" -ForegroundColor Green
+}
+  elseif ( $YcLMvmzxA0X3tu6  -eq  '0' )
+{
+write-host " Do not suggest third-party content in Windows spotlight is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not suggest third-party content in Windows spotlight is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### SOFTWARE-BASED FIREWALLS #######################`r`n"
+
+write-host "`r`n####################### SOUND RECORDER #######################`r`n"
+
+$IAtVlOZ8HnEGCq5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\SoundRecorder\'  -Name Soundrec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Soundrec
+if ( $IAtVlOZ8HnEGCq5 -eq $null)
+{
+write-host " Do not allow Sound Recorder to run is not configured" -ForegroundColor Yellow
+}
+   elseif ( $IAtVlOZ8HnEGCq5  -eq  '1' )
+{
+write-host " Do not allow Sound Recorder to run is enabled" -ForegroundColor Green
+}
+  elseif ( $IAtVlOZ8HnEGCq5  -eq  '0' )
+{
+write-host " Do not allow Sound Recorder to run is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not allow Sound Recorder to run is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### STANDARD OPERATING ENVIRONMENT #######################`r`n"
+
+write-host "`r`n####################### SYSTEM BACKUP AND RESTORE #######################`r`n"
+
+write-host "Can't check system backup and restore settings yet"
+
+write-host "`r`n####################### SYSTEM CRYPTOGRAPHY #######################`r`n"
+
+write-host "Unable to check force strong key protection for user keys stored ont eh computer"
+
+
+$9UNpgi6osfkQlnF = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Centrify\CentrifyDC\Settings\Fips\'  -Name fips.mode.enable -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fips.mode.enable
+if ( $9UNpgi6osfkQlnF -eq $null)
+{
+write-host " Use FIPS compliant algorithms for encryption, hashing and signing is not configured" -ForegroundColor Yellow
+}
+   elseif ( $9UNpgi6osfkQlnF  -eq  'true' )
+{
+write-host " Use FIPS compliant algorithms for encryption, hashing and signing is enabled" -ForegroundColor Green
+}
+  elseif ( $9UNpgi6osfkQlnF  -eq  'false' )
+{
+write-host " Use FIPS compliant algorithms for encryption, hashing and signing is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Use FIPS compliant algorithms for encryption, hashing and signing is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### USER RIGHTS POLICIES #######################`r`n"
+
+write-host "Unable to check this chapter"
+
+write-host "`r`n####################### VIRTUALISED WEB AND EMAIL ACCESS #######################`r`n"
+
+
+write-host "`r`n####################### WINDOWS REMOTE MANAGEMENT #######################`r`n"
+
+$q8Y9g4oz6TAULkJ = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client\'  -Name AllowBasic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowBasic
+if ( $q8Y9g4oz6TAULkJ -eq $null)
+{
+write-host " Allow Basic authentication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $q8Y9g4oz6TAULkJ  -eq  '0' )
+{
+write-host " Allow Basic authentication is disabled" -ForegroundColor Green
+}
+  elseif ( $q8Y9g4oz6TAULkJ  -eq  '1' )
+{
+write-host " Allow Basic authentication is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Basic authentication is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$svkG3Au1aOf5IwN = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client\'  -Name AllowUnencryptedTraffic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowUnencryptedTraffic
+if ( $svkG3Au1aOf5IwN -eq $null)
+{
+write-host " Allow unencrypted traffic is not configured" -ForegroundColor Yellow
+}
+   elseif ( $svkG3Au1aOf5IwN  -eq  '0' )
+{
+write-host " Allow unencrypted traffic is disabled" -ForegroundColor Green
+}
+  elseif ( $svkG3Au1aOf5IwN  -eq  '1' )
+{
+write-host " Allow unencrypted traffic is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow unencrypted traffic is set to an unknown setting" -ForegroundColor Red
+}
+
+$Zvk72J5CFEsdqhg = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client\'  -Name AllowDigest -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDigest
+if ( $Zvk72J5CFEsdqhg -eq $null)
+{
+write-host " Disallow Digest authentication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Zvk72J5CFEsdqhg  -eq  '0' )
+{
+write-host " Disallow Digest authentication is enabled" -ForegroundColor Green
+}
+  elseif ( $Zvk72J5CFEsdqhg  -eq  '1' )
+{
+write-host " Disallow Digest authentication is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Disallow Digest authentication is set to an unknown setting" -ForegroundColor Red
+}
+
+$R3rxMaJTWuI8Ggn = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\'  -Name AllowBasic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowBasic
+if ( $R3rxMaJTWuI8Ggn -eq $null)
+{
+write-host " Allow Basic authentication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $R3rxMaJTWuI8Ggn  -eq  '0' )
+{
+write-host " Allow Basic authentication is disabled" -ForegroundColor Green
+}
+  elseif ( $R3rxMaJTWuI8Ggn  -eq  '1' )
+{
+write-host " Allow Basic authentication is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Basic authentication is set to an unknown setting" -ForegroundColor Red
+}
+
+$WeNYH9rskqIXnld = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\'  -Name AllowUnencryptedTraffic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowUnencryptedTraffic
+if ( $WeNYH9rskqIXnld -eq $null)
+{
+write-host " Allow unencrypted traffic is not configured" -ForegroundColor Yellow
+}
+   elseif ( $WeNYH9rskqIXnld  -eq  '0' )
+{
+write-host " Allow unencrypted traffic is disabled" -ForegroundColor Green
+}
+  elseif ( $WeNYH9rskqIXnld  -eq  '1' )
+{
+write-host " Allow unencrypted traffic is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow unencrypted traffic is set to an unknown setting" -ForegroundColor Red
+}
+
+$Gl0HpCP1daqYn28 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\'  -Name DisableRunAs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRunAs
+if ( $Gl0HpCP1daqYn28 -eq $null)
+{
+write-host " Disallow WinRM from storing RunAs credentials is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Gl0HpCP1daqYn28  -eq  '1' )
+{
+write-host " Disallow WinRM from storing RunAs credentials is enabled" -ForegroundColor Green
+}
+  elseif ( $Gl0HpCP1daqYn28  -eq  '0' )
+{
+write-host " Disallow WinRM from storing RunAs credentials is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Disallow WinRM from storing RunAs credentials is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### WINDOWS REMOTE SHELL ACCESS #######################`r`n"
+
+$traYJW4x86uMjUG = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS\'  -Name AllowRemoteShellAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowRemoteShellAccess
+if ( $traYJW4x86uMjUG -eq $null)
+{
+write-host " Allow Remote Shell Access is not configured" -ForegroundColor Yellow
+}
+   elseif ( $traYJW4x86uMjUG  -eq  '0' )
+{
+write-host " Allow Remote Shell Access is disabled" -ForegroundColor Green
+}
+  elseif ( $traYJW4x86uMjUG  -eq  '1' )
+{
+write-host " Allow Remote Shell Access is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Remote Shell Access is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### WINDOWS SEARCH AND CORTANA #######################`r`n"
+
+$nCf3tP6YSFhcpD0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search\'  -Name AllowCortana -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowCortana
+if ( $nCf3tP6YSFhcpD0 -eq $null)
+{
+write-host " Allow Cortana is not configured" -ForegroundColor Yellow
+}
+   elseif ( $nCf3tP6YSFhcpD0  -eq  '0' )
+{
+write-host " Allow Cortana is disabled" -ForegroundColor Green
+}
+  elseif ( $nCf3tP6YSFhcpD0  -eq  '1' )
+{
+write-host " Allow Cortana is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow Cortana is set to an unknown setting" -ForegroundColor Red
+}
+
+$zKbSDWr3cMvUZu7 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search\'  -Name ConnectedSearchUseWeb -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ConnectedSearchUseWeb
+if ( $zKbSDWr3cMvUZu7 -eq $null)
+{
+write-host " Don't search the web or display web results in Search is not configured" -ForegroundColor Yellow
+}
+   elseif ( $zKbSDWr3cMvUZu7  -eq  '0' )
+{
+write-host " Don't search the web or display web results in Search is enabled" -ForegroundColor Green
+}
+  elseif ( $zKbSDWr3cMvUZu7  -eq  '1' )
+{
+write-host " Don't search the web or display web results in Search is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Don't search the web or display web results in Search is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### WINDOWS TO GO #######################`r`n"
+
+$rbWyQvlG5TAVoS7 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\PortableOperatingSystem\'  -Name Launcher -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Launcher
+if ( $rbWyQvlG5TAVoS7 -eq $null)
+{
+write-host " Windows To Go Default Startup Options is not configured" -ForegroundColor Yellow
+}
+   elseif ( $rbWyQvlG5TAVoS7  -eq  '0' )
+{
+write-host " Windows To Go Default Startup Options is disabled" -ForegroundColor Green
+}
+  elseif ( $rbWyQvlG5TAVoS7  -eq  '1' )
+{
+write-host " Windows To Go Default Startup Options is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Windows To Go Default Startup Options is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### DISPLAYING FILE EXTENSIONS #######################`r`n"
+
+$rbWyQvlG5TAVoS = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'  -Name HideFileExt -ErrorAction SilentlyContinue|Select-Object -ExpandProperty HideFileExt
+if ( $rbWyQvlG5TAVoS -eq $null)
+{
+write-host " Display file extensions is not configured" -ForegroundColor Yellow
+}
+   elseif ( $rbWyQvlG5TAVoS  -eq  '1' )
+{
+write-host "Display file extensions is enabled" -ForegroundColor Green
+}
+  elseif ( $rbWyQvlG5TAVoS  -eq  '1' )
+{
+write-host " Display file extensions is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Display file extensions is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### FILE AND FOLDER SECURITY PROPERTIES #######################`r`n"
+
+$7DTmwyr9KIcjvMi = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoSecurityTab -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoSecurityTab
+if ( $7DTmwyr9KIcjvMi -eq $null)
+{
+write-host " Remove Security tab is not configured" -ForegroundColor Yellow
+}
+   elseif ( $7DTmwyr9KIcjvMi  -eq  '1' )
+{
+write-host " Remove Security tab is enabled" -ForegroundColor Green
+}
+  elseif ( $7DTmwyr9KIcjvMi  -eq  '0' )
+{
+write-host " Remove Security tab is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Remove Security tab is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### LOCATION AWARENESS #######################`r`n"
+
+$L0t3zDQOWT82Yjk = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocation
+if ( $L0t3zDQOWT82Yjk -eq $null)
+{
+write-host " Turn off location is not configured" -ForegroundColor Yellow
+}
+   elseif ( $L0t3zDQOWT82Yjk  -eq  '1' )
+{
+write-host " Turn off location is enabled" -ForegroundColor Green
+}
+  elseif ( $L0t3zDQOWT82Yjk  -eq  '0' )
+{
+write-host " Turn off location is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off location is set to an unknown setting" -ForegroundColor Red
+}
+
+$wOWZP5iF8Ah2HLn = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocationScripting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocationScripting
+if ( $wOWZP5iF8Ah2HLn -eq $null)
+{
+write-host " Turn off location scripting is not configured" -ForegroundColor Yellow
+}
+   elseif ( $wOWZP5iF8Ah2HLn  -eq  '1' )
+{
+write-host " Turn off location scripting is enabled" -ForegroundColor Green
+}
+  elseif ( $wOWZP5iF8Ah2HLn  -eq  '0' )
+{
+write-host " Turn off location scripting is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off location scripting is set to an unknown setting" -ForegroundColor Red
+}
+
+$SbtA61CokgvnOKE = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableWindowsLocationProvider -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableWindowsLocationProvider
+if ( $SbtA61CokgvnOKE -eq $null)
+{
+write-host " Turn off Windows Location Provider is not configured" -ForegroundColor Yellow
+}
+   elseif ( $SbtA61CokgvnOKE  -eq  '1' )
+{
+write-host " Turn off Windows Location Provider is enabled" -ForegroundColor Green
+}
+  elseif ( $SbtA61CokgvnOKE  -eq  '0' )
+{
+write-host " Turn off Windows Location Provider is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Windows Location Provider is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### MICROSOFT STORE #######################`r`n"
+
+$64GduoTfcmp2iqY = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\'  -Name NoUseStoreOpenWith -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoUseStoreOpenWith
+if ( $64GduoTfcmp2iqY -eq $null)
+{
+write-host " Turn off access to the Store is not configured" -ForegroundColor Yellow
+}
+   elseif ( $64GduoTfcmp2iqY  -eq  '1' )
+{
+write-host " Turn off access to the Store is enabled" -ForegroundColor Green
+}
+  elseif ( $64GduoTfcmp2iqY  -eq  '0' )
+{
+write-host " Turn off access to the Store is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off access to the Store is set to an unknown setting" -ForegroundColor Red
+}
+
+$2D3fnVsKR9pBEYm = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\WindowsStore\'  -Name RemoveWindowsStore -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RemoveWindowsStore
+if ( $2D3fnVsKR9pBEYm -eq $null)
+{
+write-host " Turn off the Store application is not configured" -ForegroundColor Yellow
+}
+   elseif ( $2D3fnVsKR9pBEYm  -eq  '1' )
+{
+write-host " Turn off the Store application is enabled" -ForegroundColor Green
+}
+  elseif ( $2D3fnVsKR9pBEYm  -eq  '0' )
+{
+write-host " Turn off the Store application is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off the Store application is set to an unknown setting" -ForegroundColor Red
+}
+
+
+write-host "`r`n####################### PUBLISHING INFORMATION TO THE WEB #######################`r`n"
+
+
+$8Ak7NpxH5Vs3bWE = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoWebServices -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoWebServices
+if ( $8Ak7NpxH5Vs3bWE -eq $null)
+{
+write-host " Turn off Internet download for Web publishing and online ordering wizards is not configured" -ForegroundColor Yellow
+}
+   elseif ( $8Ak7NpxH5Vs3bWE  -eq  '1' )
+{
+write-host " Turn off Internet download for Web publishing and online ordering wizards is enabled" -ForegroundColor Green
+}
+  elseif ( $8Ak7NpxH5Vs3bWE  -eq  '0' )
+{
+write-host " Turn off Internet download for Web publishing and online ordering wizards is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off Internet download for Web publishing and online ordering wizards is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### RESULTANT SET OF POLICY REPORTING #######################`r`n"
+
+$dc04uCRS6vJGiNf = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\'  -Name DenyRsopToInteractiveUser -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyRsopToInteractiveUser
+if ( $dc04uCRS6vJGiNf -eq $null)
+{
+write-host " Determine if interactive users can generate Resultant Set of Policy data is not configured" -ForegroundColor Yellow
+}
+   elseif ( $dc04uCRS6vJGiNf  -eq  '1' )
+{
+write-host " Determine if interactive users can generate Resultant Set of Policy data is enabled" -ForegroundColor Green
+}
+  elseif ( $dc04uCRS6vJGiNf  -eq  '0' )
+{
+write-host " Determine if interactive users can generate Resultant Set of Policy data is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Determine if interactive users can generate Resultant Set of Policy data is set to an unknown setting" -ForegroundColor Red
+}
+
