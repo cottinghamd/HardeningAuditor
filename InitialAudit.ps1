@@ -2818,3 +2818,84 @@ write-host " Turn off printing over HTTP is disabled" -ForegroundColor Red
 {
 write-host " Turn off printing over HTTP is set to an unknown setting" -ForegroundColor Red
 }
+
+write-host "`r`n####################### LEGACY AND RUN ONCE LISTS #######################`r`n"
+
+$UN6ehVpmakAXClE = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name DisableCurrentUserRun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCurrentUserRun
+if ( $UN6ehVpmakAXClE -eq $null)
+{
+write-host " Do not process the legacy run list is not configured" -ForegroundColor Yellow
+}
+   elseif ( $UN6ehVpmakAXClE  -eq  '1' )
+{
+write-host " Do not process the legacy run list is enabled" -ForegroundColor Green
+}
+  elseif ( $UN6ehVpmakAXClE  -eq  '0' )
+{
+write-host " Do not process the legacy run list is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not process the legacy run list is set to an unknown setting" -ForegroundColor Red
+}
+
+$keAWhyT9w1aMjVE = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name DisableLocalMachineRunOnce -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocalMachineRunOnce
+if ( $keAWhyT9w1aMjVE -eq $null)
+{
+write-host " Do not process the run once list is not configured" -ForegroundColor Yellow
+}
+   elseif ( $keAWhyT9w1aMjVE  -eq  '1' )
+{
+write-host " Do not process the run once list is enabled" -ForegroundColor Green
+}
+  elseif ( $keAWhyT9w1aMjVE  -eq  '0' )
+{
+write-host " Do not process the run once list is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Do not process the run once list is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check Run these programs at user logon"
+
+write-host "`r`n####################### MICROSOFT ACCOUNTS #######################`r`n"
+
+$7u6bAiHSjEa1L9F = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\MicrosoftAccount\'  -Name DisableUserAuth -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableUserAuth
+if ( $7u6bAiHSjEa1L9F -eq $null)
+{
+write-host " Block all consumer Microsoft account user authentication is not configured" -ForegroundColor Yellow
+}
+   elseif ( $7u6bAiHSjEa1L9F  -eq  '1' )
+{
+write-host " Block all consumer Microsoft account user authentication is enabled" -ForegroundColor Green
+}
+  elseif ( $7u6bAiHSjEa1L9F  -eq  '0' )
+{
+write-host " Block all consumer Microsoft account user authentication is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Block all consumer Microsoft account user authentication is set to an unknown setting" -ForegroundColor Red
+}
+
+$q69ocA0RwE3KT7D = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\OneDrive\'  -Name DisableFileSyncNGSC -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableFileSyncNGSC
+if ( $q69ocA0RwE3KT7D -eq $null)
+{
+write-host " Prevent the usage of OneDrive for file storage is not configured" -ForegroundColor Yellow
+}
+   elseif ( $q69ocA0RwE3KT7D  -eq  '1' )
+{
+write-host " Prevent the usage of OneDrive for file storage is enabled" -ForegroundColor Green
+}
+  elseif ( $q69ocA0RwE3KT7D  -eq  '0' )
+{
+write-host " Prevent the usage of OneDrive for file storage is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Prevent the usage of OneDrive for file storage is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Unable to check Accounts: Block Microsoft accounts"
+
