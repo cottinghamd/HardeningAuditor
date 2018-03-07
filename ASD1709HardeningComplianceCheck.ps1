@@ -1256,6 +1256,22 @@ write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is
 
 write-host "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n"
 write-host "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n"
+
+$architecture = $ENV:PROCESSOR_ARCHITECTURE
+if ($architecture -Match '64')
+{
+write-host "Operating System Architecture is 64-Bit" -ForegroundColor Green
+}
+elseif ($architecture -Match '32')
+{
+write-host "Operating System Architecture is 32-Bit" -ForegroundColor Red
+}
+else
+{
+write-host "Operating System Architecture was unable to be determined" -ForegroundColor Red
+}
+
+
 write-host "`r`n####################### OPERATING SYSTEM PATCHING #######################`r`n"
 
 
