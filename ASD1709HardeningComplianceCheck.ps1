@@ -1455,7 +1455,7 @@ if ( $LMMinPwdLen  -ge '10')
 {
 write-host "Minimum Password Length is set to 10 or highter in Local Machine GP" -ForegroundColor Green
 }
-if ( $LMMinPwdLen  -le '9')
+if ( $LMMinPwdLen  -le '9' -and $UPMinPwdLen  -ge  '0')
 {
 write-host "Minimum Password Length is set to 9 or lower in Local Machine GP" -ForegroundColor Red
 }
@@ -1463,7 +1463,7 @@ if ( $UPMinPwdLen  -ge  '10' )
 {
 write-host "Minimum Password Length is set to 10 or highter in User GP" -ForegroundColor Green
 }
-if ( $UPMinPwdLen  -le  '9' )
+if ( $UPMinPwdLen  -le  '9' -and $UPMinPwdLen  -ge  '0')
 {
 write-host "Minimum Password Length is set to 9 or lower in User GP" -ForegroundColor Red
 }
