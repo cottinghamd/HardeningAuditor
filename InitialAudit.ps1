@@ -2668,6 +2668,99 @@ write-host " Deny write access to removable drives not protected by BitLocker is
 write-host " Deny write access to removable drives not protected by BitLocker is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "unable to check Enforce drive encryption type on removable data drive "
+$RDVEncryptionType = Get-ItemProperty -Path  'Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE\RDVEncryptionType HKLM\SOFTWARE\Policies\Microsoft\FVE\'  -Name  RDVEncryptionType -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVEncryptionType
+if ( $RDVEncryptionType -eq $null)
+{
+write-host "Enforce drive encryption type on removable data drive  is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RDVEncryptionType  -eq  '1' )
+{
+write-host "Enforce drive encryption type on removable data drive  is enabled with full encryption" -ForegroundColor Green
+}
+  elseif ( $RDVEncryptionType  -eq  '2' )
+{
+write-host "Enforce drive encryption type on removable data drive  is enabled with Used Space Only encryption" -ForegroundColor Red
+}
+  else
+{
+write-host "Enforce drive encryption type on removable data drive  is set to Allow user to choose" -ForegroundColor Red
+}
 
 write-host "`r`n####################### INSTALLING APPLICATIONS #######################`r`n"
+
+$EnableSmartScreen = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name EnableSmartScreen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSmartScreen
+if ( $EnableSmartScreen -eq $null)
+{
+write-host " Configure Windows Defender SmartScreen is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableSmartScreen  -eq  '1' )
+{
+write-host " Configure Windows Defender SmartScreen is enabled" -ForegroundColor Green
+
+$ShellSmartScreenLevel = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name ShellSmartScreenLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ShellSmartScreenLevel
+if ( $ShellSmartScreenLevel -eq $null)
+{
+write-host "SmartScreen is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ShellSmartScreenLevel  -eq  'Block' )
+{
+write-host "Windows Defender SmartScreen is set to Warn and Prevent Bypass" -ForegroundColor Green
+}
+  elseif ( $ShellSmartScreenLevel -eq  'Warn' )
+{
+write-host "SmartScreen is set to Warn" -ForegroundColor Red
+}
+  else
+{
+write-host "SmartScreen is set to an unknown setting" -ForegroundColor Red
+}
+
+
+}
+  elseif ( $EnableSmartScreen  -eq  '0' )
+{
+write-host " Configure Windows Defender SmartScreen is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Configure Windows Defender SmartScreen is set to an unknown setting" -ForegroundColor Red
+}
+
+$EnableUserControl = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer\'  -Name EnableUserControl -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableUserControl
+if ( $EnableUserControl -eq $null)
+{
+write-host " Allow user control over installs is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableUserControl  -eq  '0' )
+{
+write-host " Allow user control over installs is disabled" -ForegroundColor Green
+}
+  elseif ( $EnableUserControl  -eq  '1' )
+{
+write-host " Allow user control over installs is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Allow user control over installs is set to an unknown setting" -ForegroundColor Red
+}
+
+$AlwaysInstallElevated = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstall
+Elevated
+if ( $AlwaysInstallElevated -eq $null)
+{
+write-host " Always install with elevated privileges is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AlwaysInstallElevated  -eq  '0' )
+{
+write-host " Always install with elevated privileges is disabled" -ForegroundColor Green
+}
+  elseif ( $AlwaysInstallElevated  -eq  '1' )
+{
+write-host " Always install with elevated privileges is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Always install with elevated privileges is set to an unknown setting" -ForegroundColor Red
+}
+
+
