@@ -2857,7 +2857,31 @@ write-host " Do not process the run once list is disabled" -ForegroundColor Red
 write-host " Do not process the run once list is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check Run these programs at user logon"
+foreach($_ in 1..50)
+{
+    $runkeys = Get-ItemProperty -Path "Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\" -Name $_ -ErrorAction SilentlyContinue|Select-Object -ExpandProperty $_
+    If ($runkeys -ne $null)
+    {
+        write-host "The following run key is set: $runkeys" -ForegroundColor Red
+
+    }
+}
+foreach($_ in 1..50)
+{
+    $runkeys2 = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\" -Name $_ -ErrorAction SilentlyContinue|Select-Object -ExpandProperty $_
+    If ($runkeys2 -ne $null)
+    {
+        write-host "The following run key is set: $runkeys2" -ForegroundColor Red
+
+    }
+}
+If ($runkeys -eq $null -and $runkeys2 -eq $runkeys2)
+{
+
+    write-host "Run These Programs At User Logon is disabled, no run keys are set" -ForegroundColor Green
+}
+
+
 
 write-host "`r`n####################### MICROSOFT ACCOUNTS #######################`r`n"
 
@@ -2974,6 +2998,27 @@ write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS n
 }
 
 write-host "`r`n####################### NETBIOS OVER TCP/IP #######################`r`n"
+
+$servicenetbt = get-service netbt
+
+if ($servicenetbt.Status -eq 'Running')
+{
+    write-host "NetBIOS Over TCP/IP service is running, NetBIOS over TCP/IP is likely enabled" -ForegroundColor Red
+}
+elseif ($servicenetbt.Status -eq 'Disabled')
+{
+    write-host "NetBIOS Over TCP/IP service is disabled, NetBIOS over TCP/IP is not running" -ForegroundColor Green
+}
+elseif ($servicenetbt.Status -eq 'Stopped')
+{
+    write-host "NetBIOS Over TCP/IP service is stopped but not disabled" -ForegroundColor Red
+}
+else
+{
+    write-host "NetBIOS Over TCP/IP service status was unable to be determined" -ForegroundColor Yellow
+}
+
+
 
 write-host "`r`n####################### NETWORK AUTHENTICATION #######################`r`n"
 
@@ -3740,7 +3785,30 @@ if ( $LM8KSMxRACOWXwybq  -eq '1' -or $LM8KSMxRACOWXwybq  -eq '2' -or $LM8KSMxRAC
 write-host " Allow Telemetry is set to a non-compliant setting in User GP" -ForegroundColor Red
 }
 
-write-host "Unable to check configure corporate windows error reporting"
+
+$KVHIZdcponOfwF7 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting\'  -Name CorporateWerServer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty CorporateWerServer
+if ( $KVHIZdcponOfwF7 -eq $null)
+{
+write-host " Configure Corporate Windows Error Reporting is not configured" -ForegroundColor Red
+}
+  else
+{
+write-host " The corporate WER server is configured as $KVHIZdcponOfwF7" -ForegroundColor Green
+}
+
+$KVHIZdcponOfwF = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting\'  -Name CorporateWerUseSSL -ErrorAction SilentlyContinue|Select-Object -ExpandProperty CorporateWerUseSSL
+if ( $KVHIZdcponOfwF -eq $null)
+{
+write-host "Connect using SSL is not configured" -ForegroundColor Yellow
+}
+   elseif ( $KVHIZdcponOfwF  -eq  '1' )
+{
+write-host "Connect using SSL is enabled" -ForegroundColor Green
+}
+  elseif ( $KVHIZdcponOfwF  -eq  '0' )
+{
+write-host "Connect using SSL is disabled" -ForegroundColor Red
+}
 
 write-host "`r`n####################### SAFE MODE #######################`r`n"
 
