@@ -2899,3 +2899,77 @@ write-host " Prevent the usage of OneDrive for file storage is set to an unknown
 
 write-host "Unable to check Accounts: Block Microsoft accounts"
 
+write-host "`r`n####################### MSS SETTINGS #######################`r`n"
+
+$fYg2RApMS8B3z4o = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\'  -Name DisableIPSourceRouting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableIPSourceRouting
+if ( $fYg2RApMS8B3z4o -eq $null)
+{
+write-host " MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $fYg2RApMS8B3z4o  -eq  '2' )
+{
+write-host " MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing) is set to Highest protection, source routing is completely disabled " -ForegroundColor Green
+}
+  elseif ( $fYg2RApMS8B3z4o  -eq  '0' -or $fYg2RApMS8B3z4o  -eq  '1' )
+{
+write-host " MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing) is configured incorrectly" -ForegroundColor Red
+}
+  else
+{
+write-host " MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing) is set to an unknown setting" -ForegroundColor Red
+}
+
+$Yd9tFn6Q4UEIR8a = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip6\Parameters\'  -Name DisableIPSourceRouting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableIPSourceRouting
+if ( $Yd9tFn6Q4UEIR8a -eq $null)
+{
+write-host " MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $Yd9tFn6Q4UEIR8a  -eq  '2' )
+{
+write-host " MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing) is set to Highest protection, source routing is completely disabled " -ForegroundColor Green
+}
+  elseif ( $Yd9tFn6Q4UEIR8a  -eq  '0' -or $Yd9tFn6Q4UEIR8a  -eq  '1' )
+{
+write-host " MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing) is configured incorrectly" -ForegroundColor Red
+}
+  else
+{
+write-host " MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing) is set to an unknown setting" -ForegroundColor Red
+}
+
+$ZqEKJnRyWQruTsH = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\'  -Name EnableICMPRedirect -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableICMPRedirect
+if ( $ZqEKJnRyWQruTsH -eq $null)
+{
+write-host " MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ZqEKJnRyWQruTsH  -eq  '0' )
+{
+write-host " MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes is disabled" -ForegroundColor Green
+}
+  elseif ( $ZqEKJnRyWQruTsH  -eq  '1' )
+{
+write-host " MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes is set to an unknown setting" -ForegroundColor Red
+}
+
+$JKYyPoEx63dhjZr = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netbt\Parameters\'  -Name NoNameReleaseOnDemand -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoNameReleaseOnDemand
+if ( $JKYyPoEx63dhjZr -eq $null)
+{
+write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is not configured" -ForegroundColor Yellow
+}
+   elseif ( $JKYyPoEx63dhjZr  -eq  '1' )
+{
+write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is enabled" -ForegroundColor Green
+}
+  elseif ( $JKYyPoEx63dhjZr  -eq  '0' )
+{
+write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to an unknown setting" -ForegroundColor Red
+}
+
