@@ -2973,3 +2973,18 @@ write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS n
 write-host " MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to an unknown setting" -ForegroundColor Red
 }
 
+write-host "`r`n####################### NETBIOS OVER TCP/IP #######################`r`n"
+
+write-host "`r`n####################### NETWORK AUTHENTICATION #######################`r`n"
+
+write-host "Unable to check Network security: Configure encryption types allowed for Kerberos"
+
+write-host "Unable to check Network security: LAN Manager authentication level"
+
+write-host "Unable to check Network security: Minimum session security for NTLM SSP based (including secure RPC) clients"
+
+write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
+
+write-host "Unable to check Network security: Do not store LAN Manager hash value on next password change"
+
+
