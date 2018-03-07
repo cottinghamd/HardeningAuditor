@@ -2,6 +2,23 @@
 #Uses Content From MidnightFreddie https://gist.github.com/midnightfreddie/69d25ddf5ed784d75c1180f12bee84a6
 #This script is a little insane, it was made to create another powershell script to check registry settings, based on data pulled from getadmx.com
 
+Function Get-RandomAlphanumericString {
+	
+	[CmdletBinding()]
+	Param (
+        [int] $length = 8
+	)
+
+	Begin{
+	}
+
+	Process{
+        Write-Output ( -join ((0x30..0x39) + ( 0x41..0x5A) + ( 0x61..0x7A) | Get-Random -Count $length  | % {[char]$_}) )
+	}	
+}
+
+$browser = New-Object System.Net.WebClient
+$browser.Proxy.Credentials =[System.Net.CredentialCache]::DefaultNetworkCredentials 
 $Uri = Read-Host 'Please paste a Valid Control URL from getadmx.com'
 
 $InfoPage = Invoke-Webrequest -Uri $Uri
@@ -29,6 +46,9 @@ $InfoPage.ParsedHtml.getElementsByTagName("tbody") | ForEach-Object {
     }
 }
 
+$Random = (Get-RandomAlphanumericString -length 15 | Tee-Object -variable teeTime )
+New-Variable -Name $Random -Value $null
+
 $pagetitle = $title.innerText
 write-host "The Control Name is $pagetitle" -ForegroundColor Green
 write-host "The Registry Hive is $Row1" -ForegroundColor Green
@@ -38,9 +58,9 @@ write-host "The Enabled Value is $Row5" -ForegroundColor Green
 write-host "The Disabled Value is $Row6" -ForegroundColor Green
 
 
-$variablelm = '$LM'+$Row3
-$variableup = '$UP'+$Row3
-$variablestd = '$'+$Row3
+$variablelm = '$LM'+$Random
+$variableup = '$UP'+$Random
+$variablestd = '$'+$Random
 $enabled = ''''+$row5+''''
 $disabled = ''''+$row6+''''
 
@@ -66,7 +86,7 @@ write-host     'write-host "'$pagetitle 'is enabled in Local Machine GP" -Foregr
 write-host '}'
 write-host 'if ('$variablelm ' -eq' $disabled ')'
 write-host '{'
-write-host     'write-host "'$pagetitle 'is disabled in Local Machine GP" -ForegroundColor Red'
+write-host     'write-host "'$pagetitle 'is disabled in Local Machine GP" -ForegroundColor Red' 
 write-host '}'
 write-host 'if ('$variableup ' -eq ' $enabled ')'
 write-host '{'
