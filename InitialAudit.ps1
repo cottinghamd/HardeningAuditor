@@ -2744,8 +2744,7 @@ write-host " Allow user control over installs is enabled" -ForegroundColor Red
 write-host " Allow user control over installs is set to an unknown setting" -ForegroundColor Red
 }
 
-$AlwaysInstallElevated = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstall
-Elevated
+$AlwaysInstallElevated = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstallElevated
 if ( $AlwaysInstallElevated -eq $null)
 {
 write-host " Always install with elevated privileges is not configured" -ForegroundColor Yellow
@@ -2764,3 +2763,58 @@ write-host " Always install with elevated privileges is set to an unknown settin
 }
 
 
+$AlwaysInstallElevated1 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstallElevated
+if ( $AlwaysInstallElevated1 -eq $null)
+{
+write-host " Always install with elevated privileges is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AlwaysInstallElevated1  -eq  '0' )
+{
+write-host " Always install with elevated privileges is disabled" -ForegroundColor Green
+}
+  elseif ( $AlwaysInstallElevated1  -eq  '1' )
+{
+write-host " Always install with elevated privileges is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Always install with elevated privileges is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "`r`n####################### INTERNET PRINTING #######################`r`n"
+
+$DisableWebPnPDownload = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows NT\Printers\'  -Name DisableWebPnPDownload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableWebPnPDownload
+if ( $DisableWebPnPDownload -eq $null)
+{
+write-host " Turn off downloading of print drivers over HTTP is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableWebPnPDownload  -eq  '1' )
+{
+write-host " Turn off downloading of print drivers over HTTP is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableWebPnPDownload  -eq  '0' )
+{
+write-host " Turn off downloading of print drivers over HTTP is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off downloading of print drivers over HTTP is set to an unknown setting" -ForegroundColor Red
+}
+
+$DisableHTTPPrinting = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers\'  -Name DisableHTTPPrinting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableHTTPPrinting
+if ( $DisableHTTPPrinting -eq $null)
+{
+write-host " Turn off printing over HTTP is not configured" -ForegroundColor Yellow
+}
+   elseif ( $DisableHTTPPrinting  -eq  '1' )
+{
+write-host " Turn off printing over HTTP is enabled" -ForegroundColor Green
+}
+  elseif ( $DisableHTTPPrinting  -eq  '0' )
+{
+write-host " Turn off printing over HTTP is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Turn off printing over HTTP is set to an unknown setting" -ForegroundColor Red
+}
