@@ -293,6 +293,82 @@ process {
 
 }
 
+Function Get-MachineType 
+{ 
+    [CmdletBinding()] 
+    [OutputType([int])] 
+    Param 
+    ( 
+        # ComputerName 
+        [Parameter(Mandatory=$false, 
+                   ValueFromPipeline=$true, 
+                   ValueFromPipelineByPropertyName=$true, 
+                   Position=0)] 
+        [string[]]$ComputerName=$env:COMPUTERNAME, 
+        $Credential = [System.Management.Automation.PSCredential]::Empty 
+    ) 
+ 
+    Begin 
+    { 
+    } 
+    Process 
+    { 
+        foreach ($Computer in $ComputerName) { 
+            Write-Verbose "Checking $Computer" 
+            try { 
+                $hostdns = [System.Net.DNS]::GetHostEntry($Computer) 
+                $ComputerSystemInfo = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $Computer -ErrorAction Stop -Credential $Credential 
+                 
+                switch ($ComputerSystemInfo.Model) { 
+                     
+                    # Check for Hyper-V Machine Type 
+                    "Virtual Machine" { 
+                        $MachineType="VM" 
+                        } 
+ 
+                    # Check for VMware Machine Type 
+                    "VMware Virtual Platform" { 
+                        $MachineType="VM" 
+                        } 
+ 
+                    # Check for Oracle VM Machine Type 
+                    "VirtualBox" { 
+                        $MachineType="VM" 
+                        } 
+ 
+                    # Check for Xen 
+                    # I need the values for the Model for which to check. 
+ 
+                    # Check for KVM 
+                    # I need the values for the Model for which to check. 
+ 
+                    # Otherwise it is a physical Box 
+                    default { 
+                        $MachineType="Physical" 
+                        } 
+                    } 
+                 
+                # Building MachineTypeInfo Object 
+                $MachineTypeInfo = New-Object -TypeName PSObject -Property ([ordered]@{ 
+                    ComputerName=$ComputerSystemInfo.PSComputername 
+                    Type=$MachineType 
+                    Manufacturer=$ComputerSystemInfo.Manufacturer 
+                    Model=$ComputerSystemInfo.Model 
+                    }) 
+                $MachineTypeInfo 
+                } 
+            catch [Exception] { 
+                Write-Output "$Computer`: $($_.Exception.Message)" 
+                } 
+            } 
+    } 
+    End 
+    { 
+ 
+    } 
+}
+
+
 write-host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script" -ForegroundColor Green
 write-host "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
 write-host "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
@@ -3436,6 +3512,21 @@ write-host " Network security: Do not store LAN Manager hash value on next passw
 
 write-host "`r`n####################### OPERATING SYSTEM FUNCTIONALITY #######################`r`n"
 
+$numberofservices = (Get-Service | Measure-Object).Count
+$numberofdisabledservices = (Get-WmiObject Win32_Service | Where-Object {$_.StartMode -eq 'Disabled'}).count
+If ($numberofdisabledservices -eq $null)
+{
+write-host "The number of disabled services was unable to be determined" -ForegroundColor Yellow
+}
+elseif ($numberofdisabledservices -le '30')
+{
+write-host "There are $numberofservices services present on this machine, however only $numberofdisabledservices have been disabled. This indicates that no functionality reduction, or a minimal level of functionality reduction has been applied to this machine." -ForegroundColor Red
+}
+elseif($numberofdisabledservices -gt '30')
+{
+write-host "There are $numberofservices services present on this machine and $numberofdisabledservices have been disabled. This incidicates that reduction in operating system functionality has likely been performed." -Foregroundcolour Green
+}
+
 
 write-host "`r`n####################### POWER MANAGEMENT #######################`r`n"
 
@@ -4622,6 +4713,7 @@ write-host " Do not suggest third-party content in Windows spotlight is set to a
 
 write-host "`r`n####################### SOFTWARE-BASED FIREWALLS #######################`r`n"
 
+write-host "Unable to confirm if an effective, application based software firewall is in use on this endpoint. Please confirm that a software firewall is in use on this host, listing explicitly which applications can generate inbound and outbound network traffic." -ForegroundColor Cyan
 write-host "`r`n####################### SOUND RECORDER #######################`r`n"
 
 $IAtVlOZ8HnEGCq5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\SoundRecorder\'  -Name Soundrec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Soundrec
@@ -4643,6 +4735,8 @@ write-host " Do not allow Sound Recorder to run is set to an unknown setting" -F
 }
 
 write-host "`r`n####################### STANDARD OPERATING ENVIRONMENT #######################`r`n"
+
+write-host "This script is unable to check if a Standard Operating Environment (SOE) was used to build this image. Please manually confirm if the computer was built using a SOE image process" -ForegroundColor Cyan
 
 write-host "`r`n####################### SYSTEM BACKUP AND RESTORE #######################`r`n"
 
@@ -4677,6 +4771,19 @@ write-host "Unable to check this chapter"
 
 write-host "`r`n####################### VIRTUALISED WEB AND EMAIL ACCESS #######################`r`n"
 
+$Physicalorvirtual = Get-MachineType
+If ($physicalorvirtual -eq $null)
+{
+write-host "Unable to determine machine type, if this machine is a virtual machine and non-persistent (new upon every reboot) you are compliant with this chapter of the guide" -ForegroundColor Cyan
+}
+elseif ($Physicalorvirtual -match "Physical")
+{
+write-host "This machine was detected to be a physical machine, if this machine is used to browse the web and check e-mail, you are non compliant with this chapter of the guide" -ForegroundColor Red
+}
+elseif ($Physicalorvirtual -match "Virtual")
+{
+write-host "This machine was detected to be a virtual machine, if this machine is used to browse the web and check e-mail and the machine is non-persistent (new upon every reboot) you are compliant with this chapter of the guide" -ForegroundColor Cyan
+}
 
 write-host "`r`n####################### WINDOWS REMOTE MANAGEMENT #######################`r`n"
 
