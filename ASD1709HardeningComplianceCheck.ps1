@@ -1504,11 +1504,106 @@ write-host " Enable insecure guest logons is set to an unknown setting" -Foregro
 
 write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
 
+<<<<<<< HEAD
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
 write-host "Network access: Let Everyone permissions apply to anonymous users"
 write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
+=======
+$RestrictAnonymousSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymousSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymousSAM
+if ( $RestrictAnonymousSAM -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictAnonymousSAM  -eq  '1' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is enabled" -ForegroundColor Green
+}
+  elseif ( $RestrictAnonymousSAM  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is set to an unknown setting" -ForegroundColor Red
+}
+
+$RestrictAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymous
+if ( $RestrictAnonymous -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictAnonymous  -eq  '1' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is enabled" -ForegroundColor Green
+}
+  elseif ( $RestrictAnonymous  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to an unknown setting" -ForegroundColor Red
+}
+
+
+$EveryoneIncludesAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name EveryoneIncludesAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EveryoneIncludesAnonymous
+if ( $EveryoneIncludesAnonymous -eq $null)
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EveryoneIncludesAnonymous  -eq  '0' )
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is disabled" -ForegroundColor Green
+}
+  elseif ( $EveryoneIncludesAnonymous  -eq  '1' )
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is set to an unknown setting" -ForegroundColor Red
+}
+
+$RestrictNullSessAccess = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\ -Name RestrictNullSessAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictNullSessAccess
+if ( $RestrictNullSessAccess -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictNullSessAccess  -eq  '1' )
+{
+write-host " Network access: Restrict clients allowed to make remote calls to SAM is configured correctly" -ForegroundColor Green
+}
+   else
+{
+write-host " Network access: Restrict clients allowed to make remote calls to SAM is configured incorrectly" -ForegroundColor Red
+}
+
+
+>>>>>>> 331b7703c1f4caf35783125443f4198a17a7cf0b
 write-host "Network access: Restrict clients allowed to make remote calls to SAM "
+
+
+
+$RestrictRemoteSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\ -Name RestrictRemoteSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictRemoteSAM
+if ( $RestrictRemoteSAM -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictRemoteSAM  -eq  'O:BAG:BAD:(A;;RC;;;BA)' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is enabled" -ForegroundColor Green
+}
+  elseif ( $RRestrictRemoteSAM  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to an unknown setting" -ForegroundColor Red
+}
+
+
 write-host "Network security: Allow Local System to use computer identity for NTLM"
 
 
