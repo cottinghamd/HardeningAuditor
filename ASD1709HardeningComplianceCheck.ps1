@@ -1446,7 +1446,6 @@ write-host "Enforce Password History is unable to be checked using PowerShell, a
 write-host "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
 write-host "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
 write-host "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
-write-host "Accounts: Limit local account use of blank passwords to console logon only can't be checked yet"
 
 $LimitBlankPasswordUse = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name LimitBlankPasswordUse -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LimitBlankPasswordUse
 if ( $LimitBlankPasswordUse -eq $null)
@@ -1472,9 +1471,10 @@ write-host "`r`n####################### SECURE BOOT #######################`r`n"
 
 write-host "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n"
 
-write-host "need to check Account lockout duration"
-write-host "Account lockout threshold"
-write-host "Reset account lockout counter after needs checking"
+write-host "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
+write-host "Account Lockout Threshold is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
+write-host "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
+
 
 write-host "`r`n####################### ANONYMOUS CONNECTIONS #######################`r`n"
 
@@ -3046,31 +3046,7 @@ write-host "Unable to check Network security: Minimum session security for NTLM 
 
 write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
 
-$noLMhash = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name noLMHash -ErrorAction SilentlyContinue|Select-Object -ExpandProperty noLMHash
-
-if ( $noLMhash -eq $null)
-
-{
-write-host " Network security: Do not store LAN Manager hash value on next password change is not configured" -ForegroundColor Yellow
-}
-   
-elseif ( $noLMhash  -eq  '1' )
-
-{
-write-host " Network security: Do not store LAN Manager hash value on next password change is enabled" -ForegroundColor Green
-}
-  
-elseif ( $noLMhash  -eq  '0' )
-
-{
-write-host " Network security: Do not store LAN Manager hash value on next password change is disabled" -ForegroundColor Red
-}
-  
-else
-{
-write-host " Network security: Do not store LAN Manager hash value on next password change is set to an unknown setting" -ForegroundColor Red
-}
-
+write-host "Unable to check Network security: Do not store LAN Manager hash value on next password change"
 
 
 
