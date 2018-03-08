@@ -293,6 +293,10 @@ process {
 
 }
 
+write-host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script" -ForegroundColor Green
+write-host "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
+write-host "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
+
 If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
  
 {
@@ -2314,7 +2318,13 @@ write-host " Turn off Autoplay is disabled in User GP" -ForegroundColor Red
 }
 
 write-host "`r`n####################### BIOS AND UEFI PASSWORDS #######################`r`n"
+
+write-host "Unable to confirm that a BIOS password is set via PowerShell. Please manually check if a BIOS password is set (if applicable)" -ForegroundColor Cyan
+
 write-host "`r`n####################### BOOT DEVICES #######################`r`n"
+
+write-host "Unable to confirm the BIOS device boot order. Please manually check to ensure that the hard disk of this device is the primary boot device and the machine is unable to be booted off removable media (if applicable)" -ForegroundColor Cyan
+
 write-host "`r`n####################### BRIDGING NETWORKS #######################`r`n"
 
 $NC_AllowNetBridge_NLA = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Network Connections\'  -Name NC_AllowNetBridge_NLA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NC_AllowNetBridge_NLA
@@ -2373,6 +2383,11 @@ write-host " Prohibit connection to non-domain networks when connected to domain
 
 
 write-host "`r`n####################### BUILT-IN GUEST ACCOUNTS #######################`r`n"
+
+
+Get-WmiObject -Class Win32_UserAccount -Filter "LocalAccount='$true'"|Select-Object Name,Disabled|Format-Table -AutoSize
+
+
 
 write-host "Unable to check Accounts: Guest account status"
 write-host "Unable to Deny log on locally"
@@ -3374,7 +3389,30 @@ write-host "Unable to check Network security: Minimum session security for NTLM 
 
 write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
 
-write-host "Unable to check Network security: Do not store LAN Manager hash value on next password change"
+$noLMhash = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name noLMHash -ErrorAction SilentlyContinue|Select-Object -ExpandProperty noLMHash
+
+if ( $noLMhash -eq $null)
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is not configured" -ForegroundColor Yellow
+}
+   
+elseif ( $noLMhash  -eq  '1' )
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is enabled" -ForegroundColor Green
+}
+  
+elseif ( $noLMhash  -eq  '0' )
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is disabled" -ForegroundColor Red
+}
+  
+else
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is set to an unknown setting" -ForegroundColor Red
+}
 
 
 
