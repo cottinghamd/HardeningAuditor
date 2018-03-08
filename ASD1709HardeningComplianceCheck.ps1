@@ -395,9 +395,8 @@ foreach($_ in 1..50)
 }
 
 
-
 write-host "`r`n####################### CREDENTIAL CACHING #######################`r`n"
-write-host "Unable to check Number of Previous Logons to cache, due to setting being in the Security hive, look at setting in Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon"
+write-host "This script is unable to check Number of Previous Logons to cache, this is because the setting is in the security registry hive, please check the GPO located at Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon" -ForegroundColor Blue
 
 #Check Network Access: Do not allow storage of passwords and credentials for network authentication
 $networkaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\" -Name disabledomaincreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabledomaincreds
@@ -1255,6 +1254,9 @@ write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is
 }
 
 write-host "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n"
+
+write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Blue
+
 write-host "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n"
 
 $architecture = $ENV:PROCESSOR_ARCHITECTURE
@@ -1440,54 +1442,29 @@ write-host " Turn on convenience PIN sign-in is enabled" -ForegroundColor Red
 write-host " Turn on convenience PIN sign-in is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is stored in the user account SAM on a Domain Controller"
-write-host "Maximum password age can be checked"
-write-host "Minimum password age can be checked"
+write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
+write-host "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
+write-host "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
+write-host "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
+write-host "Accounts: Limit local account use of blank passwords to console logon only can't be checked yet"
 
-
-$LMMinPwdLen = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Network\ -Name MinPwdLen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinPwdLen
-$UPMinPwdLen = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Network\ -Name MinPwdLen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinPwdLen
-if ( $LMMinPwdLen -eq $null -and $UPMinPwdLen -eq $null)
+$LimitBlankPasswordUse = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name LimitBlankPasswordUse -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LimitBlankPasswordUse
+if ( $LimitBlankPasswordUse -eq $null)
 {
-write-host "Minimum Password Length Is Not Configured" -ForegroundColor Yellow
+write-host "Limit local account use of blank passwords to console logon only is not configured" -ForegroundColor Yellow
 }
-if ( $LMMinPwdLen  -ge '10')
+   elseif ( $LimitBlankPasswordUse  -eq  '0' )
 {
-write-host "Minimum Password Length is set to 10 or highter in Local Machine GP" -ForegroundColor Green
+write-host "Limit local account use of blank passwords to console logon only is disabled" -ForegroundColor Red
 }
-if ( $LMMinPwdLen  -le '9' -and $UPMinPwdLen  -ge  '0')
+  elseif ( $LimitBlankPasswordUse  -eq  '1' )
 {
-write-host "Minimum Password Length is set to 9 or lower in Local Machine GP" -ForegroundColor Red
-}
-if ( $UPMinPwdLen  -ge  '10' )
-{
-write-host "Minimum Password Length is set to 10 or highter in User GP" -ForegroundColor Green
-}
-if ( $UPMinPwdLen  -le  '9' -and $UPMinPwdLen  -ge  '0')
-{
-write-host "Minimum Password Length is set to 9 or lower in User GP" -ForegroundColor Red
-}
-
-$UserPwdComplexityReqs = Get-ItemProperty -Path 'Registry::HKEY_CURRENT_USER\Software\Policies\Infineon\TPM Software\' -Name UserPwdComplexityReqs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UserPwdComplexityReqs
-if ( $UserPwdComplexityReqs -eq $null)
-{
-write-host " Password must meet complexity requirements is not configured" -ForegroundColor Yellow
-}
-   elseif ( $UserPwdComplexityReqs  -eq  '1' )
-{
-write-host " Password must meet complexity requirements is enabled" -ForegroundColor Green
-}
-  elseif ( $UserPwdComplexityReqs  -eq  '0' )
-{
-write-host " Password must meet complexity requirements is disabled" -ForegroundColor Red
+write-host "Limit local account use of blank passwords to console logon only is enabled" -ForegroundColor Green
 }
   else
 {
-write-host " Password must meet complexity requirements is set to an unknown setting" -ForegroundColor Red
+write-host "Limit local account use of blank passwords to console logon only is set to an unknown setting" -ForegroundColor Red
 }
-
-write-host "Store passwords using reversible encryption can't be checked yet"
-write-host "Accounts: Limit local account use of blank passwords to console logon only can't be checked yet"
 
 write-host "`r`n####################### RESTRICTING PRIVILEGED ACCOUNTS #######################`r`n"
 
