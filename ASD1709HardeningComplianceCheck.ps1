@@ -1504,8 +1504,41 @@ write-host " Enable insecure guest logons is set to an unknown setting" -Foregro
 
 write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
 
-write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
-write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
+$RestrictAnonymousSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymousSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymousSAM
+if ( $RestrictAnonymousSAM -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictAnonymousSAM  -eq  '1' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is enabled" -ForegroundColor Green
+}
+  elseif ( $RestrictAnonymousSAM  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts is set to an unknown setting" -ForegroundColor Red
+}
+
+$RestrictAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymous
+if ( $RestrictAnonymous -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictAnonymous  -eq  '1' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is enabled" -ForegroundColor Green
+}
+  elseif ( $RestrictAnonymous  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to an unknown setting" -ForegroundColor Red
+}
 write-host "Network access: Let Everyone permissions apply to anonymous users"
 write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
 write-host "Network access: Restrict clients allowed to make remote calls to SAM "
