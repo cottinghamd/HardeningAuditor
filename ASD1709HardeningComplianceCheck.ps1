@@ -2125,10 +2125,90 @@ write-host " Specify the maximum log file size (KB) for the Setup Log is set to 
 write-host " Specify the maximum log file size (KB) for the Setup Log is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Manage Auditing and Security Log is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to only have 'Administrators' present" -ForegroundColor Cyan
+write-host "`r`nManage Auditing and Security Log is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to only have 'Administrators' present" -ForegroundColor Cyan
 
+write-host "`r`nAudit Credential Validation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
 
-write-host "Check whole Audit Event Management Section, unable to do a lot of them"
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management"  -ForegroundColor Cyan
+write-host "    Audit Computer Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Other Account Management Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Security Group Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit User Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking"  -ForegroundColor Cyan
+
+write-host "    Audit PNP Activity is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Process Creation is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Process Termination is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff"  -ForegroundColor Cyan
+
+write-host "    Audit Account Lockout is unable to be checked using PowerShell, as the setting is not a registry key. Please check. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Group Membership is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Logoff is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Logon is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Other Logon/Logoff Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Audit Special Logon is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access"  -ForegroundColor Cyan
+
+write-host "    Audit File Share is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Kernel Object is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Other Object Access Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Removable Storage is unable to be checked using PowerShell, as the setting is not a registry key ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change"  -ForegroundColor Cyan
+
+write-host "    Audit Audit Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Authentication Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Authorization Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "`r`nAudit Sensitive Privilege Use is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System"  -ForegroundColor Cyan
+
+write-host "    Audit IPsec Driver is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Other System Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit Security State Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -ForegroundColor Cyan
+
+write-host "    Audit Security System Extension is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+write-host "    Audit System Integrity is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -ForegroundColor Cyan
+
+$SCENoApplyLegacyAuditPolicy = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name SCENoApplyLegacyAuditPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SCENoApplyLegacyAuditPolicy
+if ( $SCENoApplyLegacyAuditPolicy -eq $null)
+{
+write-host "Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is not configured" -ForegroundColor Yellow
+}
+   elseif ( $SCENoApplyLegacyAuditPolicy -eq  '1' )
+{
+write-host "Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is enabled" -ForegroundColor Green
+}
+  elseif ( $SCENoApplyLegacyAuditPolicy  -eq  '0' )
+{
+write-host "Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is set to an unknown setting" -ForegroundColor Red
+}
 
 write-host "`r`n####################### AUTOPLAY AND AUTORUN #######################`r`n"
 
