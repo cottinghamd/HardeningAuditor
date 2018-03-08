@@ -3069,7 +3069,31 @@ write-host "Unable to check Network security: Minimum session security for NTLM 
 
 write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
 
-write-host "Unable to check Network security: Do not store LAN Manager hash value on next password change"
+$noLMhash = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name noLMHash -ErrorAction SilentlyContinue|Select-Object -ExpandProperty noLMHash
+
+if ( $noLMhash -eq $null)
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is not configured" -ForegroundColor Yellow
+}
+   
+elseif ( $noLMhash  -eq  '1' )
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is enabled" -ForegroundColor Green
+}
+  
+elseif ( $noLMhash  -eq  '0' )
+
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is disabled" -ForegroundColor Red
+}
+  
+else
+{
+write-host " Network security: Do not store LAN Manager hash value on next password change is set to an unknown setting" -ForegroundColor Red
+}
+
 
 
 
