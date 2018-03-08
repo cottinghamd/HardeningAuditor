@@ -2385,14 +2385,29 @@ write-host " Prohibit connection to non-domain networks when connected to domain
 write-host "`r`n####################### BUILT-IN GUEST ACCOUNTS #######################`r`n"
 
 
-Get-WmiObject -Class Win32_UserAccount -Filter "LocalAccount='$true'"|Select-Object Name,Disabled|Format-Table -AutoSize
+$accounts = Get-WmiObject -Class Win32_UserAccount -Filter "LocalAccount='$true'"|Select-Object Name,Disabled|Select-String 'Guest'
+if ($accounts -like"@{Name=Guest; Disabled=True}")
+{
+write-host "The local guest account is disabled" -ForegroundColor Green
+}
+elseif ($accounts -like "@{Name=Guest; Disabled=False}")
+{
+write-host "The local guest account is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "The local guest account status was unable to be determined or has been renamed" -ForegroundColor Red
+}
 
 
 
-write-host "Unable to check Accounts: Guest account status"
-write-host "Unable to Deny log on locally"
+write-host "Deny Logon Locally is unable to be checked realiably using PowerShell. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to have 'Guests' present." -ForegroundColor Cyan
 
 write-host "`r`n####################### CASE LOCKS #######################`r`n"
+
+write-host "Unable to check if this computer has a physical case lock with a PowerShell script! Ensure the physical workstation is secured to prevent tampering, such as adding / removing hardware or removing CMOS battery." -ForegroundColor Cyan
+
+
 write-host "`r`n####################### CD BURNER ACCESS #######################`r`n"
 
 $NoCDBurning = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoCDBurning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoCDBurning
@@ -2414,6 +2429,9 @@ write-host " Remove CD Burning features is set to an unknown setting" -Foregroun
 }
 
 write-host "`r`n####################### CENTRALISED AUDIT EVENT LOGGING #######################`r`n"
+
+write-host "Centralised Audit Event Logging is unable to be checked with PowerShell. Ensure the organisation is using Centralised Event Logging, please confirm events from endpoint computers are being sent to a central location." -ForegroundColor Cyan
+
 write-host "`r`n####################### COMMAND PROMPT #######################`r`n"
 
 $DisableCMD = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\'  -Name DisableCMD -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCMD
