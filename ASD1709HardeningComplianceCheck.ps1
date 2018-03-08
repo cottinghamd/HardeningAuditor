@@ -1,3 +1,9 @@
+#Authors: David Cottingham & Huda Minhaj
+#Purpose: This script checks for compliance with the ASD Hardening Guide 1709 by checking registry keys on the local machine. Where checks are unable to be performed in this manner, either other methods of scanning are used or the user is prompted for manual checking.
+#This script is designed to be used as a simple spot check of a endpoint to ensure the correct settings are applied, regardless of how complex an organisations group policy may be.
+#The ASD hardening guide can be downloaded here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf 
+
+
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [string[]]$ComputerName = $env:COMPUTERNAME,
@@ -1496,7 +1502,8 @@ write-host " Enable insecure guest logons is enabled" -ForegroundColor Red
 write-host " Enable insecure guest logons is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Network access: Allow anonymous SID/Name translation can't check"
+write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Blue
+
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
 write-host "Network access: Let Everyone permissions apply to anonymous users"
