@@ -3,20 +3,6 @@
 #This script is designed to be used as a simple spot check of a endpoint to ensure the correct settings are applied, regardless of how complex an organisations group policy may be.
 #The ASD hardening guide can be downloaded here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf 
 
-If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
- 
-{
-$CheckSecureBoot = Read-Host 'Administrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)'
-
-If ($CheckSecureBoot -eq 'n')
-{
-write-host "exiting"
-break
-}
-}
-
-
-
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [string[]]$ComputerName = $env:COMPUTERNAME,
@@ -306,6 +292,19 @@ process {
 }
 
 }
+
+If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+ 
+{
+$CheckSecureBoot = Read-Host 'Administrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)'
+
+If ($CheckSecureBoot -eq 'n')
+{
+write-host "exiting"
+break
+}
+}
+
 
 $officetemp = Get-OfficeVersion | select -ExpandProperty version
 $officeversion = $officetemp.Substring(0,4)
