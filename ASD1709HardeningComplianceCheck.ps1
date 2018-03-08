@@ -1539,8 +1539,45 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 {
 write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to an unknown setting" -ForegroundColor Red
 }
-write-host "Network access: Let Everyone permissions apply to anonymous users"
-write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
+
+
+$EveryoneIncludesAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name EveryoneIncludesAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EveryoneIncludesAnonymous
+if ( $EveryoneIncludesAnonymous -eq $null)
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EveryoneIncludesAnonymous  -eq  '0' )
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is disabled" -ForegroundColor Green
+}
+  elseif ( $EveryoneIncludesAnonymous  -eq  '1' )
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Let Everyone permissions apply to anonymous users is set to an unknown setting" -ForegroundColor Red
+}
+
+$RestrictNullSessAccess = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\\System\CurrentControlSet\Services\LanManServer\Parameters\ -Name RestrictNullSessAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictNullSessAccess
+if ( $RestrictNullSessAccess -eq $null)
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RestrictNullSessAccess  -eq  '1' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is enabled" -ForegroundColor Green
+}
+  elseif ( $RestrictNullSessAccess  -eq  '0' )
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to an unknown setting" -ForegroundColor Red
+}
+
+
 write-host "Network access: Restrict clients allowed to make remote calls to SAM "
 write-host "Network security: Allow Local System to use computer identity for NTLM"
 
