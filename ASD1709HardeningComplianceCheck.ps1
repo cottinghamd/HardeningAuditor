@@ -1495,7 +1495,7 @@ If ($CheckSecureBoot -eq 'y')
 }
 elseif ($CheckSecureBoot -eq $null)
 {
-$SecureBootStatus = Get-SecureBootUEFI
+$SecureBootStatus = Confirm-SecureBootUEFI
 If ($SecureBootStatus -eq 'True')
     {
     write-host "Secure Boot is Enabled On This Computer" -ForegroundColor Green
