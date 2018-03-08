@@ -1583,7 +1583,7 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 {
 write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is enabled" -ForegroundColor Green
 }
-  elseif ( $RRestrictRemoteSAM  -eq  '0' )
+  elseif ( $RestrictRemoteSAM  -eq  '0' )
 {
 write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is disabled" -ForegroundColor Red
 }
@@ -1595,6 +1595,25 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 
 write-host "Network security: Allow Local System to use computer identity for NTLM"
 
+
+
+$UseMachineId = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name UseMachineId -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseMachineId
+if ( $UseMachineId -eq $null)
+{
+write-host "Network security: Allow Local System to use computer identity for NTLM is not configured" -ForegroundColor Yellow
+}
+   elseif ( $UseMachineId  -eq  '1' )
+{
+write-host "Network security: Allow Local System to use computer identity for NTLM is enabled" -ForegroundColor Green
+}
+  elseif ( $UseMachineId  -eq  '0' )
+{
+write-host "Network security: Allow Local System to use computer identity for NTLM is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Network security: Allow Local System to use computer identity for NTLM is set to an unknown setting" -ForegroundColor Red
+}
 
 
 $allownullsessionfallback = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0\ -Name allownullsessionfallback -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownullsessionfallback
