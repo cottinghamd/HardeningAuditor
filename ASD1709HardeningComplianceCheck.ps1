@@ -1588,7 +1588,7 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 }
     else
 {
-write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares isconfigured incorrectly." -ForegroundColor Red
+write-host " Network access: Do not allow anonymous enumeration of SAM accounts and shares is configured incorrectly." -ForegroundColor Red
 }
 
 
@@ -1601,7 +1601,7 @@ write-host " Network security: Allow Local System to use computer identity for N
 {
 write-host " Network security: Allow Local System to use computer identity for NTLM is enabled" -ForegroundColor Green
 }
-  elseif ( $EUseMachineId  -eq  '1' )
+  elseif ( $UseMachineId  -eq  '1' )
 {
 write-host " Network security: Allow Local System to use computer identity for NTLM is disabled" -ForegroundColor Red
 }
