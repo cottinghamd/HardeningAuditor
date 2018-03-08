@@ -3,6 +3,19 @@
 #This script is designed to be used as a simple spot check of a endpoint to ensure the correct settings are applied, regardless of how complex an organisations group policy may be.
 #The ASD hardening guide can be downloaded here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf 
 
+If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+ 
+{
+$CheckSecureBoot = Read-Host 'Administrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)'
+
+If ($CheckSecureBoot -eq 'n')
+{
+write-host "exiting"
+break
+}
+}
+
+
 
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
@@ -1473,7 +1486,27 @@ write-host "Limit local account use of blank passwords to console logon only is 
 
 write-host "`r`n####################### RESTRICTING PRIVILEGED ACCOUNTS #######################`r`n"
 
+write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Cyan
+
 write-host "`r`n####################### SECURE BOOT #######################`r`n"
+
+If ($CheckSecureBoot -eq 'y')
+{
+    write-host "Secure Boot status was unable to be checked due to no administrative privileges, please run this script with administrative privileges to check Secureboot" -ForegroundColor Cyan
+}
+elseif ($CheckSecureBoot -eq $null)
+{
+$SecureBootStatus = Get-SecureBootUEFI
+If ($SecureBootStatus -eq 'True')
+    {
+    write-host "Secure Boot is Enabled On This Computer" -ForegroundColor Green
+    }
+elseIf($SecureBootStatus -eq 'False')
+    {
+    write-host "Secure Boot status was unable to be determined" -ForegroundColor Red
+    }
+}
+
 
 write-host "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n"
 
