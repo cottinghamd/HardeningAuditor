@@ -1504,12 +1504,6 @@ write-host " Enable insecure guest logons is set to an unknown setting" -Foregro
 
 write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
 
-<<<<<<< HEAD
-write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
-write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
-write-host "Network access: Let Everyone permissions apply to anonymous users"
-write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
-=======
 $RestrictAnonymousSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymousSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymousSAM
 if ( $RestrictAnonymousSAM -eq $null)
 {
@@ -1578,11 +1572,6 @@ write-host " Network access: Restrict clients allowed to make remote calls to SA
 {
 write-host " Network access: Restrict clients allowed to make remote calls to SAM is configured incorrectly" -ForegroundColor Red
 }
-
-
->>>>>>> 331b7703c1f4caf35783125443f4198a17a7cf0b
-write-host "Network access: Restrict clients allowed to make remote calls to SAM "
-
 
 
 $RestrictRemoteSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\ -Name RestrictRemoteSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictRemoteSAM
