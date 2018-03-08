@@ -4502,7 +4502,18 @@ write-host " Configure SMB v1 server is enabled" -ForegroundColor Red
 write-host " Configure SMB v1 server is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check for remaining microsoft network server settings"
+write-host "Microsoft network client: Digitally sign communications (always)"
+
+write-host "Microsoft network client: Digitally sign communications (if server agrees)"
+
+write-host "Microsoft network client: Send unencrypted password to third-party SMB servers"
+
+write-host "Microsoft network server: Amount of idle time required before suspending session"
+
+write-host "Microsoft network server: Digitally sign communications (always)"
+
+write-host "Microsoft network server: Digitally sign communications (if client agrees)"
+
 
 write-host "`r`n####################### SESSION LOCKING #######################`r`n"
 
