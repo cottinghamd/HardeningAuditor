@@ -402,7 +402,7 @@ foreach($_ in 1..50)
 
 
 write-host "`r`n####################### CREDENTIAL CACHING #######################`r`n"
-write-host "This script is unable to check Number of Previous Logons to cache, this is because the setting is in the security registry hive, please check the GPO located at Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon" -ForegroundColor Blue
+write-host "This script is unable to check Number of Previous Logons to cache, this is because the setting is in the security registry hive, please check the GPO located at Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon" -ForegroundColor Cyan
 
 #Check Network Access: Do not allow storage of passwords and credentials for network authentication
 $networkaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\" -Name disabledomaincreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabledomaincreds
@@ -1261,7 +1261,7 @@ write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is
 
 write-host "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n"
 
-write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Blue
+write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Cyan
 
 write-host "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n"
 
@@ -1448,10 +1448,10 @@ write-host " Turn on convenience PIN sign-in is enabled" -ForegroundColor Red
 write-host " Turn on convenience PIN sign-in is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
-write-host "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
-write-host "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
-write-host "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Blue
+write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+write-host "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+write-host "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+write-host "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
 
 $LimitBlankPasswordUse = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name LimitBlankPasswordUse -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LimitBlankPasswordUse
 if ( $LimitBlankPasswordUse -eq $null)
@@ -1477,9 +1477,9 @@ write-host "`r`n####################### SECURE BOOT #######################`r`n"
 
 write-host "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n"
 
-write-host "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
-write-host "Account Lockout Threshold is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
-write-host "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Blue
+write-host "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
+write-host "Account Lockout Threshold is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
+write-host "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
 
 
 write-host "`r`n####################### ANONYMOUS CONNECTIONS #######################`r`n"
@@ -1502,7 +1502,7 @@ write-host " Enable insecure guest logons is enabled" -ForegroundColor Red
 write-host " Enable insecure guest logons is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Blue
+write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
 
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts"
 write-host "Network access: Do not allow anonymous enumeration of SAM accounts and shares"
@@ -1510,9 +1510,30 @@ write-host "Network access: Let Everyone permissions apply to anonymous users"
 write-host "Network access: Restrict anonymous access to Named Pipes and Shares"
 write-host "Network access: Restrict clients allowed to make remote calls to SAM "
 write-host "Network security: Allow Local System to use computer identity for NTLM"
-write-host "Network security: Allow LocalSystem NULL session fallback "
-write-host "Access this computer from the network"
-write-host "Deny access to this computer from the network"
+
+
+
+$allownullsessionfallback = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0\ -Name allownullsessionfallback -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownullsessionfallback
+if ( $allownullsessionfallback -eq $null)
+{
+write-host "Network security: Allow LocalSystem NULL session fallback is not configured" -ForegroundColor Yellow
+}
+   elseif ( $allownullsessionfallback  -eq  '0' )
+{
+write-host "Network security: Allow LocalSystem NULL session fallback is disabled" -ForegroundColor Green
+}
+  elseif ( $allownullsessionfallback  -eq  '1' )
+{
+write-host "Network security: Allow LocalSystem NULL session fallback is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Network security: Allow LocalSystem NULL session fallback is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Access this computer from the network is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\. ASD Recommendation is to only have 'Administrators & Remote Desktop Users' present" -ForegroundColor Cyan
+write-host "Deny Access to this computer from the network is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\. ASD Recommendation is to only have 'Guests & NT AUTHORITY\Local Account' present" -ForegroundColor Cyan
+
 
 write-host "`r`n####################### ANTI-VIRUS SOFTWARE #######################`r`n"
 
