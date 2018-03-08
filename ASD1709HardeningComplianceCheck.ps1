@@ -1938,8 +1938,98 @@ write-host " Include command line in process creation events is disabled" -Foreg
 write-host " Include command line in process creation events is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Can't check Specify the maximum log file size (KB)"
-write-host "Can't check Manage auditing and security log"
+
+$1AW2CfpSKiewv0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Application\'  -Name MaxSize -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MaxSize
+if ( $1AW2CfpSKiewv0 -eq $null)
+{
+write-host " Specify the maximum log file size (KB) for the Application Log is not configured" -ForegroundColor Yellow
+}
+   elseif ( $1AW2CfpSKiewv0  -eq  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Application Log is set to a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2CfpSKiewv0  -lt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Application Log is set to $1AW2CfpSKiewv0 which is a lower value than 65536 required for compliance" -ForegroundColor Red
+}
+  elseif ( $1AW2CfpSKiewv0  -gt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Application Log is set to $1AW2CfpSKiewv0 which is a higher value than 65536 required for compliance" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the maximum log file size (KB) for the Application Log is set to an unknown setting" -ForegroundColor Red
+}
+
+$1AW2CfpSKiewv = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Security\'  -Name MaxSize -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MaxSize
+if ( $1AW2CfpSKiewv -eq $null)
+{
+write-host " Specify the maximum log file size (KB) for the Security Log is not configured" -ForegroundColor Yellow
+}
+   elseif ( $1AW2CfpSKiewv  -eq  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Security Log is set to a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2CfpSKiewv  -lt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Security Log is set to $1AW2CfpSKiewv which is a lower value than 65536 required for compliance" -ForegroundColor Red
+}
+  elseif ( $1AW2CfpSKiewv  -gt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Security Log is set to $1AW2CfpSKiewv which is a higher value than 65536 required for compliance" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the maximum log file size (KB) for the Security Log is set to an unknown setting" -ForegroundColor Red
+}
+
+$1AW2CfpSKiew = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\System\'  -Name MaxSize -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MaxSize
+if ( $1AW2CfpSKiew -eq $null)
+{
+write-host " Specify the maximum log file size (KB) for the System Log is not configured" -ForegroundColor Yellow
+}
+   elseif ( $1AW2CfpSKiew  -eq  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the System Log is set to a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2CfpSKiew  -lt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the System Log is set to $1AW2CfpSKiew which is a lower value than 65536 required for compliance" -ForegroundColor Red
+}
+  elseif ( $1AW2CfpSKiew  -gt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the System Log is set to $1AW2CfpSKiew which is a higher value than 65536 required for compliance" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the maximum log file size (KB) for the System Log is set to an unknown setting" -ForegroundColor Red
+}
+
+$1AW2CfpSKiewv0n = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Setup\'  -Name MaxSize -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MaxSize
+if ( $1AW2CfpSKiewv0n -eq $null)
+{
+write-host " Specify the maximum log file size (KB) for the Setup Log is not configured" -ForegroundColor Yellow
+}
+   elseif ( $1AW2CfpSKiewv0n  -eq  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Setup Log is set to a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2CfpSKiewv0n  -lt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Setup Log is set to $1AW2CfpSKiewv0n which is a lower value than 65536 required for compliance" -ForegroundColor Red
+}
+  elseif ( $1AW2CfpSKiewv0n  -gt  '65536' )
+{
+write-host " Specify the maximum log file size (KB) for the Setup Log is set to $1AW2CfpSKiewv0n which is a higher value than 65536 required for compliance" -ForegroundColor Green
+}
+  else
+{
+write-host " Specify the maximum log file size (KB) for the Setup Log is set to an unknown setting" -ForegroundColor Red
+}
+
+write-host "Manage Auditing and Security Log is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to only have 'Administrators' present" -ForegroundColor Cyan
+
+
 write-host "Check whole Audit Event Management Section, unable to do a lot of them"
 
 write-host "`r`n####################### AUTOPLAY AND AUTORUN #######################`r`n"
@@ -2791,38 +2881,38 @@ write-host " Allow user control over installs is set to an unknown setting" -For
 $AlwaysInstallElevated = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstallElevated
 if ( $AlwaysInstallElevated -eq $null)
 {
-write-host " Always install with elevated privileges is not configured" -ForegroundColor Yellow
+write-host " Always install with elevated privileges is not configured in local machine policy" -ForegroundColor Yellow
 }
    elseif ( $AlwaysInstallElevated  -eq  '0' )
 {
-write-host " Always install with elevated privileges is disabled" -ForegroundColor Green
+write-host " Always install with elevated privileges is disabled in local machine policy" -ForegroundColor Green
 }
   elseif ( $AlwaysInstallElevated  -eq  '1' )
 {
-write-host " Always install with elevated privileges is enabled" -ForegroundColor Red
+write-host " Always install with elevated privileges is enabled in local machine policy" -ForegroundColor Red
 }
   else
 {
-write-host " Always install with elevated privileges is set to an unknown setting" -ForegroundColor Red
+write-host " Always install with elevated privileges is set to an unknown setting in local machine policy" -ForegroundColor Red
 }
 
 
 $AlwaysInstallElevated1 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Installer\'  -Name AlwaysInstallElevated -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AlwaysInstallElevated
 if ( $AlwaysInstallElevated1 -eq $null)
 {
-write-host " Always install with elevated privileges is not configured" -ForegroundColor Yellow
+write-host " Always install with elevated privileges is not configured in user policy" -ForegroundColor Yellow
 }
    elseif ( $AlwaysInstallElevated1  -eq  '0' )
 {
-write-host " Always install with elevated privileges is disabled" -ForegroundColor Green
+write-host " Always install with elevated privileges is disabled in user policy" -ForegroundColor Green
 }
   elseif ( $AlwaysInstallElevated1  -eq  '1' )
 {
-write-host " Always install with elevated privileges is enabled" -ForegroundColor Red
+write-host " Always install with elevated privileges is enabled in user policy" -ForegroundColor Red
 }
   else
 {
-write-host " Always install with elevated privileges is set to an unknown setting" -ForegroundColor Red
+write-host " Always install with elevated privileges is set to an unknown setting in user policy" -ForegroundColor Red
 }
 
 write-host "`r`n####################### INTERNET PRINTING #######################`r`n"
@@ -4689,3 +4779,4 @@ write-host " Determine if interactive users can generate Resultant Set of Policy
 write-host " Determine if interactive users can generate Resultant Set of Policy data is set to an unknown setting" -ForegroundColor Red
 }
 
+Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
