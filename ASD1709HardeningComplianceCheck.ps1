@@ -4536,6 +4536,24 @@ write-host " Microsoft Network Client: Digitally sign communications (always) is
 
 write-host "Microsoft network client: Digitally sign communications (if server agrees)"
 
+$EnableSecuritySignature = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\'  -Name EnableSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSecuritySignature
+if ( $EnableSecuritySignature -eq $null)
+{
+write-host " Microsoft network client: Digitally sign communications (if server agrees) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableSecuritySignature  -eq  '1' )
+{
+write-host " Microsoft network client: Digitally sign communications (if server agrees) is enabled" -ForegroundColor Green
+}
+  elseif ( $EnableSecuritySignature  -eq  '0' )
+{
+write-host " Microsoft network client: Digitally sign communications (if server agrees) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Microsoft network client: Digitally sign communications (if server agrees) is set to an unknown setting" -ForegroundColor Red
+}
+
 write-host "Microsoft network client: Send unencrypted password to third-party SMB servers"
 
 write-host "Microsoft network server: Amount of idle time required before suspending session"
