@@ -1222,6 +1222,7 @@ write-host " Configure Windows Defender SmartScreen is disabled" -ForegroundColo
 write-host " Configure Windows Defender SmartScreen is set to an unknown setting" -ForegroundColor Red
 }
 
+#Prevent access to the about:flags page in Microsoft Edge is disabled in User GP
 
 $LMPreventAccessToAboutFlagsInMicrosoftEdge = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\Main\ -Name PreventAccessToAboutFlagsInMicrosoftEdge -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventAccessToAboutFlagsInMicrosoftEdge
 $UPPreventAccessToAboutFlagsInMicrosoftEdge = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\Main\ -Name PreventAccessToAboutFlagsInMicrosoftEdge -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventAccessToAboutFlagsInMicrosoftEdge
@@ -1246,6 +1247,9 @@ if ( $UPPreventAccessToAboutFlagsInMicrosoftEdge  -eq  '0' )
 write-host " Prevent access to the about:flags page in Microsoft Edge is disabled in User GP" -ForegroundColor Red
 }
 
+
+
+#Prevent bypassing Windows Defender SmartScreen prompts for sites is not configured
 $LMPreventOverride = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
 $UPPreventOverride = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
 if ( $LMPreventOverride -eq $null -and  $UPPreventOverride -eq $null)
@@ -1269,6 +1273,8 @@ if ( $UPPreventOverride  -eq  '0' )
 write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in User GP" -ForegroundColor Red
 }
 
+
+#Prevent users and apps from accessing dangerous websites
 $EnableNetworkProtection = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection\' -Name EnableNetworkProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableNetworkProtection
 if ( $EnableNetworkProtection -eq $null)
 {
@@ -1287,6 +1293,9 @@ write-host " Prevent users and apps from accessing dangerous websites is disable
 write-host " Prevent users and apps from accessing dangerous websites is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check Turn on Windows Defender Application Guard in Enterprise Mode
 $AllowAppHVSI_ProviderSet = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\AppHVSI\ -Name AllowAppHVSI_ProviderSet -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowAppHVSI_ProviderSet
 if ( $AllowAppHVSI_ProviderSet -eq $null)
 {
@@ -1305,6 +1314,9 @@ write-host " Turn on Windows Defender Application Guard in Enterprise Mode is di
 write-host " Turn on Windows Defender Application Guard in Enterprise Mode is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check Windows Defender SmartScreen configuration
 $LMEnabledV9 = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name EnabledV9 -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnabledV9
 $UPEnabledV9 = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name EnabledV9 -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnabledV9
 if ( $LMEnabledV9 -eq $null -and  $UPEnabledV9 -eq $null)
@@ -1328,6 +1340,9 @@ if ( $UPEnabledV9  -eq  '0' )
 write-host " Configure Windows Defender SmartScreen is disabled in User GP" -ForegroundColor Red
 }
 
+
+
+#Prevent bypassing Windows Defender SmartScreen prompts for sites
 $LMPreventOverride = Get-ItemProperty -Path Registry::HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
 $UPPreventOverride = Get-ItemProperty -Path Registry::HKCU\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter\ -Name PreventOverride -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PreventOverride
 if ( $LMPreventOverride -eq $null -and  $UPPreventOverride -eq $null)
@@ -1351,12 +1366,16 @@ if ( $UPPreventOverride  -eq  '0' )
 write-host " Prevent bypassing Windows Defender SmartScreen prompts for sites is disabled in User GP" -ForegroundColor Red
 }
 
+
 write-host "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n"
 
 write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Cyan
 
+
+
 write-host "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n"
 
+#Operating System Architecture
 $architecture = $ENV:PROCESSOR_ARCHITECTURE
 if ($architecture -Match '64')
 {
@@ -1375,6 +1394,8 @@ write-host "Operating System Architecture was unable to be determined" -Foregrou
 write-host "`r`n####################### OPERATING SYSTEM PATCHING #######################`r`n"
 
 
+
+#Automatic Updates immediate installation
 $AutoInstallMinorUpdates = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name AutoInstallMinorUpdates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoInstallMinorUpdates
 if ( $AutoInstallMinorUpdates -eq $null)
 {
@@ -1393,6 +1414,9 @@ write-host " Allow Automatic Updates immediate installation is disabled" -Foregr
 write-host " Allow Automatic Updates immediate installation is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check "Configure Automatic Updates"
 $NoAutoUpdate = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name NoAutoUpdate -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoUpdate
 if ( $NoAutoUpdate -eq $null)
 {
@@ -1411,6 +1435,9 @@ write-host " Configure Automatic Updates is disabled" -ForegroundColor Red
 write-host " Configure Automatic Updates is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#check Do not include drivers with Windows Updates
 $ExcludeWUDriversInQualityUpdate = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\ -Name ExcludeWUDriversInQualityUpdate -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExcludeWUDriversInQualityUpdate
 if ( $ExcludeWUDriversInQualityUpdate -eq $null)
 {
@@ -1429,6 +1456,9 @@ write-host " Do not include drivers with Windows Updates is enabled" -Foreground
 write-host " Do not include drivers with Windows Updates is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#No auto-restart with logged on users for scheduled automatic updates installations
 $NoAutoRebootWithLoggedOnUsers = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name NoAutoRebootWithLoggedOnUsers -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoRebootWithLoggedOnUsers
 if ( $NoAutoRebootWithLoggedOnUsers -eq $null)
 {
@@ -1448,6 +1478,8 @@ write-host " No auto-restart with logged on users for scheduled automatic update
 }
 
 
+
+#Check configuration for Remove access to use all Windows Update features
 $SetDisableUXWUAccess = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\ -Name SetDisableUXWUAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SetDisableUXWUAccess
 if ( $SetDisableUXWUAccess -eq $null)
 {
@@ -1466,6 +1498,10 @@ write-host " Remove access to use all Windows Update features is enabled" -Foreg
 write-host " Remove access to use all Windows Update features is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+
+#Check configuration for Turn on recommended updates via Automatic Updates
 $IncludeRecommendedUpdates = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name IncludeRecommendedUpdates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty IncludeRecommendedUpdates
 if ( $IncludeRecommendedUpdates -eq $null)
 {
@@ -1484,6 +1520,9 @@ write-host " Turn on recommended updates via Automatic Updates is disabled" -For
 write-host " Turn on recommended updates via Automatic Updates is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Specify intranet Microsoft update service location
 $UseWUServer = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU\ -Name UseWUServer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseWUServer
 if ( $UseWUServer -eq $null)
 {
@@ -1502,8 +1541,13 @@ write-host " Specify intranet Microsoft update service location is disabled" -Fo
 write-host " Specify intranet Microsoft update service location is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
 write-host "`r`n####################### PASSWORD POLICY #######################`r`n"
 
+
+
+#Check configuration: Turn off picture password sign-in
 $BlockDomainPicturePassword = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\ -Name BlockDomainPicturePassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty BlockDomainPicturePassword
 if ( $BlockDomainPicturePassword -eq $null)
 {
@@ -1522,6 +1566,8 @@ write-host " Turn off picture password sign-in is disabled" -ForegroundColor Red
 write-host " Turn off picture password sign-in is set to an unknown setting" -ForegroundColor Red
 }
 
+
+#Check: Turn on convenience PIN sign-in
 $AllowDomainPINLogon = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\ -Name AllowDomainPINLogon -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowDomainPINLogon
 if ( $AllowDomainPINLogon -eq $null)
 {
@@ -1540,11 +1586,21 @@ write-host " Turn on convenience PIN sign-in is enabled" -ForegroundColor Red
 write-host " Turn on convenience PIN sign-in is set to an unknown setting" -ForegroundColor Red
 }
 
+#Enforce Password History
 write-host "Enforce Password History is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+
+#Maximum password age
 write-host "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+
+#Minimum password age
 write-host "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
+
+#Store passwords using reversible encryption
 write-host "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -ForegroundColor Cyan
 
+
+
+#Check: Limit local account use of blank passwords to console logon only
 $LimitBlankPasswordUse = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name LimitBlankPasswordUse -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LimitBlankPasswordUse
 if ( $LimitBlankPasswordUse -eq $null)
 {
@@ -1563,12 +1619,17 @@ write-host "Limit local account use of blank passwords to console logon only is 
 write-host "Limit local account use of blank passwords to console logon only is set to an unknown setting" -ForegroundColor Red
 }
 
+
 write-host "`r`n####################### RESTRICTING PRIVILEGED ACCOUNTS #######################`r`n"
 
 write-host "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -ForegroundColor Cyan
 
+
+
 write-host "`r`n####################### SECURE BOOT #######################`r`n"
 
+
+#Secure Boot status
 If ($CheckSecureBoot -eq 'y')
 {
     write-host "Secure Boot status was unable to be checked due to no administrative privileges, please run this script with administrative privileges to check Secureboot" -ForegroundColor Cyan
@@ -1589,8 +1650,13 @@ elseIf($SecureBootStatus -eq 'False')
 
 write-host "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n"
 
+#Account Lockout Duration
 write-host "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
+
+#Account Lockout Threshold
 write-host "Account Lockout Threshold is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
+
+#Reset Account Lockout Counter
 write-host "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -ForegroundColor Cyan
 
 
