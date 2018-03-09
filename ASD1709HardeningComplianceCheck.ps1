@@ -3479,7 +3479,7 @@ write-host "Unable to check Network security: Configure encryption types allowed
 
 write-host "Unable to check Network security: LAN Manager authentication level"
 
-$LMCompatibilityLevel = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netbt\Parameters\'  -Name LMCompatibilityLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LMCompatibilityLevel
+$LMCompatibilityLevel = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name LMCompatibilityLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LMCompatibilityLevel
 if ( $LMCompatibilityLevel -eq $null)
 {
 write-host " Network security: LAN Manager authentication level is not configured" -ForegroundColor Yellow
@@ -4516,7 +4516,23 @@ write-host " Configure SMB v1 server is enabled" -ForegroundColor Red
 write-host " Configure SMB v1 server is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Microsoft network client: Digitally sign communications (always)"
+$RequireSecuritySignature = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\'  -Name RequireSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSecuritySignature
+if ( $RequireSecuritySignature -eq $null)
+{
+write-host " Microsoft Network Client: Digitally sign communications (always) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RequireSecuritySignature  -eq  '1' )
+{
+write-host " Microsoft Network Client: Digitally sign communications (always) is enabled" -ForegroundColor Green
+}
+  elseif ( $RequireSecuritySignature  -eq  '0' )
+{
+write-host " Microsoft Network Client: Digitally sign communications (always) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Microsoft Network Client: Digitally sign communications (always) is set to an unknown setting" -ForegroundColor Red
+}
 
 write-host "Microsoft network client: Digitally sign communications (if server agrees)"
 
