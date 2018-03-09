@@ -3479,6 +3479,20 @@ write-host "Unable to check Network security: Configure encryption types allowed
 
 write-host "Unable to check Network security: LAN Manager authentication level"
 
+$LMCompatibilityLevel = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netbt\Parameters\'  -Name LMCompatibilityLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LMCompatibilityLevel
+if ( $LMCompatibilityLevel -eq $null)
+{
+write-host " Network security: LAN Manager authentication level is not configured" -ForegroundColor Yellow
+}
+   elseif ( $LMCompatibilityLevel  -eq  '5' )
+{
+write-host " Network security: LAN Manager authentication level is configured correctly" -ForegroundColor Green
+}
+  else
+{
+write-host " Network security: LAN Manager authentication level is configured incorrectly" -ForegroundColor Red
+}
+
 write-host "Unable to check Network security: Minimum session security for NTLM SSP based (including secure RPC) clients"
 
 write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
