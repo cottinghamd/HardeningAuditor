@@ -4579,23 +4579,25 @@ write-host " Microsoft network server: Amount of idle time required before suspe
 {
 write-host " Microsoft network server: Amount of idle time required before suspending session is less than or equal to 15 mins" -ForegroundColor Green
 }
-  else
+  elseif ($AutoDisconnect -gt '15')
 {
 write-host " Microsoft network server: Amount of idle time required before suspending session is $AutoDisconnect which is outside the compliant limit of 0 to 15 minutes" -ForegroundColor Red
 }
+ else
+{
+write-host " Microsoft network server: Amount of idle time required before suspending session is configured incorrectly" -ForegroundColor Red
+}
 
-write-host "Microsoft network server: Digitally sign communications (always)"
-
-$RequireSecuritySignature = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name RequireSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSecuritySignature
-if ( $RequireSecuritySignature -eq $null)
+$RequireSecuritySignature1 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name RequireSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSecuritySignature
+if ( $RequireSecuritySignature1 -eq $null)
 {
 write-host " Microsoft network server: Digitally sign communications (always) is not configured" -ForegroundColor Yellow
 }
-   elseif ( $RequireSecuritySignature  -eq  '1' )
+   elseif ( $RequireSecuritySignature1  -eq  '1' )
 {
 write-host " Microsoft network server: Digitally sign communications (always) is enabled" -ForegroundColor Green
 }
-  elseif ( $RequireSecuritySignature  -eq  '0' )
+  elseif ( $RequireSecuritySignature1  -eq  '0' )
 {
 write-host " Microsoft network server: Digitally sign communications (always) is disabled" -ForegroundColor Red
 }
@@ -4604,8 +4606,23 @@ write-host " Microsoft network server: Digitally sign communications (always) is
 write-host " Microsoft network server: Digitally sign communications (always) is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Microsoft network server: Digitally sign communications (if client agrees)"
-
+$EnableSecuritySignature1 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name EnableSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSecuritySignature
+if ( $EnableSecuritySignature1 -eq $null)
+{
+write-host " Microsoft network server: Digitally sign communications (if client agrees) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $EnableSecuritySignature1  -eq  '1' )
+{
+write-host " Microsoft network server: Digitally sign communications (if client agrees) is enabled" -ForegroundColor Green
+}
+  elseif ( $EnableSecuritySignature1  -eq  '0' )
+{
+write-host " Microsoft network server: Digitally sign communications (if client agrees) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Microsoft network server: Digitally sign communications (if client agrees) is set to an unknown setting" -ForegroundColor Red
+}
 
 write-host "`r`n####################### SESSION LOCKING #######################`r`n"
 
