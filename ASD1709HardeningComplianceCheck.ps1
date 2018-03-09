@@ -1662,6 +1662,8 @@ write-host "Reset Account Lockout Counter After is unable to be checked using Po
 
 write-host "`r`n####################### ANONYMOUS CONNECTIONS #######################`r`n"
 
+
+#Enable insecure guest logons
 $AllowInsecureGuestAuth = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\LanmanWorkstation\ -Name AllowInsecureGuestAuth -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowInsecureGuestAuth
 if ( $AllowInsecureGuestAuth -eq $null)
 {
@@ -1680,8 +1682,12 @@ write-host " Enable insecure guest logons is enabled" -ForegroundColor Red
 write-host " Enable insecure guest logons is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Network access: Allow anonymous SID/Name translation can't check is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
 
+#Network access: Allow anonymous SID/Name translation
+write-host "Network access: Allow anonymous SID/Name translation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -ForegroundColor Cyan
+
+
+#Check configuration: Network access: Do not allow anonymous enumeration of SAM accounts
 $RestrictAnonymousSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymousSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymousSAM
 if ( $RestrictAnonymousSAM -eq $null)
 {
@@ -1700,6 +1706,9 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 write-host " Network access: Do not allow anonymous enumeration of SAM accounts is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Network access: Do not allow anonymous enumeration of SAM accounts and shares
 $RestrictAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymous
 if ( $RestrictAnonymous -eq $null)
 {
@@ -1719,6 +1728,8 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 }
 
 
+
+#Check configuration: Network access: Let Everyone permissions apply to anonymous users
 $EveryoneIncludesAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name EveryoneIncludesAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EveryoneIncludesAnonymous
 if ( $EveryoneIncludesAnonymous -eq $null)
 {
@@ -1737,6 +1748,9 @@ write-host " Network access: Let Everyone permissions apply to anonymous users i
 write-host " Network access: Let Everyone permissions apply to anonymous users is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Network access: Restrict anonymous access to Named Pipes and Shares
 $RestrictNullSessAccess = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\ -Name RestrictNullSessAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictNullSessAccess
 if ( $RestrictNullSessAccess -eq $null)
 {
@@ -1755,6 +1769,9 @@ write-host " Network access: Restrict anonymous access to Named Pipes and Shares
 write-host " Network access: Restrict anonymous access to Named Pipes and Shares is set to an unknown setting " -ForegroundColor Red
 }
 
+
+
+#Check configuration: Network access: Do not allow anonymous enumeration of SAM accounts and shares
 $RestrictRemoteSAM = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\ -Name RestrictRemoteSAM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictRemoteSAM
 if ( $RestrictRemoteSAM -eq $null)
 {
@@ -1770,6 +1787,8 @@ write-host " Network access: Do not allow anonymous enumeration of SAM accounts 
 }
 
 
+
+#Check configuration: Network security: Allow Local System to use computer identity for NTLM
 $UseMachineId = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name UseMachineId -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseMachineId
 if ( $UseMachineId -eq $null)
 {
@@ -1789,6 +1808,8 @@ write-host " Network security: Allow Local System to use computer identity for N
 }
 
 
+
+#Check configuration: Allow LocalSystem NULL session fallback is not configured
 $allownullsessionfallback = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0\ -Name allownullsessionfallback -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownullsessionfallback
 if ( $allownullsessionfallback -eq $null)
 {
@@ -1807,12 +1828,20 @@ write-host "Network security: Allow LocalSystem NULL session fallback is enabled
 write-host "Network security: Allow LocalSystem NULL session fallback is set to an unknown setting" -ForegroundColor Red
 }
 
+
+#Access this computer from the network
 write-host "Access this computer from the network is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\. ASD Recommendation is to only have 'Administrators & Remote Desktop Users' present" -ForegroundColor Cyan
+
+
+#Deny Access to this computer from the network
 write-host "Deny Access to this computer from the network is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\. ASD Recommendation is to only have 'Guests & NT AUTHORITY\Local Account' present" -ForegroundColor Cyan
 
 
 write-host "`r`n####################### ANTI-VIRUS SOFTWARE #######################`r`n"
 
+
+
+#Check configuration: Turn off Windows Defender Antivirus
 $DisableAntiSpyware = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\" -Name DisableAntiSpyware -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableAntiSpyware
 if ( $DisableAntiSpyware -eq $null)
 {
@@ -1831,6 +1860,9 @@ write-host " Turn off Windows Defender Antivirus is enabled" -ForegroundColor Re
 write-host " Turn off Windows Defender Antivirus is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Configure local setting override for reporting to Microsoft Active Protection Service (MAPS)
 $LocalSettingOverrideSpyNetReporting = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\SpyNet\' -Name LocalSettingOverrideSpyNetReporting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LocalSettingOverrideSpyNetReporting
 if ( $LocalSettingOverrideSpyNetReporting -eq $null)
 {
@@ -1849,6 +1881,9 @@ write-host " Configure local setting override for reporting to Microsoft Active 
 write-host " Configure local setting override for reporting to Microsoft Active Protection Service (MAPS). is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Configure the 'Block at First Sight' feature
 $DisableBlockAtFirstSeen = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Spynet\' -Name DisableBlockAtFirstSeen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBlockAtFirstSeen
 if ( $DisableBlockAtFirstSeen -eq $null)
 {
@@ -1867,6 +1902,10 @@ write-host " Configure the 'Block at First Sight' feature is disabled" -Foregrou
 write-host " Configure the 'Block at First Sight' feature is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+
+#Check configuration: Join Microsoft Active Protection Service (MAPS)
 $SpyNetReporting = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\SpyNet\' -Name SpyNetReporting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SpyNetReporting
 if ( $SpyNetReporting -eq $null)
 {
@@ -1885,6 +1924,9 @@ write-host " Join Microsoft Active Protection Service (MAPS). is disabled" -Fore
 write-host " Join Microsoft Active Protection Service (MAPS). is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Send file samples when further analysis is required
 $SubmitSamplesConsent = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Spynet\' -Name SubmitSamplesConsent -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SubmitSamplesConsent
 if ( $SubmitSamplesConsent -eq $null)
 {
@@ -1903,6 +1945,9 @@ write-host " Send file samples when further analysis is required is disabled" -F
 write-host " Send file samples when further analysis is required is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Configure extended cloud check
 $MpBafsExtendedTimeout = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\MpEngine\' -Name MpBafsExtendedTimeout -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MpBafsExtendedTimeout
 if ( $MpBafsExtendedTimeout -eq $null)
 {
@@ -1921,6 +1966,9 @@ write-host " Configure extended cloud check is disabled" -ForegroundColor Red
 write-host " Configure extended cloud check is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Select cloud protection level
 $MpCloudBlockLevel = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\MpEngine\' -Name MpCloudBlockLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MpCloudBlockLevel
 if ( $MpCloudBlockLevel -eq $null)
 {
@@ -1939,6 +1987,9 @@ write-host " Select cloud protection level is disabled" -ForegroundColor Red
 write-host " Select cloud protection level is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Configure local setting override for scanning all downloaded files and attachments
 $LocalSettingOverrideDisableIOAVProtection = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\' -Name LocalSettingOverrideDisableIOAVProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LocalSettingOverrideDisableIOAVProtection
 if ( $LocalSettingOverrideDisableIOAVProtection -eq $null)
 {
@@ -1957,6 +2008,10 @@ write-host " Configure local setting override for scanning all downloaded files 
 write-host " Configure local setting override for scanning all downloaded files and attachments is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+
+#Check configuration: Turn off real-time protection
 $DisableRealtimeMonitoring = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\' -Name DisableRealtimeMonitoring -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRealtimeMonitoring
 if ( $DisableRealtimeMonitoring -eq $null)
 {
@@ -1975,6 +2030,9 @@ write-host " Turn off real-time protection is enabled" -ForegroundColor Red
 write-host " Turn off real-time protection is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Turn on behavior monitoring
 $DisableBehaviorMonitoring = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\' -Name DisableBehaviorMonitoring -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBehaviorMonitoring
 if ( $DisableBehaviorMonitoring -eq $null)
 {
@@ -1993,6 +2051,9 @@ write-host " Turn on behavior monitoring is disabled" -ForegroundColor Red
 write-host " Turn on behavior monitoring is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Turn on process scanning whenever real-time protection
 $DisableScanOnRealtimeEnable = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection\' -Name DisableScanOnRealtimeEnable -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableScanOnRealtimeEnable
 if ( $DisableScanOnRealtimeEnable -eq $null)
 {
@@ -2011,6 +2072,9 @@ write-host " Turn on process scanning whenever real-time protection is enabled i
 write-host " Turn on process scanning whenever real-time protection is enabled is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Configure removal of items from Quarantine folder
 $PurgeItemsAfterDelay = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Quarantine\' -Name PurgeItemsAfterDelay -ErrorAction SilentlyContinue|Select-Object -ExpandProperty PurgeItemsAfterDelay
 if ( $PurgeItemsAfterDelay -eq $null)
 {
@@ -2029,6 +2093,9 @@ write-host " Configure removal of items from Quarantine folder is enabled" -Fore
 write-host " Configure removal of items from Quarantine folder is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Allow users to pause scan
 $AllowPause = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name AllowPause -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowPause
 if ( $AllowPause -eq $null)
 {
@@ -2047,6 +2114,10 @@ write-host " Allow users to pause scan is enabled" -ForegroundColor Red
 write-host " Allow users to pause scan is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+
+#Check configuration: Check for the latest virus and spyware definitions before running a scheduled scan
 $CheckForSignaturesBeforeRunningScan = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name CheckForSignaturesBeforeRunningScan -ErrorAction SilentlyContinue|Select-Object -ExpandProperty CheckForSignaturesBeforeRunningScan
 if ( $CheckForSignaturesBeforeRunningScan -eq $null)
 {
@@ -2065,6 +2136,9 @@ write-host " Check for the latest virus and spyware definitions before running a
 write-host " Check for the latest virus and spyware definitions before running a scheduled scan is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Scan archive files
 $DisableArchiveScanning = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name DisableArchiveScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableArchiveScanning
 if ( $DisableArchiveScanning -eq $null)
 {
@@ -2083,6 +2157,9 @@ write-host " Scan archive files is disabled" -ForegroundColor Red
 write-host " Scan archive files is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Scan packed executables
 $DisablePackedExeScanning = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name DisablePackedExeScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePackedExeScanning
 if ( $DisablePackedExeScanning -eq $null)
 {
@@ -2101,6 +2178,9 @@ write-host " Scan packed executables is disabled" -ForegroundColor Red
 write-host " Scan packed executables is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Scan removable drives
 $DisableRemovableDriveScanning = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name DisableRemovableDriveScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRemovableDriveScanning
 if ( $DisableRemovableDriveScanning -eq $null)
 {
@@ -2119,6 +2199,9 @@ write-host " Scan removable drives is disabled" -ForegroundColor Red
 write-host " Scan removable drives is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Turn on e-mail scanning
 $DisableEmailScanning = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name DisableEmailScanning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableEmailScanning
 if ( $DisableEmailScanning -eq $null)
 {
@@ -2137,6 +2220,9 @@ write-host " Turn on e-mail scanning is disabled" -ForegroundColor Red
 write-host " Turn on e-mail scanning is set to an unknown setting" -ForegroundColor Red
 }
 
+
+
+#Check configuration: Turn on heuristics
 $DisableHeuristics = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Microsoft Antimalware\Scan\' -Name DisableHeuristics -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableHeuristics
 if ( $DisableHeuristics -eq $null)
 {
