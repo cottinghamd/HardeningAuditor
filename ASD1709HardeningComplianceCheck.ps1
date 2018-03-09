@@ -4570,8 +4570,6 @@ write-host " Microsoft network client: Send unencrypted password to third-party 
 write-host " Microsoft network client: Send unencrypted password to third-party SMB servers is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Microsoft network server: Amount of idle time required before suspending session"
-
 $AutoDisconnect = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name AutoDisconnect -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoDisconnect
 if ( $AutoDisconnect -eq $null)
 {
@@ -4583,10 +4581,28 @@ write-host " Microsoft network server: Amount of idle time required before suspe
 }
   else
 {
-write-host " Microsoft network server: Amount of idle time required before suspending session is configured incorrectly" -ForegroundColor Red
+write-host " Microsoft network server: Amount of idle time required before suspending session is $AutoDisconnect which is outside the compliant limit of 0 to 15 minutes" -ForegroundColor Red
 }
 
 write-host "Microsoft network server: Digitally sign communications (always)"
+
+$RequireSecuritySignature = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name RequireSecuritySignature -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSecuritySignature
+if ( $RequireSecuritySignature -eq $null)
+{
+write-host " Microsoft network server: Digitally sign communications (always) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $RequireSecuritySignature  -eq  '1' )
+{
+write-host " Microsoft network server: Digitally sign communications (always) is enabled" -ForegroundColor Green
+}
+  elseif ( $RequireSecuritySignature  -eq  '0' )
+{
+write-host " Microsoft network server: Digitally sign communications (always) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host " Microsoft network server: Digitally sign communications (always) is set to an unknown setting" -ForegroundColor Red
+}
 
 write-host "Microsoft network server: Digitally sign communications (if client agrees)"
 
