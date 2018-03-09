@@ -4572,6 +4572,20 @@ write-host " Microsoft network client: Send unencrypted password to third-party 
 
 write-host "Microsoft network server: Amount of idle time required before suspending session"
 
+$AutoDisconnect = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\'  -Name AutoDisconnect -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoDisconnect
+if ( $AutoDisconnect -eq $null)
+{
+write-host " Microsoft network server: Amount of idle time required before suspending session is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AutoDisconnect  -le  '15' )
+{
+write-host " Microsoft network server: Amount of idle time required before suspending session is less than or equal to 15 mins" -ForegroundColor Green
+}
+  else
+{
+write-host " Microsoft network server: Amount of idle time required before suspending session is configured incorrectly" -ForegroundColor Red
+}
+
 write-host "Microsoft network server: Digitally sign communications (always)"
 
 write-host "Microsoft network server: Digitally sign communications (if client agrees)"
