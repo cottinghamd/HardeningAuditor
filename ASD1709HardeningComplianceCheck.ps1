@@ -4558,8 +4558,28 @@ write-host "Allow users to connect remotely by using Remote Desktop Services is 
 write-host "Allow users to connect remotely by using Remote Desktop Services is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check allow log on through remote desktop services"
-write-host "Unable to check deny log on through remote desktop services"
+$admins2 = @()
+$group2 =[ADSI]"WinNT://localhost/Remote Desktop Users" 
+$members2 = @($group2.psbase.Invoke("Members"))
+$members2 | foreach {
+ $obj2 = new-object psobject -Property @{
+ Member = $_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)
+ }
+ $admins2 += $obj2
+ } 
+$resultsrd += $admins2
+$members2 = $admins2.Member
+
+If ($members2 -eq $null)
+{
+write-host "No members are allowed to logon through remote desktop services, this setting is compliant" -ForegroundColor Green
+}
+else
+{
+write-host "There are members allowing remote desktop users to logon locally, these members are: $members2. The compliant setting is to have no members of this group (if remote desktop is not explicity required). If remote desktop is required only 'Remote Desktop Users' should be listed as a member" -ForegroundColor Red
+}
+
+write-host "Unable to check members of deny logon through remote desktop services at this time please manually check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Deny Logon through Remote Desktop Services and ensure 'Administrators' 'Guests' and 'NT Authority\Local Account' are members" -ForegroundColor Cyan
 
 $NQV54zJaxh6nOE0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredentialsDelegation\'  -Name AllowProtectedCreds -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowProtectedCreds
 if ( $NQV54zJaxh6nOE0 -eq $null)
@@ -4795,9 +4815,6 @@ write-host "Set client connection encryption level is set to client compatible o
 {
 write-host "Set client connection encryption level is set to an unknown setting" -ForegroundColor Red
 }
-
-write-host "Unable to check allow log on through remote desktop services"
-write-host "Unable to check deny log on through remote desktop services"
 
 
 write-host "`r`n####################### REMOTE PROCEDURE CALL #######################`r`n"
