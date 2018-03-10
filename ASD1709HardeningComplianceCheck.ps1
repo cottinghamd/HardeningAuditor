@@ -3306,11 +3306,11 @@ write-host "Enforce drive encryption type on fixed data drive is set to Used Spa
 $OSEnablePreBootPinExceptionOnDECapableDevice = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name OSEnablePreBootPinExceptionOnDECapableDevice -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSEnablePreBootPinExceptionOnDECapableDevice
 if ( $OSEnablePreBootPinExceptionOnDECapableDevice -eq $null)
 {
-write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is not configured" -ForegroundColor Yellow
+write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN is not configured" -ForegroundColor Yellow
 }
    elseif ( $OSEnablePreBootPinExceptionOnDECapableDevice  -eq  '0' )
 {
-write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is disabled" -ForegroundColor Green
+write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN is disabled" -ForegroundColor Green
 }
   elseif ( $OSEnablePreBootPinExceptionOnDECapableDevice  -eq  '1' )
 {
@@ -3318,7 +3318,7 @@ write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boo
 }
   else
 {
-write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN. is set to an unknown setting" -ForegroundColor Red
+write-host "Allow devices compliant with InstantGo or HSTI to opt out of pre-boot PIN is set to an unknown setting" -ForegroundColor Red
 }
 
 $UseEnhancedPin = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name UseEnhancedPin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseEnhancedPin
@@ -3947,7 +3947,7 @@ write-host "Prevent the usage of OneDrive for file storage is disabled" -Foregro
 write-host "Prevent the usage of OneDrive for file storage is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check Accounts: Block Microsoft accounts"
+write-host "This setting is unable to be checked with PowerShell as it is a registry key, please manually check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options" -ForegroundColor Cyan
 
 write-host "`r`n####################### MSS SETTINGS #######################`r`n"
 
@@ -5307,7 +5307,7 @@ write-host "Allow Windows Ink Workspace is disabled or turned on, both not recom
 write-host "Allow Windows Ink Workspace is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check machine inactivity limit"
+write-host "Unable to check the machine inactivity limit with PowerShell as this setting is not a registry key, please manually check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options and ensure this is configured to at least 900 seconds or lower" -ForegroundColor Cyan
 
 $nKErRNAU3b4k6hI = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop\'  -Name ScreenSaveActive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ScreenSaveActive
 if ( $nKErRNAU3b4k6hI -eq $null)
@@ -5437,8 +5437,24 @@ write-host "Can't check system backup and restore settings yet"
 
 write-host "`r`n####################### SYSTEM CRYPTOGRAPHY #######################`r`n"
 
-write-host "Unable to check force strong key protection for user keys stored ont eh computer"
+$forceprotection = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Cryptography" -Name ForceKeyProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ForceKeyProtection
 
+if ($forceprotection -eq $null)
+{
+write-host "System cryptography: Force strong key protection for user keys stored on the computer is not configured" -ForegroundColor Yellow
+}
+    elseif ($forceprotection -eq '2')
+{
+write-host "System cryptography: Force strong key protection for user keys stored on the computer is set to user must enter a password each time they use a key" -ForegroundColor Green
+}
+    elseif ($forceprotection -eq '1')
+{
+write-host "System cryptography: Force strong key protection for user keys stored on the computer is set to user is prompted when the key is first used, this is a non compliant setting" -ForegroundColor Red
+}
+    elseif ($forceprotection -eq '0')
+{
+write-host "System cryptography: Force strong key protection for user keys stored on the computer is set to user input is not required when new keys are stored and used, this is a non compliant setting" -ForegroundColor Red
+}
 
 $9UNpgi6osfkQlnF = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Centrify\CentrifyDC\Settings\Fips\'  -Name fips.mode.enable -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fips.mode.enable
 if ( $9UNpgi6osfkQlnF -eq $null)
