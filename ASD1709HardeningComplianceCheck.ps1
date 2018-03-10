@@ -3210,7 +3210,7 @@ write-host "Choose how BitLocker-protected fixed drives can be recovered is not 
 }
     else
 {
-write-host "Choose how BitLocker-protected fixed drives can be recovered has been configured" -ForegroundColor Green
+write-host "Choose how BitLocker-protected fixed  drives can be recovered has been configured" -ForegroundColor Green
 }
 
 
@@ -3375,9 +3375,88 @@ write-host "Allow Secure Boot for integrity validation is disabled" -ForegroundC
 write-host "Allow Secure Boot for integrity validation is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check Choose how BitLocker-protected operating system drives can be recovered"
-write-host "Unable to check Configure minimum PIN length for startup "
-write-host "Unable to check Configure use of passwords for operating system drives "
+#This check could be improved by printing out the possible configuration settings if choose how Bitlocker-protected operating system drives is configured
+$bitlockerosrecovery1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSRecovery -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSRecovery
+$bitlockerosrecovery2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSRecoveryPassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSRecoveryPassword
+$bitlockerosrecovery3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSRecoveryKey -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSRecoveryKey
+$bitlockerosrecovery4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSManageDRA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSManageDRA
+$bitlockerosrecovery5 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSHideRecoveryPage -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSHideRecoveryPage
+$bitlockerosrecovery6 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSActiveDirectoryBackup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSActiveDirectoryBackup
+$bitlockerosrecovery7 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSActiveDirectoryInfoToStore -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSActiveDirectoryInfoToStore
+
+if ($bitlockerosrecovery1 -eq $null -and $bitlockerosrecovery2 -eq $null -and $bitlockerosrecovery3 -eq $null -and $bitlockerosrecovery4 -eq $null -and $bitlockerosrecovery5 -eq $null -and $bitlockerosrecovery6 -eq $null -and $bitlockerosrecovery7 -eq $null)
+{
+write-host "Choose how BitLocker-protected operating system drives can be recovered is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Choose how BitLocker-protected operating system drives can be recovered has been configured" -ForegroundColor Green
+}
+
+$configureminimumpin = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name MinimumPin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MinimumPin
+
+if ($configureminimumpin -eq $null)
+{
+write-host "Configure minimum PIN length for startup is not configured" -ForegroundColor Yellow
+}
+elseif ($configureminimumpin -le '12')
+{
+write-host "Configure minimum PIN length for startup is set to $configureminimumpin, which is less than the requirement of 13" -ForegroundColor Red
+}
+elseif ($configureminimumpin -gt '12')
+{
+write-host "Configure minimum PIN length for startup is set to $configureminimumpin, which is more than the requirement of 13" -ForegroundColor Green
+}
+
+
+$bitlockerospassuse1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSPassphraseASCIIOnly -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSPassphraseASCIIOnly
+$bitlockerospassuse2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSPassphrase -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSPassphrase
+$bitlockerospassuse3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSPassphraseComplexity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSPassphraseComplexity
+$bitlockerospassuse4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSPassphraseLength -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSPassphraseLength
+
+if ($bitlockerospassuse1 -eq $null -and $bitlockerospassuse2 -eq $null -and $bitlockerospassuse3 -eq $null -and $bitlockerospassuse4 -eq $null)
+{
+write-host "Configure use of passwords for operating system drives is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Configure use of passwords for operating system drives has been configured" -ForegroundColor Green
+
+if ($bitlockerospassuse1 -eq '1')
+{
+write-host "Passwords required for operating system drives is enabled" -ForegroundColor Green
+}
+elseif ($bitlockerospassuse1 -eq '0')
+{
+write-host "Passwords required for operating system drives is disabled" -ForegroundColor Red
+}
+
+if ($bitlockerospassuse3 -eq '2')
+{
+write-host "Password complexity for operating system drives is set to Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerospassuse3 -eq '0')
+{
+write-host "Password complexity for operating system drives is set to Do Not Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerospassuse3 -eq '1')
+{
+write-host "Password complexity for operating system drives is set to Require Passphrase Complexity" -ForegroundColor Green
+}
+
+if ($bitlockerospassuse4 -le '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerospassuse4 which is less than the minimum requirement of 10 characters" -ForegroundColor Red
+}
+elseif ($bitlockerospassuse4 -gt '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerospassuse4 which is compliant" -ForegroundColor Green
+}
+else
+{
+write-host "Bitlocker minimum passphrase length is set to an unknown setting"
+}
+}
 
 $DisallowStandardUserPINReset = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name DisallowStandardUserPINReset -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisallowStandardUserPINReset
 if ( $DisallowStandardUserPINReset -eq $null)
@@ -3397,8 +3476,82 @@ write-host "Disallow standard users from changing the PIN or password is enabled
 write-host "Disallow standard users from changing the PIN or password is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Enforce drive encryption type on operating system drive unable to check "
-write-host "Unable to check Require additional authentication at startup"
+$oseencryptiontype = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name OSEncryptionType -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSEncryptionType
+
+if ($oseencryptiontype -eq $null)
+{
+write-host "Enforce drive encryption type on operating system drive is not configured" -ForegroundColor Yellow
+}
+    elseif ($oseencryptiontype -eq '0')
+{
+write-host "Enforce drive encryption type on operating system drive is disabled or set to Allow User to Choose" -ForegroundColor Red
+}
+    elseif ($oseencryptiontype -eq '1')
+{
+write-host "Enforce drive encryption type on operating system drive is set to Full Encryption" -ForegroundColor Green
+}
+    elseif ($oseencryptiontype -eq '2')
+{
+write-host "Enforce drive encryption type on operating system drive is set to Used Space Only Encryption" -ForegroundColor Green
+}
+
+
+$requireadditionalauth1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name UseTPM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseTPM
+$requireadditionalauth2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name UseTPMKey -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseTPMKey
+$requireadditionalauth3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name UseTPMKeyPIN -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseTPMKeyPIN
+$requireadditionalauth4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name UseTPMPIN -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseTPMPIN
+$requireadditionalauth5 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name UseAdvancedStartup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty UseAdvancedStartup 
+$requireadditionalauth6 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name EnableBDEWithNoTPM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableBDEWithNoTPM
+
+
+
+if ($requireadditionalauth1 -eq $null -and $requireadditionalauth2 -eq $null -and $requireadditionalauth3 -eq $null -and $requireadditionalauth4 -eq $null  -and $requireadditionalauth5 -eq $null -and $requireadditionalauth6 -eq $null)
+{
+write-host "Require additional authentication at startup is not configured" -ForegroundColor Yellow
+}
+else
+{
+    if ($requireadditionalauth1 -eq '0')
+{
+write-host "Configure TPM Startup is set to Do Not Allow TPM" -ForegroundColor Green
+}
+else
+{
+write-host "Configure TPM Startup is set to a non compliant setting" -ForegroundColor Red
+}
+    if ($requireadditionalauth2 -eq '2')
+{
+write-host "Configure TPM Startup key is set to Allow Startup Key With TPM" -ForegroundColor Green
+}
+else
+{
+write-host "Configure TPM Startup key is set to a non compliant setting" -ForegroundColor Red
+}
+    if ($requireadditionalauth3 -eq '2')
+{
+write-host "Configure TPM Startup key and pin is set to Allow Startup Key and pin With TPM" -ForegroundColor Green
+}
+else
+{
+write-host "Configure TPM Startup key is set to a non compliant setting" -ForegroundColor Red
+}
+    if ($requireadditionalauth4 -eq '2')
+{
+write-host "Configure TPM Startup pin is set to Allow Startup pin With TPM" -ForegroundColor Green
+}
+else
+{
+write-host "Configure TPM Startup key is set to a non compliant setting" -ForegroundColor Red
+}
+    if ($requireadditionalauth6 -eq '1')
+{
+write-host "Allow Bitlocker without a compatible TPM (require key and pin) is enabled" -ForegroundColor Green
+}
+else
+{
+write-host "Allow Bitlocker without a compatible TPM (require key and pin) is disabled" -ForegroundColor Red
+}
+}
 
 $TPMAutoReseal = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name TPMAutoReseal -ErrorAction SilentlyContinue|Select-Object -ExpandProperty TPMAutoReseal
 if ( $TPMAutoReseal -eq $null)
@@ -3418,9 +3571,110 @@ write-host "Reset platform validation data after BitLocker recovery is disabled"
 write-host "Reset platform validation data after BitLocker recovery is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Choose how BitLocker-protected removable drives can be recovered"
-write-host "Configure use of passwords for removable data drives "
-write-host "Control use of BitLocker on removable drives"
+#This check could be improved by printing out the possible configuration settings if choose how Bitlocker-protected removable drives is configured
+$bitlockerrmrecovery1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVRecovery -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVRecovery
+$bitlockerrmrecovery2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVRecoveryPassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVRecoveryPassword
+$bitlockerrmrecovery3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVRecoveryKey -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVRecoveryKey
+$bitlockerrmrecovery4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVManageDRA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVManageDRA
+$bitlockerrmrecovery5 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVHideRecoveryPage -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVHideRecoveryPage
+$bitlockerrmrecovery6 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVActiveDirectoryBackup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVActiveDirectoryBackup
+$bitlockerrmrecovery7 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVActiveDirectoryInfoToStore -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVActiveDirectoryInfoToStore
+
+if ($bitlockerrmrecovery1 -eq $null -and $bitlockerrmrecovery2 -eq $null -and $bitlockerrmrecovery3 -eq $null -and $bitlockerrmrecovery4 -eq $null -and $bitlockerrmrecovery5 -eq $null -and $bitlockerrmrecovery6 -eq $null -and $bitlockerrmrecovery7 -eq $null)
+{
+write-host "Choose how BitLocker-protected removable drives can be recovered is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Choose how BitLocker-protected removable drives can be recovered has been configured" -ForegroundColor Green
+}
+
+
+
+$bitlockerrmpassuse1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVEnforcePassphrase -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVEnforcePassphrase
+$bitlockerrmpassuse2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVPassphrase -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVPassphrase
+$bitlockerrmpassuse3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVPassphraseComplexity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVPassphraseComplexity
+$bitlockerrmpassuse4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVPassphraseLength -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVPassphraseLength
+
+if ($bitlockerrmpassuse1 -eq $null -and $bitlockerrmpassuse2 -eq $null -and $bitlockerrmpassuse3 -eq $null -and $bitlockerrmpassuse4 -eq $null)
+{
+write-host "Configure use of passwords for removable drives is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Configure use of passwords for removable drives has been configured" -ForegroundColor Green
+
+if ($bitlockerrmpassuse1 -eq '1')
+{
+write-host "Passwords required for removable drives is enabled" -ForegroundColor Green
+}
+elseif ($bitlockerrmpassuse1 -eq '0')
+{
+write-host "Passwords required for removable drives is disabled" -ForegroundColor Red
+}
+
+if ($bitlockerrmpassuse3 -eq '2')
+{
+write-host "Password complexity for removable drives is set to Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerrmpassuse3 -eq '0')
+{
+write-host "Password complexity for removable drives is set to Do Not Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerrmpassuse3 -eq '1')
+{
+write-host "Password complexity for removable drives is set to Require Passphrase Complexity" -ForegroundColor Green
+}
+
+if ($bitlockerrmpassuse4 -le '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerrmpassuse4 which is less than the minimum requirement of 10 characters" -ForegroundColor Red
+}
+elseif ($bitlockerrmpassuse4 -gt '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerrmpassuse4 which is compliant" -ForegroundColor Green
+}
+else
+{
+write-host "Bitlocker minimum passphrase length is set to an unknown setting"
+}
+}
+
+$bitlockerrmconf1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVAllowBDE -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVAllowBDE
+$bitlockerrmconf2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name RDVConfigureBDE -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVConfigureBDE
+
+if ($bitlockerrmconf1 -eq $null -and $bitlockerrmconf2 -eq $null)
+{
+write-host "Control use of bitlocker on removable drives is not configured" -ForegroundColor Yellow
+}
+    elseif ($bitlockerrmconf1 -eq '0' -and $bitlockerrmconf2 -eq '0')
+{
+write-host "Control use of bitlocker on removable drives is disabled" -ForegroundColor Red
+}
+elseif ($bitlockerrmconf2 -eq '1')
+{
+write-host "Control use of bitlocker on removable drives is enabled" -ForegroundColor Green
+
+
+
+if ($bitlockerrmconf1 -eq '1')
+{
+write-host "Allow users to apply bitlocker protection on removable data drives is enabled" -ForegroundColor Green
+}
+elseif ($bitlockerrmconf1 -eq '0')
+{
+write-host "Allow users to apply bitlocker protection on removable data drives is disabled" -ForegroundColor Red
+}
+}
+
+if ($bitlockerrmconf1 -eq '1')
+{
+write-host "Passwords required for removable drives is enabled" -ForegroundColor Green
+}
+elseif ($bitlockerrmconf1 -eq '0')
+{
+write-host "Passwords required for removable drives is disabled" -ForegroundColor Red
+}
 
 $RDVDenyWriteAccess = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE\'  -Name RDVDenyWriteAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RDVDenyWriteAccess
 if ( $RDVDenyWriteAccess -eq $null)
