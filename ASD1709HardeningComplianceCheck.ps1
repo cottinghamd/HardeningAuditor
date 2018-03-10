@@ -3213,7 +3213,57 @@ write-host "Choose how BitLocker-protected fixed drives can be recovered is not 
 write-host "Choose how BitLocker-protected fixed drives can be recovered has been configured" -ForegroundColor Green
 }
 
-write-host "Unable to check Configure use of passwords for fixed data drives "
+
+$bitlockerpassuse1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVEnforcePassphrase -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVEnforcePassphrase
+$bitlockerpassuse2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVPassphrase -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVPassphrase
+$bitlockerpassuse3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVPassphraseComplexity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVPassphraseComplexity
+$bitlockerpassuse4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVPassphraseLength -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVPassphraseLength
+
+if ($bitlockerpassuse1 -eq $null -and $bitlockerpassuse2 -eq $null -and $bitlockerpassuse3 -eq $null -and $bitlockerpassuse4 -eq $null)
+{
+write-host "Configure use of passwords for fixed data drives is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Configure use of passwords for fixed data drives has been configured" -ForegroundColor Green
+
+if ($bitlockerpassuse1 -eq '1')
+{
+write-host "Passwords required for fixed data drives is enabled" -ForegroundColor Green
+}
+elseif ($bitlockerpassuse1 -eq '0')
+{
+write-host "Passwords required for fixed data drives is disabled" -ForegroundColor Red
+}
+
+if ($bitlockerpassuse3 -eq '2')
+{
+write-host "Password complexity for fixed data drives is set to Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerpassuse3 -eq '0')
+{
+write-host "Password complexity for fixed data drives is set to Do Not Allow Passphrase Complexity, the compliant setting is Require Passphrase Complexity" -ForegroundColor Red
+}
+elseif ($bitlockerpassuse3 -eq '1')
+{
+write-host "Password complexity for fixed data drives is set to Require Passphrase Complexity" -ForegroundColor Green
+}
+
+if ($bitlockerpassuse4 -le '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerpassuse4 which is less than the minimum requirement of 10 characters" -ForegroundColor Red
+}
+elseif ($bitlockerpassuse4 -gt '9')
+{
+write-host "Bitlocker Minimum passphrase length is set to $bitlockerpassuse4 which is compliant" -ForegroundColor Green
+}
+else
+{
+write-host "Bitlocker minimum passphrase length is set to an unknown setting"
+}
+}
+
+
 
 $FDVDenyWriteAccess = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE\'  -Name FDVDenyWriteAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVDenyWriteAccess
 if ( $FDVDenyWriteAccess -eq $null)
@@ -3233,7 +3283,24 @@ write-host "Deny write access to fixed drives not protected by BitLocker is disa
 write-host "Deny write access to fixed drives not protected by BitLocker is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "unable to check Enforce drive encryption type on fixed data drive "
+$fveencryptiontype = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVEncryptionType -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVEncryptionType
+
+if ($fveencryptiontype -eq $null)
+{
+write-host "Enforce drive encryption type on fixed data drive is not configured" -ForegroundColor Yellow
+}
+    elseif ($fveencryptiontype -eq '0')
+{
+write-host "Enforce drive encryption type on fixed data drive is disabled or set to Allow User to Choose" -ForegroundColor Red
+}
+    elseif ($fveencryptiontype -eq '1')
+{
+write-host "Enforce drive encryption type on fixed data drive is set to Full Encryption" -ForegroundColor Green
+}
+    elseif ($fveencryptiontype -eq '2')
+{
+write-host "Enforce drive encryption type on fixed data drive is set to Used Space Only Encryption" -ForegroundColor Green
+}
 
 
 $OSEnablePreBootPinExceptionOnDECapableDevice = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name OSEnablePreBootPinExceptionOnDECapableDevice -ErrorAction SilentlyContinue|Select-Object -ExpandProperty OSEnablePreBootPinExceptionOnDECapableDevice
