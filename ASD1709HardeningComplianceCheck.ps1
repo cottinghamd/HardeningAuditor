@@ -4911,7 +4911,81 @@ write-host "Block Non-Administrators in Safe Mode is set to an unknown setting" 
 
 write-host "`r`n####################### SECURE CHANNEL COMMUNICATIONS #######################`r`n"
 
-write-host "Can't check this whole section yet"
+$securechannel = Get-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Services\Netlogon\Parameters\" -Name RequireSignOrSeal -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSignOrSeal
+
+if ($securechannel -eq $null)
+{
+write-host "Domain member: Digitally encrypt or sign secure channel data (always) is not configured" -ForegroundColor Yellow
+}
+    elseif ($securechannel -eq '0')
+    {
+        write-host "Domain member: Digitally encrypt or sign secure channel data (always) is disabled" -ForegroundColor Red
+    }
+    elseif  ($securechannel -eq '1')
+    {
+        write-host "Domain member: Digitally encrypt or sign secure channel data (always) is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Domain member: Digitally encrypt or sign secure channel data (always) is set to an unknown setting" -ForegroundColor Red
+    }
+
+$securechannel2 = Get-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Services\Netlogon\Parameters\" -Name SealSecureChannel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SealSecureChannel
+
+if ($securechannel2 -eq $null)
+{
+write-host "Domain member: Digitally encrypt secure channel data (when possible) is not configured" -ForegroundColor Yellow
+}
+    elseif ($securechannel2 -eq '0')
+    {
+        write-host "Domain member: Digitally encrypt secure channel data (when possible) is disabled" -ForegroundColor Red
+    }
+    elseif  ($securechannel2 -eq '1')
+    {
+        write-host "Domain member: Digitally encrypt secure channel data (when possible) is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Domain member: Digitally encrypt secure channel data (when possible)is set to an unknown setting" -ForegroundColor Red
+    }
+
+$securechannel3 = Get-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Services\Netlogon\Parameters\" -Name SignSecureChannel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SignSecureChannel
+
+if ($securechannel3 -eq $null)
+{
+write-host "Domain member: Digitally sign secure channel data (when possible) is not configured" -ForegroundColor Yellow
+}
+    elseif ($securechannel3 -eq '0')
+    {
+        write-host "Domain member: Digitally sign secure channel data (when possible) is disabled" -ForegroundColor Red
+    }
+    elseif  ($securechannel3 -eq '1')
+    {
+        write-host "Domain member: Digitally sign secure channel data (when possible) is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Domain member: Digitally sign secure channel data (when possible) is set to an unknown setting" -ForegroundColor Red
+    }
+
+$securechannel4 = Get-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Services\Netlogon\Parameters\" -Name RequireStrongKey -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireStrongKey
+
+if ($securechannel4 -eq $null)
+{
+write-host "Domain member: Require strong (Windows 2000 or later) session key is not configured" -ForegroundColor Yellow
+}
+    elseif ($securechannel4 -eq '0')
+    {
+        write-host "Domain member: Require strong (Windows 2000 or later) session key is disabled" -ForegroundColor Red
+    }
+    elseif  ($securechannel4 -eq '1')
+    {
+        write-host "Domain member: Require strong (Windows 2000 or later) session key is enabled" -ForegroundColor Green
+    }
+    else
+    {
+        write-host "Domain member: Require strong (Windows 2000 or later) session key is set to an unknown setting" -ForegroundColor Red
+    }
 
 
 write-host "`r`n####################### SECURITY POLICIES #######################`r`n"
