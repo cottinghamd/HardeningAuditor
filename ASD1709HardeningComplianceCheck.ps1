@@ -2283,8 +2283,115 @@ write-host " Prevent access to the command prompt is set to an unknown setting" 
 }
 
 write-host "`r`n####################### DIRECT MEMORY ACCESS #######################`r`n"
-write-host "Unable to check Prevent installation of devices that match any of these device IDs"
-write-host "Unable to check Prevent installation of devices using drivers that match these device setup classes"
+
+write-host "Prevent installation of devices that match any of these device IDs" -
+
+$deviceidbanlol = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceIDs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceIDs
+if ( $deviceidbanlol -eq $null)
+{
+write-host "Prevent installation of devices that match any of these device IDs is not configured" -ForegroundColor Yellow
+}
+   elseif ( $deviceidbanlol  -eq  '1' )
+{
+write-host "Prevent installation of devices that match any of these device IDs is enabled" -ForegroundColor Green
+}
+  elseif ( $deviceidbanlol  -eq  '0' )
+{
+write-host "Prevent installation of devices that match any of these device IDs is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Prevent installation of devices that match any of these device IDs is set to an unknown setting" -ForegroundColor Red
+}
+
+$deviceidbanlol1 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceIDsRetroactive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceIDsRetroactive
+if ( $deviceidbanlol1 -eq $null)
+{
+write-host "Prevent installation of devices that match any of these device IDs (retroactively) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $deviceidbanlol1  -eq  '1' )
+{
+write-host "Prevent installation of devices that match any of these device IDs (retroactively) is enabled" -ForegroundColor Green
+}
+  elseif ( $deviceidbanlol1  -eq  '0' )
+{
+write-host "Prevent installation of devices that match any of these device IDs (retroactively) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Prevent installation of devices that match any of these device IDs (retroactively) is set to an unknown setting" -ForegroundColor Red
+}
+
+foreach($_ in 1..50)
+{
+    $i++
+    $banneddevice = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceIDs\" -Name $_ -ErrorAction SilentlyContinue|Select-Object -ExpandProperty $_
+    If ($banneddevice -ne $null)
+    {
+	If ($banneddevice -eq 'PCI\CC_0C0A')
+		{
+		write-host "PCI\CC_0C0A is included on the banned device list to prevent DMA installations" -Foregroundcolor Green
+		}
+	else
+	{
+	write-host "PCI\CC_0C0A is not included on the banned device list to prevent DMA installations." -Foregroundcolor Red
+	}
+    }
+}
+
+$deviceidbanlol3 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceClasses -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceClasses
+if ( $deviceidbanlol3 -eq $null)
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes is not configured" -ForegroundColor Yellow
+}
+   elseif ( $deviceidbanlol3  -eq  '1' )
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes is enabled" -ForegroundColor Green
+}
+  elseif ( $deviceidbanlol3  -eq  '0' )
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes is set to an unknown setting" -ForegroundColor Red
+}
+
+$deviceidbanlol4 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceClassesRetroactive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceClassesRetroactive
+if ( $deviceidbanlol4 -eq $null)
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes (retroactively) is not configured" -ForegroundColor Yellow
+}
+   elseif ( $deviceidbanlol4  -eq  '1' )
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes (retroactively) is enabled" -ForegroundColor Green
+}
+  elseif ( $deviceidbanlol4  -eq  '0' )
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes (retroactively) is disabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Prevent installation of devices using drivers that match these device setup classes (retroactively) is set to an unknown setting" -ForegroundColor Red
+}
+
+foreach($_ in 1..50)
+{
+    $i++
+    $banneddevice2 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses\" -Name $_ -ErrorAction SilentlyContinue|Select-Object -ExpandProperty $_
+    If ($banneddevice2 -ne $null)
+    {
+	If ($banneddevice2 -eq '{d48179be-ec20-11d1-b6b8-00c04fa372a7}')
+		{
+		write-host "{d48179be-ec20-11d1-b6b8-00c04fa372a7} is included on the banned device list to prevent DMA installations" -Foregroundcolor Green
+		}
+	else
+	{
+	write-host "{d48179be-ec20-11d1-b6b8-00c04fa372a7} is not included on the banned device list to prevent DMA installations." -Foregroundcolor Red
+	}
+    }
+}
+
 
 write-host "`r`n####################### ENDPOINT DEVICE CONTROL #######################`r`n"
 
