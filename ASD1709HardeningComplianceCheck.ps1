@@ -2987,7 +2987,24 @@ write-host "Prevent users from sharing files within their profile is set to an u
 }
 
 write-host "`r`n####################### GROUP POLICY PROCESSING #######################`r`n"
-write-host "Unable to check Hardened UNC Paths"
+$hardenedpaths = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" -ErrorAction SilentlyContinue
+
+if ($hardenedpaths -eq $null)
+{
+write-host "Hardened UNC Paths are not configured, disabled or no paths are defined" -ForegroundColor Red
+}
+    else
+{
+write-host "Hardened UNC Paths are defined" -ForegroundColor Green
+}
+
+$hardenedpaths = (Get-ItemProperty 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths')
+
+$hardenedpaths.PSObject.Properties | ForEach-Object {
+  If($_.Name -notlike 'PSP*' -and $_.Name -notlike 'PSChild*'){
+    Write-Host "Hardened UNC Path is configured with the location" $_.Name "and has a configuration value of" $_.Value -ForegroundColor Magenta
+  }
+}
 
 $NoBackgroundPolicy = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}\'  -Name NoGPOListChanges -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoGPOListChanges
 if ( $NoBackgroundPolicy -eq $null)
@@ -3063,9 +3080,11 @@ write-host "Turn off Local Group Policy Objects processing is set to an unknown 
 
 write-host "`r`n####################### HARD DRIVE ENCRYPTION #######################`r`n"
 
-$driveencryption = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -ErrorAction SilentlyContinue
+$driveencryption = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsOs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsOs
+$driveencryption3 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsFdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsFdv
+$driveencryption4 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsRdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsRdv
 
-if ($driveencryption -eq $null)
+if ($driveencryption -eq $null -and $driveencryption3 -eq $null -and $driveencryption4 -eq $null)
 {
 write-host "Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later) is not configured or disabled" -ForegroundColor Red
 }
@@ -3073,7 +3092,6 @@ write-host "Choose drive encryption method and cipher strength (Windows 10 [Vers
     {
         write-host "Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later) is enabled" -ForegroundColor Green
 
-$driveencryption2 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsOs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsOs
 
 if ($driveencryption2 -eq '7')
 {
@@ -3096,7 +3114,6 @@ write-host "The Operating System Drives Bitlocker encryption method is set to XT
         write-host "The Operating System Drives encryption method is unable to be determined"
     }
 
-$driveencryption3 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsFdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsFdv
 
 if ($driveencryption3 -eq '7')
 {
@@ -3119,7 +3136,6 @@ write-host "The Fixed Drives Bitlocker encryption method is set to XTS-AES 256-b
         write-host "The Fixed Drives encryption method is unable to be determined"
     }
 
-$driveencryption4 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsRdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsRdv
 
 if ($driveencryption4 -eq '7')
 {
@@ -3179,7 +3195,24 @@ write-host "Prevent memory overwrite on restart is enabled" -ForegroundColor Red
 write-host "Prevent memory overwrite on restart is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check Choose how BitLocker-protected fixed drives can be recovered "
+#This check could be improved by printing out the possible configuration settings if choose how Bitlocker-protected fixed drives is configured
+$bitlockerrecovery1 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVRecovery -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVRecovery
+$bitlockerrecovery2 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVRecoveryPassword -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVRecoveryPassword
+$bitlockerrecovery3 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVRecoveryKey -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVRecoveryKey
+$bitlockerrecovery4 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVManageDRA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVManageDRA
+$bitlockerrecovery5 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVHideRecoveryPage -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVHideRecoveryPage
+$bitlockerrecovery6 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVActiveDirectoryBackup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVActiveDirectoryBackup
+$bitlockerrecovery7 = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\FVE" -Name FDVActiveDirectoryInfoToStore -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVActiveDirectoryInfoToStore
+
+if ($bitlockerrecovery1 -eq $null -and $bitlockerrecovery2 -eq $null -and $bitlockerrecovery3 -eq $null -and $bitlockerrecovery4 -eq $null -and $bitlockerrecovery5 -eq $null -and $bitlockerrecovery6 -eq $null -and $bitlockerrecovery7 -eq $null)
+{
+write-host "Choose how BitLocker-protected fixed drives can be recovered is not configured or disabled" -ForegroundColor Red
+}
+    else
+{
+write-host "Choose how BitLocker-protected fixed drives can be recovered has been configured" -ForegroundColor Green
+}
+
 write-host "Unable to check Configure use of passwords for fixed data drives "
 
 $FDVDenyWriteAccess = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE\'  -Name FDVDenyWriteAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty FDVDenyWriteAccess
