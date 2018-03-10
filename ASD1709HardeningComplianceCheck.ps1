@@ -2779,19 +2779,19 @@ write-host " Removable Disks: Deny write access is set to an unknown setting in 
 $Deny_Execute5 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
 if ( $Deny_Execute5 -eq $null)
 {
-write-host " Tape Drives: Deny execute access is not configured" -ForegroundColor Yellow
+write-host " Tape Drives: Deny execute access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Execute5  -eq  '1' )
 {
-write-host " Tape Drives: Deny execute access is enabled" -ForegroundColor Green
+write-host " Tape Drives: Deny execute access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Execute5  -eq  '0' )
 {
-write-host " Tape Drives: Deny execute access is disabled" -ForegroundColor Red
+write-host " Tape Drives: Deny execute access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Tape Drives: Deny execute access is set to an unknown setting" -ForegroundColor Red
+write-host " Tape Drives: Deny execute access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
 
 $Deny_Read5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
@@ -2873,19 +2873,19 @@ $Deny_Read92 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microso
 
 if ( $Deny_Read93 -eq $null -and $Deny_Read92 -eq $null)
 {
-write-host "WPD Devices: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
+write-host " WPD Devices: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Read93  -eq  '0' -and $Deny_Read92 -eq '0' )
 {
-write-host "WPD Devices: Deny read access is disabled in local machine group policy" -ForegroundColor Green
+write-host " WPD Devices: Deny read access is disabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Read93  -eq  '1' -and $Deny_Read92 -eq '1' )
 {
-write-host "WPD Devices: Deny read access is enabled in local machine group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny read access is enabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host "WPD Devices: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
 
 $Deny_Write93 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{6AC27878-A6FA-4155-BA85-F98F491D4F33}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
@@ -2893,19 +2893,19 @@ $Deny_Write92 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Micros
 
 if ( $Deny_Write93 -eq $null -and $Deny_Write92 -eq $null)
 {
-write-host "WPD Devices: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
+write-host " WPD Devices: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write93  -eq  '1'  -and $Deny_Write92 -eq '1' )
 {
-write-host " Tape Drives: Deny write access is enabled in local machine group policy" -ForegroundColor Green
+write-host " WPD Devices: Deny write access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write93  -eq  '0' -and $Deny_Write92 -eq '0' )
 {
-write-host " Tape Drives: Deny write access is disabled in local machine group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny write access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Tape Drives: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
 
 $Deny_Read91 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{6AC27878-A6FA-4155-BA85-F98F491D4F33}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
@@ -2933,19 +2933,19 @@ $Deny_Write88 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Micros
 
 if ( $Deny_Write89 -eq $null -and $Deny_Write88 -eq $null)
 {
-write-host "WPD Devices: Deny write access is not configured in user group policy" -ForegroundColor Yellow
+write-host " WPD Devices: Deny write access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write89  -eq  '1'  -and $Deny_Write88 -eq '1' )
 {
-write-host " Tape Drives: Deny write access is enabled in user  group policy" -ForegroundColor Green
+write-host " WPD Devices: Deny write access is enabled in user  group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write89  -eq  '0' -and $Deny_Write88 -eq '0' )
 {
-write-host " Tape Drives: Deny write access is disabled in user  group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny write access is disabled in user  group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Tape Drives: Deny write access is set to an unknown setting in user  group policy" -ForegroundColor Red
+write-host " WPD Devices: Deny write access is set to an unknown setting in user  group policy" -ForegroundColor Red
 }
 
 
