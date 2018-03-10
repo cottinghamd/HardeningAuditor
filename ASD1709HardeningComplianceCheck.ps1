@@ -2284,8 +2284,6 @@ write-host " Prevent access to the command prompt is set to an unknown setting" 
 
 write-host "`r`n####################### DIRECT MEMORY ACCESS #######################`r`n"
 
-write-host "Prevent installation of devices that match any of these device IDs" -
-
 $deviceidbanlol = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceIDs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceIDs
 if ( $deviceidbanlol -eq $null)
 {
@@ -2395,221 +2393,387 @@ foreach($_ in 1..50)
 
 write-host "`r`n####################### ENDPOINT DEVICE CONTROL #######################`r`n"
 
+
 $Deny_All = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\'  -Name Deny_All -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_All
 if ( $Deny_All -eq $null)
 {
-write-host " All Removable Storage classes: Deny all access is not configured" -ForegroundColor Yellow
+write-host " All Removable Storage classes: Deny all access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_All  -eq  '1' )
 {
-write-host " All Removable Storage classes: Deny all access is enabled" -ForegroundColor Green
+write-host " All Removable Storage classes: Deny all access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_All  -eq  '0' )
 {
-write-host " All Removable Storage classes: Deny all access is disabled" -ForegroundColor Red
+write-host " All Removable Storage classes: Deny all access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " All Removable Storage classes: Deny all access is set to an unknown setting" -ForegroundColor Red
+write-host " All Removable Storage classes: Deny all access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_All2 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\RemovableStorageDevices\'  -Name Deny_All -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_All
+if ( $Deny_All2 -eq $null)
+{
+write-host " All Removable Storage classes: Deny all access is not configured in user group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_All2  -eq  '1' )
+{
+write-host " All Removable Storage classes: Deny all access is enabled in user group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_All2  -eq  '0' )
+{
+write-host " All Removable Storage classes: Deny all access is disabled in user group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " All Removable Storage classes: Deny all access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Execute = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
 if ( $Deny_Execute -eq $null)
 {
-write-host " CD and DVD: Deny execute access is not configured" -ForegroundColor Yellow
+write-host " CD and DVD: Deny execute access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Execute  -eq  '1' )
 {
-write-host " CD and DVD: Deny execute access is enabled" -ForegroundColor Green
+write-host " CD and DVD: Deny execute access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Execute  -eq  '0' )
 {
-write-host " CD and DVD: Deny execute access is disabled" -ForegroundColor Red
+write-host " CD and DVD: Deny execute access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " CD and DVD: Deny execute access is set to an unknown setting" -ForegroundColor Red
+write-host " CD and DVD: Deny execute access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
 
 
 $Deny_Read = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
 if ( $Deny_Read -eq $null)
 {
-write-host " CD and DVD: Deny read access is not configured" -ForegroundColor Yellow
+write-host " CD and DVD: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Read  -eq  '0' )
 {
-write-host " CD and DVD: Deny read access is disabled" -ForegroundColor Green
+write-host " CD and DVD: Deny read access is disabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Read  -eq  '1' )
 {
-write-host " CD and DVD: Deny read access is enabled" -ForegroundColor Red
+write-host " CD and DVD: Deny read access is enabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " CD and DVD: Deny read access is set to an unknown setting" -ForegroundColor Red
+write-host " CD and DVD: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
 
 $Deny_Write = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
 if ( $Deny_Write -eq $null)
 {
-write-host " CD and DVD: Deny write access is not configured" -ForegroundColor Yellow
+write-host " CD and DVD: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write  -eq  '1' )
 {
-write-host " CD and DVD: Deny write access is enabled" -ForegroundColor Green
+write-host " CD and DVD: Deny write access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write  -eq  '0' )
 {
-write-host " CD and DVD: Deny write access is disabled" -ForegroundColor Red
+write-host " CD and DVD: Deny write access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " CD and DVD: Deny write access is set to an unknown setting" -ForegroundColor Red
+write-host " CD and DVD: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
+
+$Deny_Read99 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read99 -eq $null)
+{
+write-host " CD and DVD: Deny read access is not configured in user group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read99  -eq  '0' )
+{
+write-host " CD and DVD: Deny read access is disabled in user group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Read99  -eq  '1' )
+{
+write-host " CD and DVD: Deny read access is enabled in user group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " CD and DVD: Deny read access is set to an unknown setting in user group policy" -ForegroundColor Red
+}
+
+$Deny_Write99 = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56308-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write99 -eq $null)
+{
+write-host " CD and DVD: Deny write access is not configured in user group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write99  -eq  '1' )
+{
+write-host " CD and DVD: Deny write access is enabled in user group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Write99  -eq  '0' )
+{
+write-host " CD and DVD: Deny write access is disabled in user group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " CD and DVD: Deny write access is set to an unknown setting in user group policy" -ForegroundColor Red
+}
+
+$Deny_Read98 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Read\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read98 -eq $null)
+{
+write-host " Custom Classes: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read98  -eq  '0' )
+{
+write-host " Custom Classes: Deny read access is disabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Read98  -eq  '1' )
+{
+write-host " Custom Classes: Deny read access is enabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Custom Classes: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_Write98 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Write\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write98 -eq $null)
+{
+write-host " Custom Classes: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write98  -eq  '1' )
+{
+write-host " Custom Classes: Deny write access is enabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Write98  -eq  '0' )
+{
+write-host " Custom Classes: Deny write access is disabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Custom Classes: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
 
 $Deny_Read2 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Read\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
 if ( $Deny_Read2 -eq $null)
 {
-write-host " Custom Classes: Deny read access is not configured" -ForegroundColor Yellow
+write-host " Custom Classes: Deny read access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Read2  -eq  '0' )
 {
-write-host " Custom Classes: Deny read access is disabled" -ForegroundColor Green
+write-host " Custom Classes: Deny read access is disabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Read2  -eq  '1' )
 {
-write-host " Custom Classes: Deny read access is enabled" -ForegroundColor Red
+write-host " Custom Classes: Deny read access is enabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Custom Classes: Deny read access is set to an unknown setting" -ForegroundColor Red
+write-host " Custom Classes: Deny read access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Write2 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Custom\Deny_Write\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
 if ( $Deny_Write2 -eq $null)
 {
-write-host " Custom Classes: Deny write access is not configured" -ForegroundColor Yellow
+write-host " Custom Classes: Deny write access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write2  -eq  '1' )
 {
-write-host " Custom Classes: Deny write access is enabled" -ForegroundColor Green
+write-host " Custom Classes: Deny write access is enabled in local user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write2  -eq  '0' )
 {
-write-host " Custom Classes: Deny write access is disabled" -ForegroundColor Red
+write-host " Custom Classes: Deny write access is disabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Custom Classes: Deny write access is set to an unknown setting" -ForegroundColor Red
+write-host " Custom Classes: Deny write access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Execute3 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
 if ( $Deny_Execute3 -eq $null)
 {
-write-host " Floppy Drives: Deny execute access is not configured" -ForegroundColor Yellow
+write-host " Floppy Drives: Deny execute access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Execute3  -eq  '1' )
 {
-write-host " Floppy Drives: Deny execute access is enabled" -ForegroundColor Green
+write-host " Floppy Drives: Deny execute access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Execute3  -eq  '0' )
 {
-write-host " Floppy Drives: Deny execute access is disabled" -ForegroundColor Red
+write-host " Floppy Drives: Deny execute access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
 write-host " Floppy Drives: Deny execute access is set to an unknown setting" -ForegroundColor Red
 }
 
-$Deny_Read3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
-if ( $Deny_Read3 -eq $null)
+$Deny_Read97 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read97 -eq $null)
 {
-write-host " Floppy Drives: Deny read access is not configured" -ForegroundColor Yellow
+write-host " Floppy Drives: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
 }
-   elseif ( $Deny_Read3  -eq  '0' )
+   elseif ( $Deny_Read97  -eq  '0' )
 {
-write-host " Floppy Drives: Deny read access is disabled" -ForegroundColor Green
+write-host " Floppy Drives: Deny read access is disabled in local machine group policy" -ForegroundColor Green
 }
-  elseif ( $Deny_Read3  -eq  '1' )
+  elseif ( $Deny_Read97  -eq  '1' )
 {
-write-host " Floppy Drives: Deny read access is enabled" -ForegroundColor Red
+write-host " Floppy Drives: Deny read access is enabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Floppy Drives: Deny read access is set to an unknown setting" -ForegroundColor Red
+write-host " Floppy Drives: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_Write97 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write97 -eq $null)
+{
+write-host " Floppy Drives: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write97  -eq  '1' )
+{
+write-host " Floppy Drives: Deny write access is enabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Write97  -eq  '0' )
+{
+write-host " Floppy Drives: Deny write access is disabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Floppy Drives: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_Read3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read3 -eq $null)
+{
+write-host " Floppy Drives: Deny read access is not configured in user group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read3  -eq  '0' )
+{
+write-host " Floppy Drives: Deny read access is disabled in user group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Read3  -eq  '1' )
+{
+write-host " Floppy Drives: Deny read access is enabled in user group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Floppy Drives: Deny read access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Write3 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f56311-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
 if ( $Deny_Write3 -eq $null)
 {
-write-host " Floppy Drives: Deny write access is not configured" -ForegroundColor Yellow
+write-host " Floppy Drives: Deny write access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write3  -eq  '1' )
 {
-write-host " Floppy Drives: Deny write access is enabled" -ForegroundColor Green
+write-host " Floppy Drives: Deny write access is enabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write3  -eq  '0' )
 {
-write-host " Floppy Drives: Deny write access is disabled" -ForegroundColor Red
+write-host " Floppy Drives: Deny write access is disabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Floppy Drives: Deny write access is set to an unknown setting" -ForegroundColor Red
+write-host " Floppy Drives: Deny write access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Execute4 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
 if ( $Deny_Execute4 -eq $null)
 {
-write-host " Removable Disks: Deny execute access is not configured" -ForegroundColor Yellow
+write-host " Removable Disks: Deny execute access is not configured in local machine group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Execute4  -eq  '1' )
 {
-write-host " Removable Disks: Deny execute access is enabled" -ForegroundColor Green
+write-host " Removable Disks: Deny execute access is enabled in local machine group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Execute4  -eq  '0' )
 {
-write-host " Removable Disks: Deny execute access is disabled" -ForegroundColor Red
+write-host " Removable Disks: Deny execute access is disabled in local machine group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Removable Disks: Deny execute access is set to an unknown setting" -ForegroundColor Red
+write-host " Removable Disks: Deny execute access is set to an unknown setting in local machine group policy" -ForegroundColor Red
 }
+
+
+$Deny_Read96 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read96 -eq $null)
+{
+write-host " Removable Disks: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read96  -eq  '0' )
+{
+write-host " Removable Disks: Deny read access is disabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Read96  -eq  '1' )
+{
+write-host " Removable Disks: Deny read access is enabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Removable Disks: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_Write96 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write96 -eq $null)
+{
+write-host " Removable Disks: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write96  -eq  '1' )
+{
+write-host " Removable Disks: Deny write access is enabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Write96  -eq  '0' )
+{
+write-host " Removable Disks: Deny write access is disabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Removable Disks: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
 
 $Deny_Read4 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
 if ( $Deny_Read4 -eq $null)
 {
-write-host " Removable Disks: Deny read access is not configured" -ForegroundColor Yellow
+write-host " Removable Disks: Deny read access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Read4  -eq  '0' )
 {
-write-host " Removable Disks: Deny read access is disabled" -ForegroundColor Green
+write-host " Removable Disks: Deny read access is disabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Read4  -eq  '1' )
 {
-write-host " Removable Disks: Deny read access is enabled" -ForegroundColor Red
+write-host " Removable Disks: Deny read access is enabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Removable Disks: Deny read access is set to an unknown setting" -ForegroundColor Red
+write-host " Removable Disks: Deny read access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Write4 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
 if ( $Deny_Write4 -eq $null)
 {
-write-host " Removable Disks: Deny write access is not configured" -ForegroundColor Yellow
+write-host " Removable Disks: Deny write access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write4  -eq  '1' )
 {
-write-host " Removable Disks: Deny write access is enabled" -ForegroundColor Green
+write-host " Removable Disks: Deny write access is enabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write4  -eq  '0' )
 {
-write-host " Removable Disks: Deny write access is disabled" -ForegroundColor Red
+write-host " Removable Disks: Deny write access is disabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Removable Disks: Deny write access is set to an unknown setting" -ForegroundColor Red
+write-host " Removable Disks: Deny write access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
 
 $Deny_Execute5 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Execute -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Execute
@@ -2633,38 +2797,75 @@ write-host " Tape Drives: Deny execute access is set to an unknown setting" -For
 $Deny_Read5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
 if ( $Deny_Read5 -eq $null)
 {
-write-host " Tape Drives: Deny read access is not configured" -ForegroundColor Yellow
+write-host " Tape Drives: Deny read access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Read5  -eq  '0' )
 {
-write-host " Tape Drives: Deny read access is disabled" -ForegroundColor Green
+write-host " Tape Drives: Deny read access is disabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Read5  -eq  '1' )
 {
-write-host " Tape Drives: Deny read access is enabled" -ForegroundColor Red
+write-host " Tape Drives: Deny read access is enabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Tape Drives: Deny read access is set to an unknown setting" -ForegroundColor Red
+write-host " Tape Drives: Deny read access is set to an unknown setting  in user group policy" -ForegroundColor Red
 }
 
 $Deny_Write5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
 if ( $Deny_Write5 -eq $null)
 {
-write-host " Tape Drives: Deny write access is not configured" -ForegroundColor Yellow
+write-host " Tape Drives: Deny write access is not configured in user group policy" -ForegroundColor Yellow
 }
    elseif ( $Deny_Write5  -eq  '1' )
 {
-write-host " Tape Drives: Deny write access is enabled" -ForegroundColor Green
+write-host " Tape Drives: Deny write access is enabled in user group policy" -ForegroundColor Green
 }
   elseif ( $Deny_Write5  -eq  '0' )
 {
-write-host " Tape Drives: Deny write access is disabled" -ForegroundColor Red
+write-host " Tape Drives: Deny write access is disabled in user group policy" -ForegroundColor Red
 }
   else
 {
-write-host " Tape Drives: Deny write access is set to an unknown setting" -ForegroundColor Red
+write-host " Tape Drives: Deny write access is set to an unknown setting in user group policy" -ForegroundColor Red
 }
+
+$Deny_Read94 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Read -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Read
+if ( $Deny_Read94 -eq $null)
+{
+write-host " Tape Drives: Deny read access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Read94  -eq  '0' )
+{
+write-host " Tape Drives: Deny read access is disabled in user group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Read94  -eq  '1' )
+{
+write-host " Tape Drives: Deny read access is enabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Tape Drives: Deny read access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
+$Deny_Write94 = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\RemovableStorageDevices\{53f5630b-b6bf-11d0-94f2-00a0c91efb8b}\'  -Name Deny_Write -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_Write
+if ( $Deny_Write94 -eq $null)
+{
+write-host " Tape Drives: Deny write access is not configured in local machine group policy" -ForegroundColor Yellow
+}
+   elseif ( $Deny_Write94  -eq  '1' )
+{
+write-host " Tape Drives: Deny write access is enabled in local machine group policy" -ForegroundColor Green
+}
+  elseif ( $Deny_Write94  -eq  '0' )
+{
+write-host " Tape Drives: Deny write access is disabled in local machine group policy" -ForegroundColor Red
+}
+  else
+{
+write-host " Tape Drives: Deny write access is set to an unknown setting in local machine group policy" -ForegroundColor Red
+}
+
 write-host "Unable to check WPD Devices: Deny read access"
 write-host "Unable to check WPD Devices: Deny write access"
 
