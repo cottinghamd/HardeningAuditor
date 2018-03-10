@@ -4048,9 +4048,20 @@ else
 
 write-host "`r`n####################### NETWORK AUTHENTICATION #######################`r`n"
 
-write-host "Unable to check Network security: Configure encryption types allowed for Kerberos"
+$encryptiontypeskerb = Get-ItemProperty -Path  'Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters\'  -Name SupportedEncryptionTypes -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SupportedEncryptionTypes
+if ( $encryptiontypeskerb -eq $null)
+{
+write-host "Network security: Configure encryption types allowed for Kerberos is not configured" -ForegroundColor Yellow
+}
+   elseif ( $encryptiontypeskerb  -eq  '24' )
+{
+write-host "Network security: Configure encryption types allowed for Kerberos is configured correctly" -ForegroundColor Green
+}
+  else
+{
+write-host "Network security: Configure encryption types allowed for Kerberos is configured with a non-compliant setting, it must be set to allow only AES128_HMAC_SHA1 and AES256_HMAC_SHA1" -ForegroundColor Red
+}
 
-write-host "Unable to check Network security: LAN Manager authentication level"
 
 $LMCompatibilityLevel = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name LMCompatibilityLevel -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LMCompatibilityLevel
 if ( $LMCompatibilityLevel -eq $null)
@@ -4066,7 +4077,33 @@ write-host "Network security: LAN Manager authentication level is configured cor
 write-host "Network security: LAN Manager authentication level is configured incorrectly" -ForegroundColor Red
 }
 
-write-host "Unable to check Network security: Minimum session security for NTLM SSP based (including secure RPC) clients"
+$minsesssecclient = Get-ItemProperty -Path  'Registry::HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0\'  -Name NTLMMinClientSec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NTLMMinClientSec
+if ( $minsesssecclient -eq $null)
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is not configured" -ForegroundColor Yellow
+}
+   elseif ( $minsesssecclient  -eq  '537395200' )
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is configured correctly" -ForegroundColor Green
+}
+  else
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is configured with a non-compliant setting, it must be set to Require NTLMv2 session security and Require 128-bit encryption" -ForegroundColor Red
+}
+
+$minsesssecserver = Get-ItemProperty -Path  'Registry::HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0\'  -Name NTLMMinServerSec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NTLMMinServerSec
+if ( $minsesssecserver -eq $null)
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is not configured" -ForegroundColor Yellow
+}
+   elseif ( $minsesssecserver  -eq  '537395200' )
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is configured correctly" -ForegroundColor Green
+}
+  else
+{
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is configured with a non-compliant setting, it must be set to Require NTLMv2 session security and Require 128-bit encryption" -ForegroundColor Red
+}
 
 write-host "`r`n####################### NOLM HASH POLICY #######################`r`n"
 
