@@ -3063,7 +3063,85 @@ write-host "Turn off Local Group Policy Objects processing is set to an unknown 
 
 write-host "`r`n####################### HARD DRIVE ENCRYPTION #######################`r`n"
 
-write-host "Unable to check Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later)"
+$driveencryption = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -ErrorAction SilentlyContinue
+
+if ($driveencryption -eq $null)
+{
+write-host "Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later) is not configured or disabled" -ForegroundColor Red
+}
+    else
+    {
+        write-host "Choose drive encryption method and cipher strength (Windows 10 [Version 1511] and later) is enabled" -ForegroundColor Green
+
+$driveencryption2 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsOs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsOs
+
+if ($driveencryption2 -eq '7')
+{
+write-host "The Operating System Drives Bitlocker encryption method is set to XTS-AES 256-bit" -ForegroundColor Green
+}
+    elseif ($driveencryption2 -eq '6')
+    {
+        write-host "The Operating System Drives Bitlocker encryption method is set to XTS-AES 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption2 -eq '4')
+    {
+        write-host "The Operating System Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption2 -eq '3')
+    {
+        write-host "The Operating System Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    else
+    {
+        write-host "The Operating System Drives encryption method is unable to be determined"
+    }
+
+$driveencryption3 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsFdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsFdv
+
+if ($driveencryption3 -eq '7')
+{
+write-host "The Fixed Drives Bitlocker encryption method is set to XTS-AES 256-bit" -ForegroundColor Green
+}
+    elseif ($driveencryption3 -eq '6')
+    {
+        write-host "The Fixed Drives Bitlocker encryption method is set to XTS-AES 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption3 -eq '4')
+    {
+        write-host "The Fixed Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption3 -eq '3')
+    {
+        write-host "The Fixed Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+        else
+    {
+        write-host "The Fixed Drives encryption method is unable to be determined"
+    }
+
+$driveencryption4 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsRdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsRdv
+
+if ($driveencryption4 -eq '7')
+{
+write-host "The Removable Drives Bitlocker encryption method is set to XTS-AES 256-bit" -ForegroundColor Green
+}
+    elseif ($driveencryption4 -eq '6')
+    {
+        write-host "The Removable Drives Bitlocker encryption method is set to XTS-AES 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption4 -eq '4')
+    {
+        write-host "The Removable Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+    elseif ($driveencryption4 -eq '3')
+    {
+        write-host "The Removable Drives Bitlocker encryption method is set to AES-CBC 128-bit, the compliant setting is XES-AES 256-bit" -ForegroundColor Red
+    }
+        else
+    {
+        write-host "The Removable Drives encryption method is unable to be determined"
+    }
+}
 
 $DisableExternalDMAUnderLock = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\'  -Name DisableExternalDMAUnderLock -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableExternalDMAUnderLock
 if ( $DisableExternalDMAUnderLock -eq $null)
