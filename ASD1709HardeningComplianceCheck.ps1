@@ -5640,7 +5640,7 @@ write-host "Use FIPS compliant algorithms for encryption, hashing and signing is
 
 write-host "`r`n####################### USER RIGHTS POLICIES #######################`r`n"
 
-write-host "Unable to check this chapter"
+write-host "Unable to check this chapter as it requires a GPO export to view the settings (they are not stored locally). Please check policies located at 'Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment'" -ForegroundColor Cyan
 
 write-host "`r`n####################### VIRTUALISED WEB AND EMAIL ACCESS #######################`r`n"
 
