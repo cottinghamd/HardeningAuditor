@@ -5176,7 +5176,19 @@ write-host "Enables or disables Windows Game Recording and Broadcasting is enabl
 write-host "Enables or disables Windows Game Recording and Broadcasting is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Unable to check some security options on page 41"
+write-host "Domain member: Disable machine account password changes"
+
+write-host "Domain member: Maximum machine account password age"
+
+write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities."
+
+write-host "Network security: Force logoff when logon hours expire"
+
+write-host "Network security: LDAP client signing requirements"
+
+write-host "System objects: Require case insensitivity for non-Windows subsystems"
+
+write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links)"
 
 write-host "`r`n####################### SERVER MESSAGE BLOCK SESSIONS #######################`r`n"
 
@@ -5561,7 +5573,31 @@ write-host "This script is unable to check if a Standard Operating Environment (
 
 write-host "`r`n####################### SYSTEM BACKUP AND RESTORE #######################`r`n"
 
-write-host "Can't check system backup and restore settings yet"
+$admins3 = @()
+$group3 =[ADSI]"WinNT://localhost/Backup Operators" 
+$members3 = @($group2.psbase.Invoke("Members"))
+$members3 | foreach {
+ $obj3 = new-object psobject -Property @{
+ Member = $_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)
+ }
+ $admins3 += $obj3
+ } 
+$members3 = $admins3.Member
+
+If ($members3 -eq $null)
+{
+write-host "No members have been added to the Backup Operators group, Administrators should members of this group" -ForegroundColor Red
+}
+elseif ($members3 -eq 'Administrators')
+{
+write-host "Administrators are the only members of the Backup Operators group, this setting is compliant" -ForegroundColor Green
+}
+else
+{
+write-host "The following members are added to the Backup Operators group: $members3. Only Administrators should be members of this group." -ForegroundColor Red
+}
+
+write-host "Unable to check Restore Files and Directories setting at this time, please check manually Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Restore Files and Directories. Only Administrators should be members of this setting" -ForegroundColor Cyan
 
 write-host "`r`n####################### SYSTEM CRYPTOGRAPHY #######################`r`n"
 
