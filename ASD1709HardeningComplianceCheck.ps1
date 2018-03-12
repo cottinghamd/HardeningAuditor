@@ -5176,19 +5176,127 @@ write-host "Enables or disables Windows Game Recording and Broadcasting is enabl
 write-host "Enables or disables Windows Game Recording and Broadcasting is set to an unknown setting" -ForegroundColor Red
 }
 
-write-host "Domain member: Disable machine account password changes"
 
-write-host "Domain member: Maximum machine account password age"
+$machineaccdisable = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\ -Name DisablePasswordChange -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePasswordChange
+if ( $machineaccdisable -eq $null)
+{
+write-host "Domain member: Disable machine account password changes is not configured" -ForegroundColor Yellow
+}
+   elseif ( $machineaccdisable  -eq  '0' )
+{
+write-host "Domain member: Disable machine account password changes is disabled" -ForegroundColor Green
+}
+  elseif ( $machineaccdisable  -eq  '1' )
+{
+write-host "Domain member: Disable machine account password changes is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Domain member: Disable machine account password changes is set to an unknown setting" -ForegroundColor Red
+}
 
-write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities."
 
-write-host "Network security: Force logoff when logon hours expire"
+$1AW2Cfp = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\'  -Name MaximumPasswordAge -ErrorAction SilentlyContinue|Select-Object -ExpandProperty MaximumPasswordAge
+if ( $1AW2Cfp -eq $null)
+{
+write-host "Domain member: Maximum machine account password age is not configured" -ForegroundColor Yellow
+}
+   elseif ( $1AW2Cfp  -eq  '30' )
+{
+write-host "Domain member: Maximum machine account password age is set to a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2Cfp  -lt  '30' )
+{
+write-host "Domain member: Maximum machine account password age is set to $1AW2CfpSKiewv0 which a compliant setting" -ForegroundColor Green
+}
+  elseif ( $1AW2Cfp  -gt  '30' )
+{
+write-host "Domain member: Maximum machine account password age is set to $1AW2CfpSKiewv0 which is a higher value than 30 required for compliance" -ForegroundColor Red
+}
+  else
+{
+write-host "Domain member: Maximum machine account password age is set to an unknown setting" -ForegroundColor Red
+}
 
-write-host "Network security: LDAP client signing requirements"
+$AllowOnlineID = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\pku2u\ -Name AllowOnlineID -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowOnlineID
+if ( $AllowOnlineID -eq $null)
+{
+write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities is not configured" -ForegroundColor Yellow
+}
+   elseif ( $AllowOnlineID  -eq  '0' )
+{
+write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities is disabled" -ForegroundColor Green
+}
+  elseif ( $AllowOnlineID  -eq  '1' )
+{
+write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities is enabled" -ForegroundColor Red
+}
+  else
+{
+write-host "Network security: Allow PKU2U authentication requests to this computer to use online identities is set to an unknown setting" -ForegroundColor Red
+}
 
-write-host "System objects: Require case insensitivity for non-Windows subsystems"
 
-write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links)"
+write-host "Unable to check Network security: Force logoff when logon hours expire because it is not a registry setting. Please manually check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options and ensure this is set to enabled." -ForegroundColor Cyan
+
+$LDAPClientIntegrity = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LDAP\' -Name LDAPClientIntegrity -ErrorAction SilentlyContinue|Select-Object -ExpandProperty LDAPClientIntegrity
+if ( $LDAPClientIntegrity -eq $null)
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is not configured" -ForegroundColor Yellow
+}
+   elseif ( $LDAPClientIntegrity  -eq  '2' )
+{
+write-host "Network security: LDAP client signing requirements is enabled and set to Require Signing, it should be set to Negotiate Signing" -ForegroundColor Red
+}
+  elseif ( $LDAPClientIntegrity  -eq  '1' )
+{
+write-host "Network security: LDAP client signing requirements is enabled and set to Negotiate Signing" -ForegroundColor Green
+}
+  elseif ( $LDAPClientIntegrity  -eq  '0' )
+{
+write-host "Network security: LDAP client signing requirements is enabled and set None, it should be set to Negotiate Signing" -ForegroundColor Red
+}
+  else
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is set to an unknown setting" -ForegroundColor Red
+}
+
+$ObCaseInsensitive = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Kernel\' -Name ObCaseInsensitive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ObCaseInsensitive
+if ( $ObCaseInsensitive -eq $null)
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is not configured" -ForegroundColor Yellow
+}
+   elseif ( $ObCaseInsensitive  -eq  '0' )
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is disabled" -ForegroundColor Red
+}
+  elseif ( $ObCaseInsensitive  -eq  '1' )
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is enabled" -ForegroundColor Green
+}
+  else
+{
+write-host "System objects: Require case insensitivity for non-Windows subsystems is set to an unknown setting" -ForegroundColor Red
+}
+
+$ProtectionMode = Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\' -Name ProtectionMode -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ProtectionMode
+if ($ProtectionMode -eq $null)
+{
+write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is not configured" -ForegroundColor Yellow
+}
+   elseif ($ProtectionMode  -eq  '0' )
+{
+write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is disabled" -ForegroundColor Red
+}
+  elseif ($ProtectionMode  -eq  '1' )
+{
+write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is enabled" -ForegroundColor Green
+}
+  else
+{
+write-host "System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is set to an unknown setting" -ForegroundColor Red
+}
+
 
 write-host "`r`n####################### SERVER MESSAGE BLOCK SESSIONS #######################`r`n"
 
