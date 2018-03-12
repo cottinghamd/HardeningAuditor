@@ -5967,7 +5967,7 @@ write-host "Display file extensions is not configured" -ForegroundColor Yellow
 {
 write-host "Display file extensions is enabled" -ForegroundColor Green
 }
-  elseif ( $rbWyQvlG5TAVoS  -eq  '1' )
+  elseif ( $rbWyQvlG5TAVoS  -eq  '0' )
 {
 write-host "Display file extensions is disabled" -ForegroundColor Red
 }
