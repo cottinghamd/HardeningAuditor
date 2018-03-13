@@ -291,7 +291,21 @@ process {
 $officetemp = Get-OfficeVersion | select -ExpandProperty version
 $officeversion = $officetemp.Substring(0,4)
 
-#This registry paths assume that policies have been applied in group policy in user preferences
+
+$officeuserhive = Get-ChildItem -Path "Registry::HKCU\Software\Policies\Microsoft\Office\$officeversion\" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name 
+$officelocalhive = Get-ChildItem -Path "Registry::HKLM\Software\Policies\Microsoft\Office\$officeversion\" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name 
+
+if ($officeuserhive -eq $null -and $officelocalhive -eq $null)
+{
+write-host "No Microsoft Office group policies were detected, this script will now exit" -ForegroundColor Yellow
+pause
+break
+}
+
+write-host "`r`n####################### ATTACK SURFACE REDUCTION #######################`r`n"
+
+write-host "`r`n####################### MACROS #######################`r`n"
+
 Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name | ForEach-Object{
 $officename = ($_).Split('\')[6]
 if ($officename.Contains("outlook") -or $officename.Contains("common") -or $officename.Contains("firstrun") -or $officename.Contains("onenote") -or $officename.Contains("Registration"))
@@ -393,3 +407,23 @@ foreach($_ in 1..50)
     }
 }
 }
+
+write-host "`r`n####################### PATCHING #######################`r`n"
+
+write-host "`r`n####################### ACTIVE-X #######################`r`n"
+
+write-host "`r`n####################### ADD-INS #######################`r`n"
+
+write-host "`r`n####################### EXTENSION HARDENING #######################`r`n"
+
+write-host "`r`n####################### FILE TYPE BLOCKING #######################`r`n"
+
+write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
+
+write-host "`r`n####################### OFFICE FILE VALIDATION #######################`r`n"  -ForegroundColor Cyan
+
+write-host "`r`n####################### PROTECTED VIEW #######################`r`n"  -ForegroundColor Cyan
+
+write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"  -ForegroundColor Cyan
+
+write-host "`r`n####################### REPORTING INFORMATION #######################`r`n" -ForegroundColor Cyan
