@@ -367,7 +367,7 @@ write-host "ELAM Boot-Start Driver Initialization Policy is not configured" -For
     {
         write-host "ELAM Boot-Start Driver Initialization Policy is enabled and set to Good Only" -ForegroundColor Green
     }
-    elseif ($elam -eq '2')
+    elseif ($elam -eq '2' -or $elam -eq '1')
     {
         write-host "ELAM Boot-Start Driver Initialization Policy is enabled and set to Good and Unknown" -ForegroundColor Green
     }
