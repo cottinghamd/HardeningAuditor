@@ -959,3 +959,74 @@ else
 write-host "Disable Opt-in Wizard on first run is set to an unknown configuration" -ForegroundColor Red
 }
 
+
+
+#Enable Customer Experience Improvement Program
+
+$qmenable = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\" -Name qmenable -ErrorAction SilentlyContinue|Select-Object -ExpandProperty qmenable
+
+if ($qmenable -eq $null)
+{
+write-host "Enable Customer Experience Improvement Program is not configured"
+}
+
+else-if ($qmenable -eq '0')
+{
+write-host "Enable Customer Experience Improvement Program is disabled" -ForegroundColor Green
+}
+else-if ($qmenable -eq '1')
+{
+write-host "Enable Customer Experience Improvement Program is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Enable Customer Experience Improvement Program is set to an unknown configuration" -ForegroundColor Red
+}
+
+
+
+#Send Office Feedback
+
+$enabled = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\feedback" -Name enabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty enabled
+
+if ($enabled -eq $null)
+{
+write-host "Send Office Feedback is not configured"
+}
+
+else-if ($enabled -eq '0')
+{
+write-host "Send Office Feedback is disabled" -ForegroundColor Green
+}
+else-if ($enabled -eq '1')
+{
+write-host "Send Office Feedback is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Send Office Feedback is set to an unknown configuration" -ForegroundColor Red
+}
+
+
+
+#Send personal information
+
+$sendcustomerdata = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\" -Name sendcustomerdata -ErrorAction SilentlyContinue|Select-Object -ExpandProperty sendcustomerdata
+
+if ($sendcustomerdata -eq $null)
+{
+write-host "Send personal information is not configured"
+}
+
+else-if ($sendcustomerdata -eq '0')
+{
+write-host "Send personal information is disabled" -ForegroundColor Green
+}
+else-if ($sendcustomerdata -eq '1')
+{
+write-host "Send personal information is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Send personal information is set to an unknown configuration" -ForegroundColor Red
+}
