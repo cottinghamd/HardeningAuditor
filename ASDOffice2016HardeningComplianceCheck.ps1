@@ -677,6 +677,75 @@ write-host "Do not open files in unsafe locations in Protected View is set to an
 }
 
 
+#Turn off Protected View for attachments opened from Outlook - Excel
+
+$disableattachmentsexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+
+if ($disableattachmentsexcel -eq $null)
+{
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel"
+}
+
+else-if ($disableattachmentsexcel -eq '0')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is disabled in Excel" -ForegroundColor Green
+}
+else-if ($disableattachmentsexcel -eq '1')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is enabled in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
+
+
+#Turn off Protected View for attachments opened from Outlook - Powerpoint
+
+$disableattachmentspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+
+if ($disableattachmentspowerpoint -eq $null)
+{
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint"
+}
+
+else-if ($disableattachmentspowerpoint -eq '0')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is disabled in powerpoint" -ForegroundColor Green
+}
+else-if ($disableattachmentspowerpoint -eq '1')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is enabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
+#Turn off Protected View for attachments opened from Outlook - word
+
+$disableattachmentsword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+
+if ($disableattachmentsword -eq $null)
+{
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in word"
+}
+
+else-if ($disableattachmentsword -eq '0')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is disabled in word" -ForegroundColor Green
+}
+else-if ($disableattachmentsword -eq '1')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is enabled in word" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in word" -ForegroundColor Red
+}
+
 write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"  -ForegroundColor Cyan
 
 write-host "`r`n####################### REPORTING INFORMATION #######################`r`n" -ForegroundColor Cyan
