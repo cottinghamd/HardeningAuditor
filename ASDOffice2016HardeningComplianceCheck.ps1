@@ -420,7 +420,120 @@ write-host "`r`n####################### FILE TYPE BLOCKING #####################
 
 write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
 
+#Powerpoint - Make Hidden Markup Visible
+
+$hiddenmarkupppt = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\options" -Name markupopensave -ErrorAction SilentlyContinue|Select-Object -ExpandProperty markupopensave
+
+if ($hiddenmarkupppt -eq $null)
+{
+write-host "Make hidden markup visible for Powerpoint is not configured"
+}
+
+else-if ($hiddenmarkupppt -eq '1')
+{
+write-host "Make hidden markup visible for Powerpoint is enabled" -ForegroundColor Green
+}
+else
+{
+write-host "Make hidden markup visible for Powerpoint is disabled" -ForegroundColor Red
+}
+
+
+#Word - Make Hidden Markup Visible
+
+$hiddenmarkupword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\options" -Name showmarkupopensave -ErrorAction SilentlyContinue|Select-Object -ExpandProperty showmarkupopensave
+
+if ($hiddenmarkupword -eq $null)
+{
+write-host "Make hidden markup visible for Word is not configured"
+}
+
+else-if ($hiddenmarkupword -eq '1')
+{
+write-host "Make hidden markup visible for Word is enabled" -ForegroundColor Green
+}
+else
+{
+write-host "Make hidden markup visible for Word is disabled" -ForegroundColor Red
+}
+
+
 write-host "`r`n####################### OFFICE FILE VALIDATION #######################`r`n"  -ForegroundColor Cyan
+
+#Turn off error reporting for files that fail file validation
+
+$disablereporting = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\security\filevalidation" -Name disablereporting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablereporting
+
+if ($disablereporting -eq $null)
+{
+write-host "Turn off error reporting for files that fail file validation is not configured"
+}
+
+else-if ($disablereporting -eq '1')
+{
+write-host "Turn off error reporting for files that fail file validation is enabled" -ForegroundColor Green
+}
+else
+{
+write-host "Turn off error reporting for files that fail file validation is disabled" -ForegroundColor Red
+}
+
+
+#Turn off file validation - excel
+
+$filevalidationexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\filevalidation" -Name enableonload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty enableonload
+
+if ($filevalidationexcel -eq $null)
+{
+write-host "Turn off file validation is not configured in Excel"
+}
+
+else-if ($filevalidationexcel -eq '1')
+{
+write-host "Turn off file validation is disabled in Excel" -ForegroundColor Green
+}
+else
+{
+write-host "Turn off file validation is enabled in Excel" -ForegroundColor Red
+}
+
+
+#Turn off file validation - Powerpoint
+
+$filevalidationppt = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\filevalidation" -Name enableonload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty enableonload
+
+if ($filevalidationppt -eq $null)
+{
+write-host "Turn off file validation is not configured in Powepoint"
+}
+
+else-if ($filevalidationppt -eq '1')
+{
+write-host "Turn off file validation is disabled in Powepoint" -ForegroundColor Green
+}
+else
+{
+write-host "Turn off file validation is enabled in Powepoint" -ForegroundColor Red
+}
+
+#Turn off file validation - Word
+
+$filevalidationword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\filevalidation" -Name enableonload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty enableonload
+
+if ($filevalidationword -eq $null)
+{
+write-host "Turn off file validation is not configured in Word"
+}
+
+else-if ($filevalidationppt -eq '1')
+{
+write-host "Turn off file validation is disabled in Word" -ForegroundColor Green
+}
+else
+{
+write-host "Turn off file validation is enabled in Word" -ForegroundColor Red
+}
+
 
 write-host "`r`n####################### PROTECTED VIEW #######################`r`n"  -ForegroundColor Cyan
 
