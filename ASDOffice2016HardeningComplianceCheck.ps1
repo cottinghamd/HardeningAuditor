@@ -936,3 +936,26 @@ else
 write-host "Automatically receive small updates to improve reliability is set to an unknown configuration" -ForegroundColor Red
 }
 
+
+#Disable Opt-in Wizard on first run
+
+$shownfirstrunoptin = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\general" -Name shownfirstrunoptin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty shownfirstrunoptin
+
+if ($shownfirstrunoptin -eq $null)
+{
+write-host "Disable Opt-in Wizard on first run is not configured"
+}
+
+else-if ($shownfirstrunoptin -eq '1')
+{
+write-host "Disable Opt-in Wizard on first run is enabled" -ForegroundColor Green
+}
+else-if ($shownfirstrunoptin -eq '0')
+{
+write-host "Disable Opt-in Wizard on first run is disabled" -ForegroundColor Red
+}
+else
+{
+write-host "Disable Opt-in Wizard on first run is set to an unknown configuration" -ForegroundColor Red
+}
+
