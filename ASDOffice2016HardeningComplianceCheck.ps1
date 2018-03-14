@@ -537,6 +537,146 @@ write-host "Turn off file validation is enabled in Word" -ForegroundColor Red
 
 write-host "`r`n####################### PROTECTED VIEW #######################`r`n"  -ForegroundColor Cyan
 
+#Do not open files from the Internet zone in Protected View - Excel
+
+$disableifexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableinternetfilesinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableinternetfilesinpv
+
+if ($disableifexcel -eq $null)
+{
+write-host "Do not open files from the Internet zone in Protected View is not configured in Excel"
+}
+
+else-if ($disableifexcel -eq '0')
+{
+write-host "Do not open files from the Internet zone in Protected View is disabled in Excel" -ForegroundColor Green
+}
+else-if ($disableifexcel -eq '1')
+{
+write-host "Do not open files from the Internet zone in Protected View is enabled in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
+
+
+#Do not open files from the Internet zone in Protected View - Powerpoint
+
+$disableifpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableinternetfilesinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableinternetfilesinpv
+
+if ($disableifpowerpoint -eq $null)
+{
+write-host "Do not open files from the Internet zone in Protected View is not configured in powerpoint"
+}
+
+else-if ($disableifpowerpoint -eq '0')
+{
+write-host "Do not open files from the Internet zone in Protected View is disabled in powerpoint" -ForegroundColor Green
+}
+else-if ($disableifpowerpoint -eq '1')
+{
+write-host "Do not open files from the Internet zone in Protected View is enabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
+#Do not open files from the Internet zone in Protected View - word
+
+$disableifword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\protectedview" -Name disableinternetfilesinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableinternetfilesinpv
+
+if ($disableifword -eq $null)
+{
+write-host "Do not open files from the Internet zone in Protected View is not configured in word"
+}
+
+else-if ($disableifword -eq '0')
+{
+write-host "Do not open files from the Internet zone in Protected View is disabled in word" -ForegroundColor Green
+}
+else-if ($disableifword -eq '1')
+{
+write-host "Do not open files from the Internet zone in Protected View is enabled in word" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in word" -ForegroundColor Red
+}
+
+
+#Do not open files in unsafe locations in Protected View - Excel
+
+$disableifulexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
+
+if ($disableifulexcel -eq $null)
+{
+write-host "Do not open files in unsafe locations in Protected View is not configured in Excel"
+}
+
+else-if ($disableifulexcel -eq '0')
+{
+write-host "Do not open files in unsafe locations in Protected View is disabled in Excel" -ForegroundColor Green
+}
+else-if ($disableifulexcel -eq '1')
+{
+write-host "Do not open files in unsafe locations in Protected View is enabled in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
+
+
+#Do not open files in unsafe locations in Protected View - Powerpoint
+
+$disableifulpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
+
+if ($disableifulpowerpoint -eq $null)
+{
+write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint"
+}
+
+else-if ($disableifulpowerpoint -eq '0')
+{
+write-host "Do not open files in unsafe locations in Protected View is disabled in powerpoint" -ForegroundColor Green
+}
+else-if ($disableifulpowerpoint -eq '1')
+{
+write-host "Do not open files in unsafe locations in Protected View is enabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
+#Do not open files in unsafe locations in Protected View - word
+
+$disableifulword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
+
+if ($disableifulword -eq $null)
+{
+write-host "Do not open files in unsafe locations in Protected View is not configured in word"
+}
+
+else-if ($disableifulword -eq '0')
+{
+write-host "Do not open files in unsafe locations in Protected View is disabled in word" -ForegroundColor Green
+}
+else-if ($disableifulword -eq '1')
+{
+write-host "Do not open files in unsafe locations in Protected View is enabled in word" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in word" -ForegroundColor Red
+}
+
+
 write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"  -ForegroundColor Cyan
 
 write-host "`r`n####################### REPORTING INFORMATION #######################`r`n" -ForegroundColor Cyan
