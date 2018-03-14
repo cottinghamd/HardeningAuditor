@@ -888,3 +888,51 @@ write-host "Turn off Trusted Documents on the network is set to an unknown confi
 }
 
 write-host "`r`n####################### REPORTING INFORMATION #######################`r`n" -ForegroundColor Cyan
+
+
+#Allow including screenshot with Office Feedback
+
+$includescreenshot = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\feedback" -Name includescreenshot -ErrorAction SilentlyContinue|Select-Object -ExpandProperty includescreenshot
+
+if ($includescreenshot -eq $null)
+{
+write-host "Allow including screenshot with Office Feedback is not configured"
+}
+
+else-if ($includescreenshot -eq '0')
+{
+write-host "Allow including screenshot with Office Feedback is disabled" -ForegroundColor Green
+}
+else-if ($includescreenshot -eq '1')
+{
+write-host "Allow including screenshot with Office Feedback is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Allow including screenshot with Office Feedback is set to an unknown configuration" -ForegroundColor Red
+}
+
+
+
+#Automatically receive small updates to improve reliability
+
+$updatereliabilitydata = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\common\" -Name updatereliabilitydata -ErrorAction SilentlyContinue|Select-Object -ExpandProperty updatereliabilitydata
+
+if ($updatereliabilitydata -eq $null)
+{
+write-host "Automatically receive small updates to improve reliability is not configured"
+}
+
+else-if ($updatereliabilitydata -eq '0')
+{
+write-host "Automatically receive small updates to improve reliability is disabled" -ForegroundColor Green
+}
+else-if ($updatereliabilitydata -eq '1')
+{
+write-host "Automatically receive small updates to improve reliability is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Automatically receive small updates to improve reliability is set to an unknown configuration" -ForegroundColor Red
+}
+
