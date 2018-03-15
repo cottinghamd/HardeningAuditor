@@ -781,11 +781,11 @@ if ($trusteddocspowerpoint -eq $null)
 write-host "Turn off trusted documents is not configured in powerpoint"
 }
 
-elseif ($trusteddocsexcel -eq '1')
+elseif ($trusteddocspowerpoint -eq '1')
 {
 write-host "Turn off trusted documents is enabled in powerpoint" -ForegroundColor Green
 }
-elseif ($trusteddocsexcel -eq '0')
+elseif ($trusteddocspowerpoint -eq '0')
 {
 write-host "Turn off trusted documents is disabled in powerpoint" -ForegroundColor Red
 }
@@ -804,11 +804,11 @@ if ($trusteddocsword -eq $null)
 write-host "Turn off trusted documents is not configured in word"
 }
 
-elseif ($trusteddocsexcel -eq '1')
+elseif ($trusteddocsword -eq '1')
 {
 write-host "Turn off trusted documents is enabled in word" -ForegroundColor Green
 }
-elseif ($trusteddocsexcel -eq '0')
+elseif ($trusteddocsword -eq '0')
 {
 write-host "Turn off trusted documents is disabled in word" -ForegroundColor Red
 }
@@ -851,11 +851,11 @@ if ($trusteddocsnetworkpowerpoint -eq $null)
 write-host "Turn off Trusted Documents on the network is not configured in powerpoint"
 }
 
-elseif ($trusteddocsnetworkexcel -eq '1')
+elseif ($trusteddocsnetworkpowerpoint -eq '1')
 {
 write-host "Turn off Trusted Documents on the network is enabled in powerpoint" -ForegroundColor Green
 }
-elseif ($trusteddocsnetworkexcel -eq '0')
+elseif ($trusteddocsnetworkpowerpoint -eq '0')
 {
 write-host "Turn off Trusted Documents on the network is disabled in powerpoint" -ForegroundColor Red
 }
@@ -874,11 +874,11 @@ if ($trusteddocsnetworkword -eq $null)
 write-host "Turn off Trusted Documents on the network is not configured in word"
 }
 
-elseif ($trusteddocsnetworkexcel -eq '1')
+elseif ($trusteddocsnetworkword -eq '1')
 {
 write-host "Turn off Trusted Documents on the network is enabled in word" -ForegroundColor Green
 }
-elseif ($trusteddocsnetworkexcel -eq '0')
+elseif ($trusteddocsnetworkword -eq '0')
 {
 write-host "Turn off Trusted Documents on the network is disabled in word" -ForegroundColor Red
 }
