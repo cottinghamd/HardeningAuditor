@@ -429,7 +429,7 @@ if ($hiddenmarkupppt -eq $null)
 write-host "Make hidden markup visible for Powerpoint is not configured"
 }
 
-else-if ($hiddenmarkupppt -eq '1')
+elseif ($hiddenmarkupppt -eq '1')
 {
 write-host "Make hidden markup visible for Powerpoint is enabled" -ForegroundColor Green
 }
@@ -448,7 +448,7 @@ if ($hiddenmarkupword -eq $null)
 write-host "Make hidden markup visible for Word is not configured"
 }
 
-else-if ($hiddenmarkupword -eq '1')
+elseif ($hiddenmarkupword -eq '1')
 {
 write-host "Make hidden markup visible for Word is enabled" -ForegroundColor Green
 }
@@ -469,7 +469,7 @@ if ($disablereporting -eq $null)
 write-host "Turn off error reporting for files that fail file validation is not configured"
 }
 
-else-if ($disablereporting -eq '1')
+elseif ($disablereporting -eq '1')
 {
 write-host "Turn off error reporting for files that fail file validation is enabled" -ForegroundColor Green
 }
@@ -488,7 +488,7 @@ if ($filevalidationexcel -eq $null)
 write-host "Turn off file validation is not configured in Excel"
 }
 
-else-if ($filevalidationexcel -eq '1')
+elseif ($filevalidationexcel -eq '1')
 {
 write-host "Turn off file validation is disabled in Excel" -ForegroundColor Green
 }
@@ -507,7 +507,7 @@ if ($filevalidationppt -eq $null)
 write-host "Turn off file validation is not configured in Powepoint"
 }
 
-else-if ($filevalidationppt -eq '1')
+elseif ($filevalidationppt -eq '1')
 {
 write-host "Turn off file validation is disabled in Powepoint" -ForegroundColor Green
 }
@@ -525,7 +525,7 @@ if ($filevalidationword -eq $null)
 write-host "Turn off file validation is not configured in Word"
 }
 
-else-if ($filevalidationppt -eq '1')
+elseif ($filevalidationppt -eq '1')
 {
 write-host "Turn off file validation is disabled in Word" -ForegroundColor Green
 }
@@ -546,11 +546,11 @@ if ($disableifexcel -eq $null)
 write-host "Do not open files from the Internet zone in Protected View is not configured in Excel"
 }
 
-else-if ($disableifexcel -eq '0')
+elseif ($disableifexcel -eq '0')
 {
 write-host "Do not open files from the Internet zone in Protected View is disabled in Excel" -ForegroundColor Green
 }
-else-if ($disableifexcel -eq '1')
+elseif ($disableifexcel -eq '1')
 {
 write-host "Do not open files from the Internet zone in Protected View is enabled in Excel" -ForegroundColor Red
 }
@@ -570,11 +570,11 @@ if ($disableifpowerpoint -eq $null)
 write-host "Do not open files from the Internet zone in Protected View is not configured in powerpoint"
 }
 
-else-if ($disableifpowerpoint -eq '0')
+elseif ($disableifpowerpoint -eq '0')
 {
 write-host "Do not open files from the Internet zone in Protected View is disabled in powerpoint" -ForegroundColor Green
 }
-else-if ($disableifpowerpoint -eq '1')
+elseif ($disableifpowerpoint -eq '1')
 {
 write-host "Do not open files from the Internet zone in Protected View is enabled in powerpoint" -ForegroundColor Red
 }
@@ -593,11 +593,11 @@ if ($disableifword -eq $null)
 write-host "Do not open files from the Internet zone in Protected View is not configured in word"
 }
 
-else-if ($disableifword -eq '0')
+elseif ($disableifword -eq '0')
 {
 write-host "Do not open files from the Internet zone in Protected View is disabled in word" -ForegroundColor Green
 }
-else-if ($disableifword -eq '1')
+elseif ($disableifword -eq '1')
 {
 write-host "Do not open files from the Internet zone in Protected View is enabled in word" -ForegroundColor Red
 }
@@ -616,11 +616,11 @@ if ($disableifulexcel -eq $null)
 write-host "Do not open files in unsafe locations in Protected View is not configured in Excel"
 }
 
-else-if ($disableifulexcel -eq '0')
+elseif ($disableifulexcel -eq '0')
 {
 write-host "Do not open files in unsafe locations in Protected View is disabled in Excel" -ForegroundColor Green
 }
-else-if ($disableifulexcel -eq '1')
+elseif ($disableifulexcel -eq '1')
 {
 write-host "Do not open files in unsafe locations in Protected View is enabled in Excel" -ForegroundColor Red
 }
@@ -640,11 +640,11 @@ if ($disableifulpowerpoint -eq $null)
 write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint"
 }
 
-else-if ($disableifulpowerpoint -eq '0')
+elseif ($disableifulpowerpoint -eq '0')
 {
 write-host "Do not open files in unsafe locations in Protected View is disabled in powerpoint" -ForegroundColor Green
 }
-else-if ($disableifulpowerpoint -eq '1')
+elseif ($disableifulpowerpoint -eq '1')
 {
 write-host "Do not open files in unsafe locations in Protected View is enabled in powerpoint" -ForegroundColor Red
 }
@@ -663,11 +663,11 @@ if ($disableifulword -eq $null)
 write-host "Do not open files in unsafe locations in Protected View is not configured in word"
 }
 
-else-if ($disableifulword -eq '0')
+elseif ($disableifulword -eq '0')
 {
 write-host "Do not open files in unsafe locations in Protected View is disabled in word" -ForegroundColor Green
 }
-else-if ($disableifulword -eq '1')
+elseif ($disableifulword -eq '1')
 {
 write-host "Do not open files in unsafe locations in Protected View is enabled in word" -ForegroundColor Red
 }
@@ -686,11 +686,11 @@ if ($disableattachmentsexcel -eq $null)
 write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel"
 }
 
-else-if ($disableattachmentsexcel -eq '0')
+elseif ($disableattachmentsexcel -eq '0')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is disabled in Excel" -ForegroundColor Green
 }
-else-if ($disableattachmentsexcel -eq '1')
+elseif ($disableattachmentsexcel -eq '1')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is enabled in Excel" -ForegroundColor Red
 }
@@ -710,11 +710,11 @@ if ($disableattachmentspowerpoint -eq $null)
 write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint"
 }
 
-else-if ($disableattachmentspowerpoint -eq '0')
+elseif ($disableattachmentspowerpoint -eq '0')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is disabled in powerpoint" -ForegroundColor Green
 }
-else-if ($disableattachmentspowerpoint -eq '1')
+elseif ($disableattachmentspowerpoint -eq '1')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is enabled in powerpoint" -ForegroundColor Red
 }
@@ -733,11 +733,11 @@ if ($disableattachmentsword -eq $null)
 write-host "Turn off Protected View for attachments opened from Outlook is not configured in word"
 }
 
-else-if ($disableattachmentsword -eq '0')
+elseif ($disableattachmentsword -eq '0')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is disabled in word" -ForegroundColor Green
 }
-else-if ($disableattachmentsword -eq '1')
+elseif ($disableattachmentsword -eq '1')
 {
 write-host "Turn off Protected View for attachments opened from Outlook is enabled in word" -ForegroundColor Red
 }
@@ -757,11 +757,11 @@ if ($trusteddocsexcel -eq $null)
 write-host "Turn off trusted documents is not configured in Excel"
 }
 
-else-if ($trusteddocsexcel -eq '1')
+elseif ($trusteddocsexcel -eq '1')
 {
 write-host "Turn off trusted documents is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsexcel -eq '0')
+elseif ($trusteddocsexcel -eq '0')
 {
 write-host "Turn off trusted documents is disabled in Excel" -ForegroundColor Red
 }
@@ -781,11 +781,11 @@ if ($trusteddocspowerpoint -eq $null)
 write-host "Turn off trusted documents is not configured in powerpoint"
 }
 
-else-if ($trusteddocsexcel -eq '1')
+elseif ($trusteddocsexcel -eq '1')
 {
 write-host "Turn off trusted documents is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsexcel -eq '0')
+elseif ($trusteddocsexcel -eq '0')
 {
 write-host "Turn off trusted documents is disabled in Excel" -ForegroundColor Red
 }
@@ -804,11 +804,11 @@ if ($trusteddocsword -eq $null)
 write-host "Turn off trusted documents is not configured in word"
 }
 
-else-if ($trusteddocsexcel -eq '1')
+elseif ($trusteddocsexcel -eq '1')
 {
 write-host "Turn off trusted documents is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsexcel -eq '0')
+elseif ($trusteddocsexcel -eq '0')
 {
 write-host "Turn off trusted documents is disabled in Excel" -ForegroundColor Red
 }
@@ -827,11 +827,11 @@ if ($trusteddocsnetworkexcel -eq $null)
 write-host "Turn off Trusted Documents on the network is not configured in Excel"
 }
 
-else-if ($trusteddocsnetworkexcel -eq '1')
+elseif ($trusteddocsnetworkexcel -eq '1')
 {
 write-host "Turn off Trusted Documents on the network is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsnetworkexcel -eq '0')
+elseif ($trusteddocsnetworkexcel -eq '0')
 {
 write-host "Turn off Trusted Documents on the network is disabled in Excel" -ForegroundColor Red
 }
@@ -851,11 +851,11 @@ if ($trusteddocsnetworkpowerpoint -eq $null)
 write-host "Turn off Trusted Documents on the network is not configured in powerpoint"
 }
 
-else-if ($trusteddocsnetworkexcel -eq '1')
+elseif ($trusteddocsnetworkexcel -eq '1')
 {
 write-host "Turn off Trusted Documents on the network is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsnetworkexcel -eq '0')
+elseif ($trusteddocsnetworkexcel -eq '0')
 {
 write-host "Turn off Trusted Documents on the network is disabled in Excel" -ForegroundColor Red
 }
@@ -874,11 +874,11 @@ if ($trusteddocsnetworkword -eq $null)
 write-host "Turn off Trusted Documents on the network is not configured in word"
 }
 
-else-if ($trusteddocsnetworkexcel -eq '1')
+elseif ($trusteddocsnetworkexcel -eq '1')
 {
 write-host "Turn off Trusted Documents on the network is enabled in Excel" -ForegroundColor Green
 }
-else-if ($trusteddocsnetworkexcel -eq '0')
+elseif ($trusteddocsnetworkexcel -eq '0')
 {
 write-host "Turn off Trusted Documents on the network is disabled in Excel" -ForegroundColor Red
 }
@@ -899,11 +899,11 @@ if ($includescreenshot -eq $null)
 write-host "Allow including screenshot with Office Feedback is not configured"
 }
 
-else-if ($includescreenshot -eq '0')
+elseif ($includescreenshot -eq '0')
 {
 write-host "Allow including screenshot with Office Feedback is disabled" -ForegroundColor Green
 }
-else-if ($includescreenshot -eq '1')
+elseif ($includescreenshot -eq '1')
 {
 write-host "Allow including screenshot with Office Feedback is enabled" -ForegroundColor Red
 }
@@ -923,11 +923,11 @@ if ($updatereliabilitydata -eq $null)
 write-host "Automatically receive small updates to improve reliability is not configured"
 }
 
-else-if ($updatereliabilitydata -eq '0')
+elseif ($updatereliabilitydata -eq '0')
 {
 write-host "Automatically receive small updates to improve reliability is disabled" -ForegroundColor Green
 }
-else-if ($updatereliabilitydata -eq '1')
+elseif ($updatereliabilitydata -eq '1')
 {
 write-host "Automatically receive small updates to improve reliability is enabled" -ForegroundColor Red
 }
@@ -946,11 +946,11 @@ if ($shownfirstrunoptin -eq $null)
 write-host "Disable Opt-in Wizard on first run is not configured"
 }
 
-else-if ($shownfirstrunoptin -eq '1')
+elseif ($shownfirstrunoptin -eq '1')
 {
 write-host "Disable Opt-in Wizard on first run is enabled" -ForegroundColor Green
 }
-else-if ($shownfirstrunoptin -eq '0')
+elseif ($shownfirstrunoptin -eq '0')
 {
 write-host "Disable Opt-in Wizard on first run is disabled" -ForegroundColor Red
 }
@@ -970,11 +970,11 @@ if ($qmenable -eq $null)
 write-host "Enable Customer Experience Improvement Program is not configured"
 }
 
-else-if ($qmenable -eq '0')
+elseif ($qmenable -eq '0')
 {
 write-host "Enable Customer Experience Improvement Program is disabled" -ForegroundColor Green
 }
-else-if ($qmenable -eq '1')
+elseif ($qmenable -eq '1')
 {
 write-host "Enable Customer Experience Improvement Program is enabled" -ForegroundColor Red
 }
@@ -994,11 +994,11 @@ if ($enabled -eq $null)
 write-host "Send Office Feedback is not configured"
 }
 
-else-if ($enabled -eq '0')
+elseif ($enabled -eq '0')
 {
 write-host "Send Office Feedback is disabled" -ForegroundColor Green
 }
-else-if ($enabled -eq '1')
+elseif ($enabled -eq '1')
 {
 write-host "Send Office Feedback is enabled" -ForegroundColor Red
 }
@@ -1018,11 +1018,11 @@ if ($sendcustomerdata -eq $null)
 write-host "Send personal information is not configured"
 }
 
-else-if ($sendcustomerdata -eq '0')
+elseif ($sendcustomerdata -eq '0')
 {
 write-host "Send personal information is disabled" -ForegroundColor Green
 }
-else-if ($sendcustomerdata -eq '1')
+elseif ($sendcustomerdata -eq '1')
 {
 write-host "Send personal information is enabled" -ForegroundColor Red
 }
