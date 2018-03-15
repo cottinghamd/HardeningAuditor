@@ -412,6 +412,27 @@ write-host "`r`n####################### PATCHING #######################`r`n"
 
 write-host "`r`n####################### ACTIVE-X #######################`r`n"
 
+$disableallactivex = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\common\security" -Name disableallactivex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableallactivex
+
+if ($disableallactivex -eq $null)
+{
+write-host "Disable All ActiveX is not configured"
+}
+
+elseif ($disableallactivex -eq '1')
+{
+write-host "Disable All ActiveX is enabled" -ForegroundColor Green
+}
+elseif ($disableallactivex -eq '0')
+{
+write-host "Disable All ActiveX is disabled" -ForegroundColor Red
+}
+else
+{
+write-host "Disable All ActiveX is configured to an unknown setting" -ForegroundColor Red
+}
+
+
 write-host "`r`n####################### ADD-INS #######################`r`n"
 
 write-host "`r`n####################### EXTENSION HARDENING #######################`r`n"
