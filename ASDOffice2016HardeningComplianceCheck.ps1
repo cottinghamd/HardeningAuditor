@@ -318,7 +318,7 @@ else
 
 If ($appsetting -eq $null)
 {
-    write-host "Macro settings have not been configured in $officename"
+    write-host "Macro settings have not been configured in $officename" -ForegroundColor Yellow
 }
     elseif ($appsetting -eq "4")
     {
@@ -372,7 +372,7 @@ $macrooutlook = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Poli
 
 If ($macrooutlook -eq $null)
 {
-write-host "Macro settings have not been configured in Microsoft Outlook"
+write-host "Macro settings have not been configured in Microsoft Outlook" -ForegroundColor Yellow
 }
 elseif ($macrooutlook -eq "4"){
     write-host "Macros are disabled in Microsoft Outlook" -ForegroundColor Green
@@ -416,7 +416,7 @@ $disableallactivex = Get-ItemProperty -Path "Registry::HKCU\software\policies\mi
 
 if ($disableallactivex -eq $null)
 {
-write-host "Disable All ActiveX is not configured"
+write-host "Disable All ActiveX is not configured" -ForegroundColor Yellow
 }
 
 elseif ($disableallactivex -eq '1')
@@ -437,6 +437,32 @@ write-host "`r`n####################### ADD-INS #######################`r`n"
 
 write-host "`r`n####################### EXTENSION HARDENING #######################`r`n"
 
+$extensionhardening = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security" -Name extensionhardening -ErrorAction SilentlyContinue|Select-Object -ExpandProperty extensionhardening
+
+if ($extensionhardening -eq $null)
+{
+write-host "Make hidden markup visible for Powerpoint is not configured" -ForegroundColor Yellow
+}
+
+elseif ($extensionhardening -eq '0')
+{
+write-host "Extension hardening for Excel is enabled, however it is set to Allow Different which is a non-compliant setting. The compliant setting is always match file type" -ForegroundColor Red
+}
+elseif ($extensionhardening -eq '1')
+{
+write-host "Extension hardening for Excel is enabled, however it is set to Allow Different, but warn which is a non-compliant setting. The compliant setting is always match file type" -ForegroundColor Red
+}
+elseif ($extensionhardening -eq '2')
+{
+write-host "Extension hardening for Excel is enabled and set to Always match file type" -ForegroundColor Green
+}
+else
+{
+write-host "Extension hardening for Excel is set to an unknown setting" -ForegroundColor Red
+}
+
+[0, Allow different] [1, Allow different, but warn] [2, Always match file type]
+
 write-host "`r`n####################### FILE TYPE BLOCKING #######################`r`n"
 
 write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
@@ -447,7 +473,7 @@ $hiddenmarkupppt = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\
 
 if ($hiddenmarkupppt -eq $null)
 {
-write-host "Make hidden markup visible for Powerpoint is not configured"
+write-host "Make hidden markup visible for Powerpoint is not configured" -ForegroundColor Yellow
 }
 
 elseif ($hiddenmarkupppt -eq '1')
@@ -466,7 +492,7 @@ $hiddenmarkupword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software
 
 if ($hiddenmarkupword -eq $null)
 {
-write-host "Make hidden markup visible for Word is not configured"
+write-host "Make hidden markup visible for Word is not configured" -ForegroundColor Yellow
 }
 
 elseif ($hiddenmarkupword -eq '1')
@@ -487,7 +513,7 @@ $disablereporting = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software
 
 if ($disablereporting -eq $null)
 {
-write-host "Turn off error reporting for files that fail file validation is not configured"
+write-host "Turn off error reporting for files that fail file validation is not configured" -ForegroundColor Yellow
 }
 
 elseif ($disablereporting -eq '1')
@@ -506,7 +532,7 @@ $filevalidationexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softw
 
 if ($filevalidationexcel -eq $null)
 {
-write-host "Turn off file validation is not configured in Excel"
+write-host "Turn off file validation is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($filevalidationexcel -eq '1')
@@ -525,7 +551,7 @@ $filevalidationppt = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softwar
 
 if ($filevalidationppt -eq $null)
 {
-write-host "Turn off file validation is not configured in Powepoint"
+write-host "Turn off file validation is not configured in Powepoint" -ForegroundColor Yellow
 }
 
 elseif ($filevalidationppt -eq '1')
@@ -543,7 +569,7 @@ $filevalidationword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softwa
 
 if ($filevalidationword -eq $null)
 {
-write-host "Turn off file validation is not configured in Word"
+write-host "Turn off file validation is not configured in Word" -ForegroundColor Yellow
 }
 
 elseif ($filevalidationppt -eq '1')
@@ -564,7 +590,7 @@ $disableifexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\p
 
 if ($disableifexcel -eq $null)
 {
-write-host "Do not open files from the Internet zone in Protected View is not configured in Excel"
+write-host "Do not open files from the Internet zone in Protected View is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($disableifexcel -eq '0')
@@ -588,7 +614,7 @@ $disableifpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softw
 
 if ($disableifpowerpoint -eq $null)
 {
-write-host "Do not open files from the Internet zone in Protected View is not configured in powerpoint"
+write-host "Do not open files from the Internet zone in Protected View is not configured in powerpoint" -ForegroundColor Yellow
 }
 
 elseif ($disableifpowerpoint -eq '0')
@@ -611,7 +637,7 @@ $disableifword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\po
 
 if ($disableifword -eq $null)
 {
-write-host "Do not open files from the Internet zone in Protected View is not configured in word"
+write-host "Do not open files from the Internet zone in Protected View is not configured in word" -ForegroundColor Yellow
 }
 
 elseif ($disableifword -eq '0')
@@ -634,7 +660,7 @@ $disableifulexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software
 
 if ($disableifulexcel -eq $null)
 {
-write-host "Do not open files in unsafe locations in Protected View is not configured in Excel"
+write-host "Do not open files in unsafe locations in Protected View is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($disableifulexcel -eq '0')
@@ -658,7 +684,7 @@ $disableifulpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\sof
 
 if ($disableifulpowerpoint -eq $null)
 {
-write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint"
+write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint" -ForegroundColor Yellow
 }
 
 elseif ($disableifulpowerpoint -eq '0')
@@ -681,7 +707,7 @@ $disableifulword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\
 
 if ($disableifulword -eq $null)
 {
-write-host "Do not open files in unsafe locations in Protected View is not configured in word"
+write-host "Do not open files in unsafe locations in Protected View is not configured in word" -ForegroundColor Yellow
 }
 
 elseif ($disableifulword -eq '0')
@@ -704,7 +730,7 @@ $disableattachmentsexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\s
 
 if ($disableattachmentsexcel -eq $null)
 {
-write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel"
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($disableattachmentsexcel -eq '0')
@@ -728,7 +754,7 @@ $disableattachmentspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_U
 
 if ($disableattachmentspowerpoint -eq $null)
 {
-write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint"
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint" -ForegroundColor Yellow
 }
 
 elseif ($disableattachmentspowerpoint -eq '0')
@@ -751,7 +777,7 @@ $disableattachmentsword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\so
 
 if ($disableattachmentsword -eq $null)
 {
-write-host "Turn off Protected View for attachments opened from Outlook is not configured in word"
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in word" -ForegroundColor Yellow
 }
 
 elseif ($disableattachmentsword -eq '0')
@@ -775,7 +801,7 @@ $trusteddocsexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software
 
 if ($trusteddocsexcel -eq $null)
 {
-write-host "Turn off trusted documents is not configured in Excel"
+write-host "Turn off trusted documents is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocsexcel -eq '1')
@@ -799,7 +825,7 @@ $trusteddocspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\sof
 
 if ($trusteddocspowerpoint -eq $null)
 {
-write-host "Turn off trusted documents is not configured in powerpoint"
+write-host "Turn off trusted documents is not configured in powerpoint" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocspowerpoint -eq '1')
@@ -822,7 +848,7 @@ $trusteddocsword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\
 
 if ($trusteddocsword -eq $null)
 {
-write-host "Turn off trusted documents is not configured in word"
+write-host "Turn off trusted documents is not configured in word" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocsword -eq '1')
@@ -845,7 +871,7 @@ $trusteddocsnetworkexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\s
 
 if ($trusteddocsnetworkexcel -eq $null)
 {
-write-host "Turn off Trusted Documents on the network is not configured in Excel"
+write-host "Turn off Trusted Documents on the network is not configured in Excel" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocsnetworkexcel -eq '1')
@@ -869,7 +895,7 @@ $trusteddocsnetworkpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_U
 
 if ($trusteddocsnetworkpowerpoint -eq $null)
 {
-write-host "Turn off Trusted Documents on the network is not configured in powerpoint"
+write-host "Turn off Trusted Documents on the network is not configured in powerpoint" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocsnetworkpowerpoint -eq '1')
@@ -892,7 +918,7 @@ $trusteddocsnetworkword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\so
 
 if ($trusteddocsnetworkword -eq $null)
 {
-write-host "Turn off Trusted Documents on the network is not configured in word"
+write-host "Turn off Trusted Documents on the network is not configured in word" -ForegroundColor Yellow
 }
 
 elseif ($trusteddocsnetworkword -eq '1')
@@ -917,7 +943,7 @@ $includescreenshot = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softwar
 
 if ($includescreenshot -eq $null)
 {
-write-host "Allow including screenshot with Office Feedback is not configured"
+write-host "Allow including screenshot with Office Feedback is not configured" -ForegroundColor Yellow
 }
 
 elseif ($includescreenshot -eq '0')
@@ -941,7 +967,7 @@ $updatereliabilitydata = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\sof
 
 if ($updatereliabilitydata -eq $null)
 {
-write-host "Automatically receive small updates to improve reliability is not configured"
+write-host "Automatically receive small updates to improve reliability is not configured" -ForegroundColor Yellow
 }
 
 elseif ($updatereliabilitydata -eq '0')
@@ -964,7 +990,7 @@ $shownfirstrunoptin = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\softwa
 
 if ($shownfirstrunoptin -eq $null)
 {
-write-host "Disable Opt-in Wizard on first run is not configured"
+write-host "Disable Opt-in Wizard on first run is not configured" -ForegroundColor Yellow
 }
 
 elseif ($shownfirstrunoptin -eq '1')
@@ -988,7 +1014,7 @@ $qmenable = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policie
 
 if ($qmenable -eq $null)
 {
-write-host "Enable Customer Experience Improvement Program is not configured"
+write-host "Enable Customer Experience Improvement Program is not configured" -ForegroundColor Yellow
 }
 
 elseif ($qmenable -eq '0')
@@ -1012,7 +1038,7 @@ $enabled = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies
 
 if ($enabled -eq $null)
 {
-write-host "Send Office Feedback is not configured"
+write-host "Send Office Feedback is not configured" -ForegroundColor Yellow
 }
 
 elseif ($enabled -eq '0')
@@ -1036,7 +1062,7 @@ $sendcustomerdata = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software
 
 if ($sendcustomerdata -eq $null)
 {
-write-host "Send personal information is not configured"
+write-host "Send personal information is not configured" -ForegroundColor Yellow
 }
 
 elseif ($sendcustomerdata -eq '0')
