@@ -783,11 +783,11 @@ write-host "Turn off trusted documents is not configured in powerpoint"
 
 elseif ($trusteddocsexcel -eq '1')
 {
-write-host "Turn off trusted documents is enabled in Excel" -ForegroundColor Green
+write-host "Turn off trusted documents is enabled in powerpoint" -ForegroundColor Green
 }
 elseif ($trusteddocsexcel -eq '0')
 {
-write-host "Turn off trusted documents is disabled in Excel" -ForegroundColor Red
+write-host "Turn off trusted documents is disabled in powerpoint" -ForegroundColor Red
 }
 else
 {
@@ -806,11 +806,11 @@ write-host "Turn off trusted documents is not configured in word"
 
 elseif ($trusteddocsexcel -eq '1')
 {
-write-host "Turn off trusted documents is enabled in Excel" -ForegroundColor Green
+write-host "Turn off trusted documents is enabled in word" -ForegroundColor Green
 }
 elseif ($trusteddocsexcel -eq '0')
 {
-write-host "Turn off trusted documents is disabled in Excel" -ForegroundColor Red
+write-host "Turn off trusted documents is disabled in word" -ForegroundColor Red
 }
 else
 {
@@ -853,11 +853,11 @@ write-host "Turn off Trusted Documents on the network is not configured in power
 
 elseif ($trusteddocsnetworkexcel -eq '1')
 {
-write-host "Turn off Trusted Documents on the network is enabled in Excel" -ForegroundColor Green
+write-host "Turn off Trusted Documents on the network is enabled in powerpoint" -ForegroundColor Green
 }
 elseif ($trusteddocsnetworkexcel -eq '0')
 {
-write-host "Turn off Trusted Documents on the network is disabled in Excel" -ForegroundColor Red
+write-host "Turn off Trusted Documents on the network is disabled in powerpoint" -ForegroundColor Red
 }
 else
 {
@@ -876,11 +876,11 @@ write-host "Turn off Trusted Documents on the network is not configured in word"
 
 elseif ($trusteddocsnetworkexcel -eq '1')
 {
-write-host "Turn off Trusted Documents on the network is enabled in Excel" -ForegroundColor Green
+write-host "Turn off Trusted Documents on the network is enabled in word" -ForegroundColor Green
 }
 elseif ($trusteddocsnetworkexcel -eq '0')
 {
-write-host "Turn off Trusted Documents on the network is disabled in Excel" -ForegroundColor Red
+write-host "Turn off Trusted Documents on the network is disabled in word" -ForegroundColor Red
 }
 else
 {
