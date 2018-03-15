@@ -703,6 +703,42 @@ else
 write-host "File Type Blocking for Excel 3 worksheets is set to an unknown setting" -ForegroundColor Red
 }
 
+
+$xl4macros = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl4macros -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl4macros
+
+if ($xl4macros -eq $null)
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is not configured" -ForegroundColor Yellow
+}
+elseif ($xl4macros -eq '0')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl4macros -eq '1')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($xl4macros -eq '2')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($xl4macros -eq '3')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'Block'" -ForegroundColor Green
+}
+elseif ($xl4macros -eq '4')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($xl4macros -eq '5')
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 4 macrosheets and add-in files is set to an unknown setting" -ForegroundColor Red
+}
+
 $xl4workbooks = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl4workbooks -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl4workbooks
 
 if ($xl4workbooks -eq $null)
@@ -735,46 +771,54 @@ write-host "File Type Blocking for Excel 4 workbooks is set to 'Allow editing an
 }
 else
 {
-write-host "File Type Blocking for Excel 3 worksheets in Excel is set to an unknown setting" -ForegroundColor Red
+write-host "File Type Blocking for Excel 4 workbooks is set to an unknown setting" -ForegroundColor Red
 }
 
+$xl4worksheets = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl4worksheets -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl4worksheets
 
-Excel 4 workbooks	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
+if ($xl4worksheets -eq $null)
+{
+write-host "File Type Blocking for Excel 4 worksheets is not configured" -ForegroundColor Yellow
+}
+elseif ($xl4worksheets -eq '0')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl4worksheets -eq '1')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($xl4worksheets -eq '2')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($xl4worksheets -eq '3')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'Block'" -ForegroundColor Green
+}
+elseif ($xl4worksheets -eq '4')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($xl4worksheets -eq '5')
+{
+write-host "File Type Blocking for Excel 4 worksheets is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 4 workbooks is set to an unknown setting" -ForegroundColor Red
+}
+
+Excel 95 workbooks	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl95workbooks	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
+
+Excel 95-97 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl9597workbooksandtemplates	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
+
+Excel 97-2003 add-in files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97addins	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy]
+
+Excel 97-2003 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97workbooksandtemplates	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
 
 
 Set default file block behavior	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!openinprotectedview	[0, Blocked files are not opened] [1, Blocked files open in Protected View and can not be edited] [2, Blocked files open in Protected View and can be edited]
-Excel 2007 and later workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xlsxandxltxfiles	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Excel 2007 and later macro-enabled workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xlsmandxltmfiles	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-
-
-OpenDocument Spreadsheet files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!opendocumentspreadsheet	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Excel 97-2003 add-in files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97addins	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy]
-Excel 97-2003 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97workbooksandtemplates	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Excel 95-97 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl9597workbooksandtemplates	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Excel 95 workbooks	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl95workbooks	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-
-Excel 4 worksheets	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl4worksheets	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-
-Excel 4 macrosheets and add-in files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl4macros	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-
-Web pages and Excel 2003 XML spreadsheets	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!htmlandxmlssfiles	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-XML files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xmlfiles	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy]
-Text files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!textfiles	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy]
-Excel add-in files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xllfiles	[0, Do not block] [2, Open/Save blocked, use open policy]
-
-Microsoft Office query files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!officequeries	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Microsoft Office data connection files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!officedataconnections	[0, Do not block] [2, Open/Save blocked, use open policy]
-Other data source files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!officedatasources	[0, Do not block] [2, Open/Save blocked, use open policy]
-Offline cube files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!offlinecubefiles	[0, Do not block] [2, Open/Save blocked, use open policy]
-
-Legacy converters for Excel	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!converters	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-Microsoft Office Open XML converters for Excel	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!ooxmlconverters	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
-
-
-
-
-
-
 
 
 write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
