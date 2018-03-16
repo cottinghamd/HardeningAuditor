@@ -1054,28 +1054,197 @@ else
 write-host "PowerPoint beta files is set to an unknown setting" -ForegroundColor Red
 }
 
-#Set default file block behavior
+#Set default file block behavior - powerpoint
 
 $openinprotectedviewBFppt = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\fileblock" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
 
 if ($openinprotectedviewBFppt -eq $null)
 {
-write-host "Set default file block behavior is not configured" -ForegroundColor Yellow
+write-host "Set default file block behavior is not configured in powerpoint" -ForegroundColor Yellow
 }
 elseif ($openinprotectedviewBFppt -eq '0')
 {
-write-host "Set default file block behavior is set to 'Blocked files are not opened'" -ForegroundColor Green
+write-host "Set default file block behavior is set to 'Blocked files are not opened'in powerpoint" -ForegroundColor Green
 }
 elseif ($openinprotectedviewBFppt -eq '1')
 {
-write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can not be edited''" -ForegroundColor Red
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can not be edited'in powerpoint" -ForegroundColor Red
 }
 elseif ($openinprotectedviewBFppt -eq '2')
 {
-write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can be edited'" -ForegroundColor Red
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can be edited'in powerpoint" -ForegroundColor Red
+}
 else
 {
-write-host "Set default file block behavior is set to an unknown setting" -ForegroundColor Red
+write-host "Set default file block behavior is set to an unknown setting in powerpoint" -ForegroundColor Red
+}
+
+
+
+
+#word
+#Set default file block behavior - word
+
+$openinprotectedviewBFword = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedviewBFword -eq $null)
+{
+write-host "Set default file block behavior is not configured in Word" -ForegroundColor Yellow
+}
+elseif ($openinprotectedviewBFword -eq '0')
+{
+write-host "Set default file block behavior is set to 'Blocked files are not opened'in Word" -ForegroundColor Green
+}
+elseif ($openinprotectedviewBFword -eq '1')
+{
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can not be edited'in Word" -ForegroundColor Red
+}
+elseif ($openinprotectedviewBFword -eq '2')
+{
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can be edited'in Word" -ForegroundColor Red
+}
+else
+{
+write-host "Set default file block behavior is set to an unknown setting in Word" -ForegroundColor Red
+}
+
+
+
+#Word 2 and earlier binary documents and templates
+
+$word2files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word2files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word2files
+
+if ($word2files -eq $null)
+{
+write-host "Word 2 and earlier binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word2files -eq '0')
+{
+write-host "Word 2 and earlier binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word2files -eq '2')
+{
+write-host "Word 2 and earlier binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word2files -eq '3')
+{
+write-host "Word 2 and earlier binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word2files -eq '4')
+{
+write-host "Word 2 and earlier binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word2files -eq '5')
+{
+write-host "Word 2 and earlier binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "Word 2 and earlier binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#Word 2000 binary documents and templates
+
+$word2000files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word2000files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word2000files
+
+if ($word2000files -eq $null)
+{
+write-host "word 2000 and earlier binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word2000files -eq '0')
+{
+write-host "word 2000 and earlier binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '2')
+{
+write-host "word 2000 and earlier binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '3')
+{
+write-host "word 2000 and earlier binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word2000files -eq '4')
+{
+write-host "word 2000 and earlier binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '5')
+{
+write-host "word 2000 and earlier binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "word 2000 and earlier binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#Word 2003 binary documents and templates
+$word2003files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word2003files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word2003files
+
+if ($word2003files -eq $null)
+{
+write-host "word 2003 and earlier binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word2003files -eq '0')
+{
+write-host "word 2003 and earlier binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word2003files -eq '2')
+{
+write-host "word 2003 and earlier binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word2003files -eq '3')
+{
+write-host "word 2003 and earlier binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word2003files -eq '4')
+{
+write-host "word 2003 and earlier binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word2003files -eq '5')
+{
+write-host "word 2003 and earlier binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "word 2003 and earlier binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#Word 2007 and later binary documents and templates
+$word2007files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word2007files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word2007files
+
+if ($word2007files -eq $null)
+{
+write-host "word 2007 and later binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word2007files -eq '0')
+{
+write-host "word 2007 and later binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word2007files -eq '1')
+{
+write-host "word 2007 and later binary documents and templates is set to 'Save blocked'" -ForegroundColor Red
+}
+elseif ($word2007files -eq '2')
+{
+write-host "word 2007 and later binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word2007files -eq '3')
+{
+write-host "word 2007 and later binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word2007files -eq '4')
+{
+write-host "word 2007 and later binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word2007files -eq '5')
+{
+write-host "word 2007 and later binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "word 2007 and later binary documents and templates is set to an unknown setting" -ForegroundColor Red
 }
 
 
