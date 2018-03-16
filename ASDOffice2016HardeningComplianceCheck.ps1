@@ -1247,6 +1247,167 @@ else
 write-host "word 2007 and later binary documents and templates is set to an unknown setting" -ForegroundColor Red
 }
 
+#Word 6.0 binary documents and templates
+$word60files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word60files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word60files
+
+if ($word60files -eq $null)
+{
+write-host "Word 6.0 binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word60files -eq '0')
+{
+write-host "Word 6.0 binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word60files -eq '2')
+{
+write-host "Word 6.0 binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word60files -eq '3')
+{
+write-host "Word 6.0 binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word60files -eq '4')
+{
+write-host "Word 6.0 binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word60files -eq '5')
+{
+write-host "Word 6.0 binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "word 2007 and later binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+#Word 95 binary documents and templates
+$word95files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word95files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word95files
+
+if ($word95files -eq $null)
+{
+write-host "Word 95 binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word95files -eq '0')
+{
+write-host "Word 95 binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word95files -eq '2')
+{
+write-host "Word 95 binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word95files -eq '3')
+{
+write-host "Word 95 binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word95files -eq '4')
+{
+write-host "Word 95 binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word95files -eq '5')
+{
+write-host "Word 95 binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "Word 95 binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+#Word 97 binary documents and templates
+$word97files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word97files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word97files
+
+if ($word97files -eq $null)
+{
+write-host "Word 97 binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word97files -eq '0')
+{
+write-host "Word 97 binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word97files -eq '2')
+{
+write-host "Word 97 binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word97files -eq '3')
+{
+write-host "Word 97 binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word97files -eq '4')
+{
+write-host "Word 97 binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word97files -eq '5')
+{
+write-host "Word 97 binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "Word 97 binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+#Word 2000 binary documents and templates
+$word2000files = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name word2000files -ErrorAction SilentlyContinue|Select-Object -ExpandProperty word2000files
+
+if ($word2000files -eq $null)
+{
+write-host "Word 2000 binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($word2000files -eq '0')
+{
+write-host "Word 2000 binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '2')
+{
+write-host "Word 2000 binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '3')
+{
+write-host "Word 2000 binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($word2000files -eq '4')
+{
+write-host "Word 2000 binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($word2000files -eq '5')
+{
+write-host "Word 2000 binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "Word 2000 binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+#Word XP binary documents and templates
+$wordXPfiles = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\word\security\fileblock" -Name wordXPfiles -ErrorAction SilentlyContinue|Select-Object -ExpandProperty wordXPfiles
+
+if ($wordXPfiles -eq $null)
+{
+write-host "Word XP binary documents and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($wordXPfiles -eq '0')
+{
+write-host "Word XP binary documents and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($wordXPfiles -eq '2')
+{
+write-host "Word XP binary documents and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($wordXPfiles -eq '3')
+{
+write-host "Word XP binary documents and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($wordXPfiles -eq '4')
+{
+write-host "Word XP binary documents and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($wordXPfiles -eq '5')
+{
+write-host "Word XP binary documents and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "Word XP binary documents and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
 
 write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
 
