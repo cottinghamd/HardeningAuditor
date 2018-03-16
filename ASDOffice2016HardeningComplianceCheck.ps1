@@ -809,16 +809,173 @@ else
 write-host "File Type Blocking for Excel 4 workbooks is set to an unknown setting" -ForegroundColor Red
 }
 
-Excel 95 workbooks	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl95workbooks	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
+#Excel 95 workbooks
 
-Excel 95-97 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl9597workbooksandtemplates	[0, Do not block] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
+$xl95workbooks = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl95workbooks -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl95workbooks
 
-Excel 97-2003 add-in files	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97addins	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy]
+if ($xl95workbooks -eq $null)
+{
+write-host "File Type Blocking for Excel 95 workbooks is not configured" -ForegroundColor Yellow
+}
+elseif ($xl95workbooks -eq '0')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl95workbooks -eq '1')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($xl95workbooks -eq '2')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($xl95workbooks -eq '3')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'Block'" -ForegroundColor Green
+}
+elseif ($xl95workbooks -eq '4')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($xl95workbooks -eq '5')
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 95 workbooks is set to an unknown setting" -ForegroundColor Red
+}
 
-Excel 97-2003 workbooks and templates	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!xl97workbooksandtemplates	[0, Do not block] [1, Save blocked] [2, Open/Save blocked, use open policy] [3, Block] [4, Open in Protected View] [5, Allow editing and open in Protected View]
 
 
-Set default file block behavior	HKCU\software\policies\microsoft\office\16.0\excel\security\fileblock!openinprotectedview	[0, Blocked files are not opened] [1, Blocked files open in Protected View and can not be edited] [2, Blocked files open in Protected View and can be edited]
+#Excel 95-97 workbooks and templates
+
+$xl9597workbooksandtemplates = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl9597workbooksandtemplates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl9597workbooksandtemplates
+
+if ($xl9597workbooksandtemplates -eq $null)
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($xl9597workbooksandtemplates -eq '0')
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl9597workbooksandtemplates -eq '2')
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($xl9597workbooksandtemplates -eq '3')
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($xl9597workbooksandtemplates -eq '4')
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($xl9597workbooksandtemplates -eq '5')
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 95-97 workbooks and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
+
+
+#Excel 97-2003 add-in files
+
+$xl97addins = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl97addins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl97addins
+
+if ($xl97addins -eq $null)
+{
+write-host "File Type Blocking for Excel 97-2003 add-in files is not configured" -ForegroundColor Yellow
+}
+elseif ($xl97addins -eq '0')
+{
+write-host "File Type Blocking for Excel 97-2003 add-in files is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl97addins -eq '1')
+{
+write-host "File Type Blocking for Excel 97-2003 add-in files is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($xl97addins -eq '2')
+{
+write-host "File Type Blocking for Excel 97-2003 add-in files is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 97-2003 add-in files is set to an unknown setting" -ForegroundColor Red
+}
+
+
+
+
+#Excel 97-2003 workbooks and templates
+
+$xl97workbooksandtemplates = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name xl97workbooksandtemplates -ErrorAction SilentlyContinue|Select-Object -ExpandProperty xl97workbooksandtemplates
+
+if ($xl97workbooksandtemplates -eq $null)
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is not configured" -ForegroundColor Yellow
+}
+elseif ($xl97workbooksandtemplates -eq '0')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($xl97workbooksandtemplates -eq '1')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($xl97workbooksandtemplates -eq '2')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($xl97workbooksandtemplates -eq '3')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'Block'" -ForegroundColor Green
+}
+elseif ($xl97workbooksandtemplates -eq '4')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($xl97workbooksandtemplates -eq '5')
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Excel 97-2003 workbooks and templates is set to an unknown setting" -ForegroundColor Red
+}
+
+
+
+
+#Set default file block behavior
+
+$openinprotectedview = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\fileblock" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedview -eq $null)
+{
+write-host "File Type Blocking for Set default file block behaviour is not configured" -ForegroundColor Yellow
+}
+elseif ($openinprotectedview -eq '0')
+{
+write-host "File Type Blocking for Set default file block behaviour is set to 'Blocked files are not opened'" -ForegroundColor Green
+}
+elseif ($openinprotectedview -eq '1')
+{
+write-host "File Type Blocking for Set default file block behaviour is set to 'Blocked files open in Protected View and can not be edited''" -ForegroundColor Red
+}
+elseif ($openinprotectedview -eq '2')
+{
+write-host "File Type Blocking for Set default file block behaviour is set to 'Blocked files open in Protected View and can be edited'" -ForegroundColor Red
+}
+else
+{
+write-host "File Type Blocking for Set default file block behaviour is set to an unknown setting" -ForegroundColor Red
+}
 
 
 write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
