@@ -305,6 +305,97 @@ break
 
 write-host "`r`n####################### ATTACK SURFACE REDUCTION #######################`r`n"
 
+#This section could be improved to check sub settings for each exploitguard rule to ensure the configured rules are set to block
+
+$ExploitGuard_ASR_Rules = Get-ItemProperty -Path "Registry::HKLM\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR" -Name ExploitGuard_ASR_Rules -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ExploitGuard_ASR_Rules
+
+if ($ExploitGuard_ASR_Rules -eq $null)
+{
+    write-host "Configure Attack Surface Reduction rules is not configured or disabled" -ForegroundColor Yellow
+}
+elseif ($ExploitGuard_ASR_Rules -eq '1')
+{
+    write-host "Configure Attack Surface Reduction rules is Enabled" -ForegroundColor Green
+
+    Get-ChildItem -Path "Registry::HKLM\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\" | Select-Object -ExpandProperty Property | ForEach-Object{
+
+    if ($_ -contains "3b576869-a4ec-4529-8536-b80a7769e899")
+    {
+        write-host "Block Office applications from creating executable content is set" -ForegroundColor Green
+        $blockofficeapps = 1
+    }
+
+    if ($_ -contains "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550")
+    {
+        write-host "Block executable content from email client and webmail is set" -ForegroundColor Green
+        $blockexecutablecontent = 1
+    }
+
+    if ($_ -contains "D4F940AB-401B-4EFC-AADC-AD5F3C50688A")
+    {
+        write-host "Block Office applications from creating child processes is set" -ForegroundColor Green
+        $blockofficechildprocess = 1
+    }
+
+    if ($_ -contains "75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84")
+    {
+        write-host "Block Office applications from injecting code into other processes is set" -ForegroundColor Green
+        $blockcodeinjection = 1
+    }
+
+    if ($_ -contains "D3E037E1-3EB8-44C8-A917-57927947596D")
+    {
+        write-host "Block JavaScript and VBScript from launching downloaded executable content is set" -ForegroundColor Green
+        $blockjavavbscript = 1
+    }
+
+    if ($_ -contains "5BEB7EFE-FD9A-4556-801D-275E5FFC04CC")
+    {
+        write-host "Block execution of potentially obfuscated scripts is set" -ForegroundColor Green
+        $blockobfuscated = 1
+    }
+
+    if ($_ -contains "92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B")
+    {
+        write-host "Block Win32 API calls from Office macro is set" -ForegroundColor Green
+        $blockwin32api = 1
+    }
+}
+    if ($blockofficeapps -ne '1')
+    {
+        write-host "Block Office applications from creating executable content is not set" -ForegroundColor Red
+    }
+    if ($blockexecutablecontent -ne '1')
+    {
+        write-host "Block executable content from email client and webmail is not set" -ForegroundColor Red
+    }
+    if ($blockofficechildprocess -ne '1')
+    {
+        write-host "Block Office applications from creating child processes is not set" -ForegroundColor Red
+    }
+    if ($blockcodeinjection -ne '1')
+    {
+        write-host "Block Office applications from injecting code into other processes is not set" -ForegroundColor Red
+    }
+    if ($blockjavavbscript -ne '1')
+    {
+        write-host "Block JavaScript and VBScript from launching downloaded executable content is not set" -ForegroundColor Red
+    }
+    if ($blockobfuscated -ne '1')
+    {
+        write-host "Block execution of potentially obfuscated scripts is not set" -ForegroundColor Red
+    }
+    if ($blockwin32api -ne '1')
+    {
+        write-host "Block Win32 API calls from Office macro is not set" -ForegroundColor Red
+    }
+}
+else
+{
+    write-host "Configure Attack Surface Reduction rules is configured with a setting of $_" -ForegroundColor Red
+}
+
+
 write-host "`r`n####################### MACROS #######################`r`n"
 
 Get-ChildItem -Path "Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\$officeversion\" | Select-Object -ExpandProperty Name | ForEach-Object{
