@@ -281,6 +281,7 @@ process {
     }
   }
 
+
   $results = Get-Unique -InputObject $results 
 
   return $results;
@@ -975,6 +976,106 @@ write-host "File Type Blocking for Set default file block behaviour is set to 'B
 else
 {
 write-host "File Type Blocking for Set default file block behaviour is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#PowerPoint 97-2003 presentations, shows, templates and add-in files
+
+$binaryfiles = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\fileblock" -Name binaryfiles -ErrorAction SilentlyContinue|Select-Object -ExpandProperty binaryfiles
+
+if ($binaryfiles -eq $null)
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is not configured" -ForegroundColor Yellow
+}
+elseif ($binaryfiles -eq '0')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($binaryfiles -eq '1')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($binaryfiles -eq '2')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($binaryfiles -eq '3')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'Block'" -ForegroundColor Green
+}
+elseif ($binaryfiles -eq '4')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($binaryfiles -eq '5')
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "PowerPoint 97-2003 presentations, shows, templates and add-in files is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#PowerPoint beta files
+
+$powerpoint12betafiles = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\fileblock" -Name powerpoint12betafiles -ErrorAction SilentlyContinue|Select-Object -ExpandProperty powerpoint12betafiles
+
+if ($powerpoint12betafiles -eq $null)
+{
+write-host "PowerPoint beta files is not configured" -ForegroundColor Yellow
+}
+elseif ($powerpoint12betafiles -eq '0')
+{
+write-host "PowerPoint beta files is set to 'do not block'" -ForegroundColor Red
+}
+elseif ($powerpoint12betafiles -eq '1')
+{
+write-host "PowerPoint beta files is set to 'Save Blocked''" -ForegroundColor Red
+}
+elseif ($powerpoint12betafiles -eq '2')
+{
+write-host "PowerPoint beta files is set to 'Open/Save blocked, use open policy'" -ForegroundColor Red
+}
+elseif ($powerpoint12betafiles -eq '3')
+{
+write-host "PowerPoint beta files is set to 'Block'" -ForegroundColor Green
+}
+elseif ($powerpoint12betafiles -eq '4')
+{
+write-host "PowerPoint beta files is set to 'Open in Protected View'" -ForegroundColor Red
+}
+elseif ($powerpoint12betafiles -eq '5')
+{
+write-host "PowerPoint beta files is set to 'Allow editing and open in Protected View'" -ForegroundColor Red
+}
+else
+{
+write-host "PowerPoint beta files is set to an unknown setting" -ForegroundColor Red
+}
+
+#Set default file block behavior
+
+$openinprotectedviewBFppt = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\fileblock" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedviewBFppt -eq $null)
+{
+write-host "Set default file block behavior is not configured" -ForegroundColor Yellow
+}
+elseif ($openinprotectedviewBFppt -eq '0')
+{
+write-host "Set default file block behavior is set to 'Blocked files are not opened'" -ForegroundColor Green
+}
+elseif ($openinprotectedviewBFppt -eq '1')
+{
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can not be edited''" -ForegroundColor Red
+}
+elseif ($openinprotectedviewBFppt -eq '2')
+{
+write-host "Set default file block behavior is set to 'Blocked files open in Protected View and can be edited'" -ForegroundColor Red
+else
+{
+write-host "Set default file block behavior is set to an unknown setting" -ForegroundColor Red
 }
 
 
