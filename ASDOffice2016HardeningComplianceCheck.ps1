@@ -670,8 +670,242 @@ else
 write-host "Disable all applications add-ins in Excel is set to an unknown setting" -ForegroundColor Red
 }
 
-#Need to do PowerPoint
-#Need to do Word
+
+#Disable all applications add-ins in Powerpoint
+$disablealladdinspowerpoint = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security" -Name disablealladdins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablealladdins
+
+if ($disablealladdinspowerpoint -eq $null)
+{
+write-host "Disable all applications add-ins in powerpoint is not configured" -ForegroundColor Yellow
+}
+elseif ($disablealladdinspowerpoint -eq '1')
+{
+write-host "Disable all applications add-ins in powerpoint is enabled" -ForegroundColor Green
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationspowerpoint2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationspowerpoint2 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationspowerpoint2 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is disabled" -ForegroundColor Green
+    }
+    elseif ($allowtrustedlocationspowerpoint2 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is enabled" -ForegroundColor Red
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledpowerpoint2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledpowerpoint2 -eq $null)
+    {
+    write-host "Disable all trusted locations in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledpowerpoint2 -eq '0')
+    {
+    write-host "Disable all trusted locations in powerpoint is disabled" -ForegroundColor Red
+    }
+    elseif ($alllocationsdisabledpowerpoint2 -eq '1')
+    {
+    write-host "Disable all trusted locations in powerpoint is enabled" -ForegroundColor Green
+    }
+
+}
+elseif ($disablealladdinspowerpoint -eq '0')
+{
+write-host "Disable all applications add-ins in powerpoint is disabled, this setting is compliant if you explicitly need add-ins" -ForegroundColor Green
+
+    #Disable Trust Bar Notification for unsigned application add-ins and block them
+    $disabletrustbarpowerpoint = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security" -Name notbpromptunsignedaddin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty notbpromptunsignedaddin
+
+    if ($disabletrustbarpowerpoint -eq $null)
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($disabletrustbarpowerpoint -eq '0')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in powerpoint is disabled" -ForegroundColor Red
+    }
+    elseif ($disabletrustbarpowerpoint -eq '1')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in powerpoint is enabled" -ForegroundColor Green
+    }
+
+    #Require that application add-ins are signed by Trusted Publisher
+    $requireaddinsigpowerpoint = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security" -Name requireaddinsig -ErrorAction SilentlyContinue|Select-Object -ExpandProperty requireaddinsig
+
+    if ($requireaddinsigpowerpoint -eq $null)
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($requireaddinsigpowerpoint -eq '0')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in powerpoint is disabled" -ForegroundColor Red
+    }
+    elseif ($requireaddinsigpowerpoint -eq '1')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in powerpoint is enabled" -ForegroundColor Green
+    }
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationspowerpoint1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationspowerpoint1 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationspowerpoint1 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is disabled" -ForegroundColor Red
+    }
+    elseif ($allowtrustedlocationspowerpoint1 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in powerpoint is enabled" -ForegroundColor Green
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledpowerpoint1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledpowerpoint1 -eq $null)
+    {
+    write-host "Disable all trusted locations in powerpoint is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledpowerpoint1 -eq '0')
+    {
+    write-host "Disable all trusted locations in powerpoint is disabled" -ForegroundColor Green
+    }
+    elseif ($alllocationsdisabledpowerpoint1 -eq '1')
+    {
+    write-host "Disable all trusted locations in powerpoint is enabled" -ForegroundColor Red
+    }
+
+}
+else
+{
+write-host "Disable all applications add-ins in powerpoint is set to an unknown setting" -ForegroundColor Red
+}
+
+#Disable all applications add-ins in Word
+$disablealladdinsWord = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security" -Name disablealladdins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablealladdins
+
+if ($disablealladdinsWord -eq $null)
+{
+write-host "Disable all applications add-ins in Word is not configured" -ForegroundColor Yellow
+}
+elseif ($disablealladdinsWord -eq '1')
+{
+write-host "Disable all applications add-ins in Word is enabled" -ForegroundColor Green
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationsWord2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationsWord2 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationsWord2 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in Word is disabled" -ForegroundColor Green
+    }
+    elseif ($allowtrustedlocationsWord2 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in Word is enabled" -ForegroundColor Red
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledWord2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledWord2 -eq $null)
+    {
+    write-host "Disable all trusted locations in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledWord2 -eq '0')
+    {
+    write-host "Disable all trusted locations in Word is disabled" -ForegroundColor Red
+    }
+    elseif ($alllocationsdisabledWord2 -eq '1')
+    {
+    write-host "Disable all trusted locations in Word is enabled" -ForegroundColor Green
+    }
+
+}
+elseif ($disablealladdinsWord -eq '0')
+{
+write-host "Disable all applications add-ins in Word is disabled, this setting is compliant if you explicitly need add-ins" -ForegroundColor Green
+
+    #Disable Trust Bar Notification for unsigned application add-ins and block them
+    $disabletrustbarWord = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security" -Name notbpromptunsignedaddin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty notbpromptunsignedaddin
+
+    if ($disabletrustbarWord -eq $null)
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($disabletrustbarWord -eq '0')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Word is disabled" -ForegroundColor Red
+    }
+    elseif ($disabletrustbarWord -eq '1')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Word is enabled" -ForegroundColor Green
+    }
+
+    #Require that application add-ins are signed by Trusted Publisher
+    $requireaddinsigWord = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security" -Name requireaddinsig -ErrorAction SilentlyContinue|Select-Object -ExpandProperty requireaddinsig
+
+    if ($requireaddinsigWord -eq $null)
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($requireaddinsigWord -eq '0')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Word is disabled" -ForegroundColor Red
+    }
+    elseif ($requireaddinsigWord -eq '1')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Word is enabled" -ForegroundColor Green
+    }
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationsWord1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationsWord1 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationsWord1 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in Word is disabled" -ForegroundColor Red
+    }
+    elseif ($allowtrustedlocationsWord1 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in Word is enabled" -ForegroundColor Green
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledWord1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\Word\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledWord1 -eq $null)
+    {
+    write-host "Disable all trusted locations in Word is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledWord1 -eq '0')
+    {
+    write-host "Disable all trusted locations in Word is disabled" -ForegroundColor Green
+    }
+    elseif ($alllocationsdisabledWord1 -eq '1')
+    {
+    write-host "Disable all trusted locations in Word is enabled" -ForegroundColor Red
+    }
+
+}
+else
+{
+write-host "Disable all applications add-ins in Word is set to an unknown setting" -ForegroundColor Red
+}
 
 write-host "`r`n####################### EXTENSION HARDENING #######################`r`n"
 
