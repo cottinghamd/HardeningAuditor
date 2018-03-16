@@ -1119,6 +1119,8 @@ else
 write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
 }
 
+
+
 #Do not open files in unsafe locations in Protected View - Excel
 
 $disableifulexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
@@ -1143,6 +1145,59 @@ write-host "Do not open files in unsafe locations in Protected View is set to an
 
 
 
+
+#Set document behaviour if file validation fails - Excel
+
+$openinprotectedviewexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\filevalidation" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedviewexcel -eq $null)
+{
+write-host "Set document behaviour if file validation fails is not configured in Excel" -ForegroundColor Yellow
+}
+
+elseif ($openinprotectedviewexcel -eq '0')
+{
+write-host "Set document behaviour if file validation fails is set to 'Block files' in Excel" -ForegroundColor Green
+}
+elseif ($openinprotectedviewexcel -eq '1')
+{
+write-host "Set document behaviour if file validation fails is set to 'Open in Protected View' in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Set document behaviour if file validation fails is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
+
+
+
+
+
+#Turn off Protected View for attachments opened from Outlook - Excel
+
+$disableattachmentsexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+
+if ($disableattachmentsexcel -eq $null)
+{
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel" -ForegroundColor Yellow
+}
+
+elseif ($disableattachmentsexcel -eq '0')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is disabled in Excel" -ForegroundColor Green
+}
+elseif ($disableattachmentsexcel -eq '1')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is enabled in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
+
+
+
 #Do not open files from the Internet zone in Protected View - Powerpoint
 
 $disableifpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableinternetfilesinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableinternetfilesinpv
@@ -1163,6 +1218,76 @@ write-host "Do not open files from the Internet zone in Protected View is enable
 else
 {
 write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+#Do not open files in unsafe locations in Protected View - Powerpoint
+
+$disableifulpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
+
+if ($disableifulpowerpoint -eq $null)
+{
+write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint" -ForegroundColor Yellow
+}
+
+elseif ($disableifulpowerpoint -eq '0')
+{
+write-host "Do not open files in unsafe locations in Protected View is disabled in powerpoint" -ForegroundColor Green
+}
+elseif ($disableifulpowerpoint -eq '1')
+{
+write-host "Do not open files in unsafe locations in Protected View is enabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
+
+#Set document behaviour if file validation fails - Powerpoint
+
+$openinprotectedviewpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\filevalidation" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedviewpowerpoint -eq $null)
+{
+write-host "Set document behaviour if file validation fails is not configured in powerpoint" -ForegroundColor Yellow
+}
+
+elseif ($openinprotectedviewpowerpoint -eq '0')
+{
+write-host "Set document behaviour if file validation fails is set to 'Block files' in powerpoint" -ForegroundColor Green
+}
+elseif ($openinprotectedviewpowerpoint -eq '1')
+{
+write-host "Set document behaviour if file validation fails is set to 'Open in Protected View' in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Set document behaviour if file validation fails is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
+
+#Turn off Protected View for attachments opened from Outlook - Powerpoint
+
+$disableattachmentspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+
+if ($disableattachmentspowerpoint -eq $null)
+{
+write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint" -ForegroundColor Yellow
+}
+
+elseif ($disableattachmentspowerpoint -eq '0')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is disabled in powerpoint" -ForegroundColor Green
+}
+elseif ($disableattachmentspowerpoint -eq '1')
+{
+write-host "Turn off Protected View for attachments opened from Outlook is enabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in powerpoint" -ForegroundColor Red
 }
 
 
@@ -1191,31 +1316,6 @@ write-host "Do not open files from the Internet zone in Protected View is set to
 
 
 
-
-
-#Do not open files in unsafe locations in Protected View - Powerpoint
-
-$disableifulpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
-
-if ($disableifulpowerpoint -eq $null)
-{
-write-host "Do not open files in unsafe locations in Protected View is not configured in powerpoint" -ForegroundColor Yellow
-}
-
-elseif ($disableifulpowerpoint -eq '0')
-{
-write-host "Do not open files in unsafe locations in Protected View is disabled in powerpoint" -ForegroundColor Green
-}
-elseif ($disableifulpowerpoint -eq '1')
-{
-write-host "Do not open files in unsafe locations in Protected View is enabled in powerpoint" -ForegroundColor Red
-}
-else
-{
-write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in powerpoint" -ForegroundColor Red
-}
-
-
 #Do not open files in unsafe locations in Protected View - word
 
 $disableifulword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
@@ -1239,51 +1339,29 @@ write-host "Do not open files in unsafe locations in Protected View is set to an
 }
 
 
-#Turn off Protected View for attachments opened from Outlook - Excel
 
-$disableattachmentsexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
+#Set document behaviour if file validation fails - word
 
-if ($disableattachmentsexcel -eq $null)
+$openinprotectedviewword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\filevalidation" -Name openinprotectedview -ErrorAction SilentlyContinue|Select-Object -ExpandProperty openinprotectedview
+
+if ($openinprotectedviewword -eq $null)
 {
-write-host "Turn off Protected View for attachments opened from Outlook is not configured in Excel" -ForegroundColor Yellow
+write-host "Set document behaviour if file validation fails is not configured in word" -ForegroundColor Yellow
 }
 
-elseif ($disableattachmentsexcel -eq '0')
+elseif ($openinprotectedviewword -eq '0')
 {
-write-host "Turn off Protected View for attachments opened from Outlook is disabled in Excel" -ForegroundColor Green
+write-host "Set document behaviour if file validation fails is set to 'Block files' in word" -ForegroundColor Green
 }
-elseif ($disableattachmentsexcel -eq '1')
+elseif ($openinprotectedviewword -eq '1')
 {
-write-host "Turn off Protected View for attachments opened from Outlook is enabled in Excel" -ForegroundColor Red
-}
-else
-{
-write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in Excel" -ForegroundColor Red
-}
-
-
-
-#Turn off Protected View for attachments opened from Outlook - Powerpoint
-
-$disableattachmentspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\protectedview" -Name disableattachmentsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableattachmentsinpv
-
-if ($disableattachmentspowerpoint -eq $null)
-{
-write-host "Turn off Protected View for attachments opened from Outlook is not configured in powerpoint" -ForegroundColor Yellow
-}
-
-elseif ($disableattachmentspowerpoint -eq '0')
-{
-write-host "Turn off Protected View for attachments opened from Outlook is disabled in powerpoint" -ForegroundColor Green
-}
-elseif ($disableattachmentspowerpoint -eq '1')
-{
-write-host "Turn off Protected View for attachments opened from Outlook is enabled in powerpoint" -ForegroundColor Red
+write-host "Set document behaviour if file validation fails is set to 'Open in Protected View' in word" -ForegroundColor Red
 }
 else
 {
-write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in powerpoint" -ForegroundColor Red
+write-host "Set document behaviour if file validation fails is set to an unknown configuration in word" -ForegroundColor Red
 }
+
 
 
 #Turn off Protected View for attachments opened from Outlook - word
@@ -1307,6 +1385,7 @@ else
 {
 write-host "Turn off Protected View for attachments opened from Outlook is set to an unknown configuration in word" -ForegroundColor Red
 }
+
 
 write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"  -ForegroundColor Cyan
 
