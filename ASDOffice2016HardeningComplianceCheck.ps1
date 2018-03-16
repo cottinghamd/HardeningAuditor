@@ -1119,6 +1119,28 @@ else
 write-host "Do not open files from the Internet zone in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
 }
 
+#Do not open files in unsafe locations in Protected View - Excel
+
+$disableifulexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
+
+if ($disableifulexcel -eq $null)
+{
+write-host "Do not open files in unsafe locations in Protected View is not configured in Excel" -ForegroundColor Yellow
+}
+
+elseif ($disableifulexcel -eq '0')
+{
+write-host "Do not open files in unsafe locations in Protected View is disabled in Excel" -ForegroundColor Green
+}
+elseif ($disableifulexcel -eq '1')
+{
+write-host "Do not open files in unsafe locations in Protected View is enabled in Excel" -ForegroundColor Red
+}
+else
+{
+write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
+}
+
 
 
 #Do not open files from the Internet zone in Protected View - Powerpoint
@@ -1144,6 +1166,7 @@ write-host "Do not open files from the Internet zone in Protected View is set to
 }
 
 
+
 #Do not open files from the Internet zone in Protected View - word
 
 $disableifword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\protectedview" -Name disableinternetfilesinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableinternetfilesinpv
@@ -1167,27 +1190,6 @@ write-host "Do not open files from the Internet zone in Protected View is set to
 }
 
 
-#Do not open files in unsafe locations in Protected View - Excel
-
-$disableifulexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\protectedview" -Name disableunsafelocationsinpv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableunsafelocationsinpv
-
-if ($disableifulexcel -eq $null)
-{
-write-host "Do not open files in unsafe locations in Protected View is not configured in Excel" -ForegroundColor Yellow
-}
-
-elseif ($disableifulexcel -eq '0')
-{
-write-host "Do not open files in unsafe locations in Protected View is disabled in Excel" -ForegroundColor Green
-}
-elseif ($disableifulexcel -eq '1')
-{
-write-host "Do not open files in unsafe locations in Protected View is enabled in Excel" -ForegroundColor Red
-}
-else
-{
-write-host "Do not open files in unsafe locations in Protected View is set to an unknown configuration in Excel" -ForegroundColor Red
-}
 
 
 
@@ -1332,52 +1334,6 @@ write-host "Turn off trusted documents is set to an unknown configuration in Exc
 
 
 
-#Turn off trusted documents - Powerpoint
-
-$trusteddocspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted documents" -Name disabletrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabletrusteddocuments
-
-if ($trusteddocspowerpoint -eq $null)
-{
-write-host "Turn off trusted documents is not configured in powerpoint" -ForegroundColor Yellow
-}
-
-elseif ($trusteddocspowerpoint -eq '1')
-{
-write-host "Turn off trusted documents is enabled in powerpoint" -ForegroundColor Green
-}
-elseif ($trusteddocspowerpoint -eq '0')
-{
-write-host "Turn off trusted documents is disabled in powerpoint" -ForegroundColor Red
-}
-else
-{
-write-host "Turn off trusted documents is set to an unknown configuration in powerpoint" -ForegroundColor Red
-}
-
-
-#Turn off trusted documents - word
-
-$trusteddocsword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\trusted documents" -Name disabletrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabletrusteddocuments
-
-if ($trusteddocsword -eq $null)
-{
-write-host "Turn off trusted documents is not configured in word" -ForegroundColor Yellow
-}
-
-elseif ($trusteddocsword -eq '1')
-{
-write-host "Turn off trusted documents is enabled in word" -ForegroundColor Green
-}
-elseif ($trusteddocsword -eq '0')
-{
-write-host "Turn off trusted documents is disabled in word" -ForegroundColor Red
-}
-else
-{
-write-host "Turn off trusted documents is set to an unknown configuration in word" -ForegroundColor Red
-}
-
-
 #Turn off Trusted Documents on the network - Excel
 
 $trusteddocsnetworkexcel = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\excel\security\trusted documents" -Name disablenetworktrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablenetworktrusteddocuments
@@ -1402,6 +1358,29 @@ write-host "Turn off Trusted Documents on the network is set to an unknown confi
 
 
 
+#Turn off trusted documents - Powerpoint
+
+$trusteddocspowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted documents" -Name disabletrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabletrusteddocuments
+
+if ($trusteddocspowerpoint -eq $null)
+{
+write-host "Turn off trusted documents is not configured in powerpoint" -ForegroundColor Yellow
+}
+
+elseif ($trusteddocspowerpoint -eq '1')
+{
+write-host "Turn off trusted documents is enabled in powerpoint" -ForegroundColor Green
+}
+elseif ($trusteddocspowerpoint -eq '0')
+{
+write-host "Turn off trusted documents is disabled in powerpoint" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off trusted documents is set to an unknown configuration in powerpoint" -ForegroundColor Red
+}
+
+
 #Turn off Trusted Documents on the network - Powerpoint
 
 $trusteddocsnetworkpowerpoint = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\powerpoint\security\trusted documents" -Name disablenetworktrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablenetworktrusteddocuments
@@ -1424,6 +1403,29 @@ else
 write-host "Turn off Trusted Documents on the network is set to an unknown configuration in powerpoint" -ForegroundColor Red
 }
 
+
+
+#Turn off trusted documents - word
+
+$trusteddocsword = Get-ItemProperty -Path "Registry::HKEY_CURRENT_USER\software\policies\microsoft\office\$officeversion\word\security\trusted documents" -Name disabletrusteddocuments -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disabletrusteddocuments
+
+if ($trusteddocsword -eq $null)
+{
+write-host "Turn off trusted documents is not configured in word" -ForegroundColor Yellow
+}
+
+elseif ($trusteddocsword -eq '1')
+{
+write-host "Turn off trusted documents is enabled in word" -ForegroundColor Green
+}
+elseif ($trusteddocsword -eq '0')
+{
+write-host "Turn off trusted documents is disabled in word" -ForegroundColor Red
+}
+else
+{
+write-host "Turn off trusted documents is set to an unknown configuration in word" -ForegroundColor Red
+}
 
 #Turn off Trusted Documents on the network - word
 
