@@ -1,4 +1,10 @@
-﻿[CmdletBinding(SupportsShouldProcess=$true)]
+﻿#Authors: David Cottingham & Huda Minhaj
+#Purpose: This script checks for compliance with the ASD Office 2016 hardening guide by checking registry keys on the local machine. Where checks are unable to be performed in this manner, either other methods of scanning are used or the user is prompted for manual checking.
+#This script is designed to be used as a simple spot check of a endpoint to ensure the correct settings are applied, regardless of how complex an organisations group policy may be.
+#The ASD hardening guide for Office 2016 can be downloaded here: https://www.asd.gov.au/publications/protect/Hardening_MS_Office_2016.pdf
+
+
+[CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [string[]]$ComputerName = $env:COMPUTERNAME,
     [switch]$ShowAllInstalledProducts,
