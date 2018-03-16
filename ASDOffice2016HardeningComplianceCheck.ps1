@@ -502,6 +502,9 @@ foreach($_ in 1..50)
 
 write-host "`r`n####################### PATCHING #######################`r`n"
 
+write-host "Unable to check patch levels reliably yet, please check the latest office patch manually to ensure patches are up to date" -ForegroundColor Cyan
+#Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Where {$_.DisplayName -like "*Office*"} | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table –AutoSize
+
 write-host "`r`n####################### ACTIVE-X #######################`r`n"
 
 $disableallactivex = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\common\security" -Name disableallactivex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disableallactivex
@@ -526,6 +529,149 @@ write-host "Disable All ActiveX is configured to an unknown setting" -Foreground
 
 
 write-host "`r`n####################### ADD-INS #######################`r`n"
+
+#Allow mix of policy and user locations
+$trustedlocationsmix = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\common\security\trusted locations" -Name 'allow user locations' -ErrorAction SilentlyContinue|Select-Object -ExpandProperty 'allow user locations'
+
+if ($trustedlocationsmix -eq $null)
+{
+write-host "Allow mix of policy and user locations is not configured" -ForegroundColor Yellow
+}
+elseif ($trustedlocationsmix -eq '0')
+{
+write-host "Allow mix of policy and user locations is disabled" -ForegroundColor Green
+}
+elseif ($trustedlocationsmix -eq '1')
+{
+write-host "Allow mix of policy and user locations is enabled" -ForegroundColor Red
+}
+else
+{
+write-host "Allow mix of policy and user locations is set to an unknown setting" -ForegroundColor Red
+}
+
+
+#Disable all applications add-ins in Excel
+$disablealladdinsexcel = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security" -Name disablealladdins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty disablealladdins
+
+if ($disablealladdinsexcel -eq $null)
+{
+write-host "Disable all applications add-ins in Excel is not configured" -ForegroundColor Yellow
+}
+elseif ($disablealladdinsexcel -eq '1')
+{
+write-host "Disable all applications add-ins in Excel is enabled" -ForegroundColor Green
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationsexcel2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationsexcel2 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationsexcel2 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in Excel is disabled" -ForegroundColor Green
+    }
+    elseif ($allowtrustedlocationsexcel2 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in Excel is enabled" -ForegroundColor Red
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledexcel2 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledexcel2 -eq $null)
+    {
+    write-host "Disable all trusted locations in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledexcel2 -eq '0')
+    {
+    write-host "Disable all trusted locations in Excel is disabled" -ForegroundColor Red
+    }
+    elseif ($alllocationsdisabledexcel2 -eq '1')
+    {
+    write-host "Disable all trusted locations in Excel is enabled" -ForegroundColor Green
+    }
+
+
+}
+elseif ($disablealladdinsexcel -eq '0')
+{
+write-host "Disable all applications add-ins in Excel is disabled, this setting is compliant if you explicitly need add-ins" -ForegroundColor Green
+
+    #Disable Trust Bar Notification for unsigned application add-ins and block them
+    $disabletrustbarexcel = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security" -Name notbpromptunsignedaddin -ErrorAction SilentlyContinue|Select-Object -ExpandProperty notbpromptunsignedaddin
+
+    if ($disabletrustbarexcel -eq $null)
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($disabletrustbarexcel -eq '0')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Excel is disabled" -ForegroundColor Red
+    }
+    elseif ($disabletrustbarexcel -eq '1')
+    {
+    write-host "Disable Trust Bar Notification for unsigned application add-ins and block them in Excel is enabled" -ForegroundColor Green
+    }
+
+    #Require that application add-ins are signed by Trusted Publisher
+    $requireaddinsigexcel = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security" -Name requireaddinsig -ErrorAction SilentlyContinue|Select-Object -ExpandProperty requireaddinsig
+
+    if ($requireaddinsigexcel -eq $null)
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($requireaddinsigexcel -eq '0')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Excel is disabled" -ForegroundColor Red
+    }
+    elseif ($requireaddinsigexcel -eq '1')
+    {
+    write-host "Require that application add-ins are signed by Trusted Publisher in Excel is enabled" -ForegroundColor Green
+    }
+
+    #Allow Trusted Locations on the network
+    $allowtrustedlocationsexcel1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\trusted locations" -Name allownetworklocations -ErrorAction SilentlyContinue|Select-Object -ExpandProperty allownetworklocations
+
+    if ($allowtrustedlocationsexcel1 -eq $null)
+    {
+    write-host "Allow Trusted Locations on the network in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($allowtrustedlocationsexcel1 -eq '0')
+    {
+    write-host "Allow Trusted Locations on the network in Excel is disabled" -ForegroundColor Red
+    }
+    elseif ($allowtrustedlocationsexcel1 -eq '1')
+    {
+    write-host "Allow Trusted Locations on the network in Excel is enabled" -ForegroundColor Green
+    }
+
+    #Disable all trusted locations
+    $alllocationsdisabledexcel1 = Get-ItemProperty -Path "Registry::HKCU\software\policies\microsoft\office\$officeversion\excel\security\trusted locations" -Name alllocationsdisabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty alllocationsdisabled
+
+    if ($alllocationsdisabledexcel1 -eq $null)
+    {
+    write-host "Disable all trusted locations in Excel is not configured" -ForegroundColor Yellow
+    }
+    elseif ($alllocationsdisabledexcel1 -eq '0')
+    {
+    write-host "Disable all trusted locations in Excel is disabled" -ForegroundColor Green
+    }
+    elseif ($alllocationsdisabledexcel1 -eq '1')
+    {
+    write-host "Disable all trusted locations in Excel is enabled" -ForegroundColor Red
+    }
+
+}
+else
+{
+write-host "Disable all applications add-ins in Excel is set to an unknown setting" -ForegroundColor Red
+}
+
+#Need to do PowerPoint
+#Need to do Word
 
 write-host "`r`n####################### EXTENSION HARDENING #######################`r`n"
 
