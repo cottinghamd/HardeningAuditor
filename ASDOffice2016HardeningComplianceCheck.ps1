@@ -478,7 +478,7 @@ elseif ($macrooutlook -eq "4"){
     elseif ($macrooutlook -eq"1")
       {Write-Host "Macros are not disabled in Microsoft Outlook, set to Enable all Macros" -ForegroundColor Red}
       elseif ($macrooutlook -eq"2")
-      {Write-Host "Macros are not disabled in Microsoft Outlook, set to Disable all Macros with notification" -ForegroundColor Red}
+      {Write-Host "Macros are not disabled in Microsoft Outlook, set to Notifications for All Macros" -ForegroundColor Red}
       elseif ($macrooutlook -eq"3")
       {Write-Host "Macros are not disabled in Microsoft Outlook, set to Disable all Macros except those digitally signed" -ForegroundColor Red}
       else {Write-host "Macros are not disabled in Microsoft Outlook, value is unknown and set to $macrooutlook" -ForegroundColor Red}
@@ -1886,7 +1886,7 @@ write-host "Word XP binary documents and templates is set to an unknown setting"
 
 
 
-write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"  -ForegroundColor Cyan
+write-host "`r`n####################### HIDDEN MARKUP #######################`r`n"
 
 #Powerpoint - Make Hidden Markup Visible
 
@@ -1926,7 +1926,7 @@ write-host "Make hidden markup visible for Word is disabled" -ForegroundColor Re
 }
 
 
-write-host "`r`n####################### OFFICE FILE VALIDATION #######################`r`n"  -ForegroundColor Cyan
+write-host "`r`n####################### OFFICE FILE VALIDATION #######################`r`n"
 
 #Turn off error reporting for files that fail file validation
 
@@ -2003,7 +2003,7 @@ write-host "Turn off file validation is enabled in Word" -ForegroundColor Red
 }
 
 
-write-host "`r`n####################### PROTECTED VIEW #######################`r`n"  -ForegroundColor Cyan
+write-host "`r`n####################### PROTECTED VIEW #######################`r`n"
 
 #Do not open files from the Internet zone in Protected View - Excel
 
@@ -2295,7 +2295,7 @@ write-host "Turn off Protected View for attachments opened from Outlook is set t
 }
 
 
-write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"  -ForegroundColor Cyan
+write-host "`r`n####################### TRUSTED DOCUMENTS #######################`r`n"
 
 #Turn off trusted documents - Excel
 
@@ -2436,7 +2436,7 @@ else
 write-host "Turn off Trusted Documents on the network is set to an unknown configuration in word" -ForegroundColor Red
 }
 
-write-host "`r`n####################### REPORTING INFORMATION #######################`r`n" -ForegroundColor Cyan
+write-host "`r`n####################### REPORTING INFORMATION #######################`r`n"
 
 
 #Allow including screenshot with Office Feedback
