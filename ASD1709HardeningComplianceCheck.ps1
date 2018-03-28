@@ -4055,7 +4055,7 @@ write-host "Network security: Configure encryption types allowed for Kerberos is
 }
    elseif ( $encryptiontypeskerb  -eq  '24' )
 {
-write-host "Network security: Configure encryption types allowed for Kerberos is configured correctly" -ForegroundColor Green
+write-host "Network security: Configure encryption types allowed for Kerberos is set to AES128_HMAC_SHA1 and AES256_HMAC_SHA1" -ForegroundColor Green
 }
   else
 {
@@ -4070,11 +4070,11 @@ write-host "Network security: LAN Manager authentication level is not configured
 }
    elseif ( $LMCompatibilityLevel  -eq  '5' )
 {
-write-host "Network security: LAN Manager authentication level is configured correctly" -ForegroundColor Green
+write-host "Network security: LAN Manager authentication level is set to Send NTLMv2 response only & refuse LM & NTLM" -ForegroundColor Green
 }
   else
 {
-write-host "Network security: LAN Manager authentication level is configured incorrectly" -ForegroundColor Red
+write-host "Network security: LAN Manager authentication level is configured with a non-compliant setting, it must be set to Send NTLMv2 response only & refuse LM & NTLM" -ForegroundColor Red
 }
 
 $minsesssecclient = Get-ItemProperty -Path  'Registry::HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0\'  -Name NTLMMinClientSec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NTLMMinClientSec
@@ -4084,7 +4084,7 @@ write-host "Network security: Minimum session security for NTLM SSP based (inclu
 }
    elseif ( $minsesssecclient  -eq  '537395200' )
 {
-write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is configured correctly" -ForegroundColor Green
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is set to Require NTLMv2 session security & Require 128-bit encryption" -ForegroundColor Green
 }
   else
 {
@@ -4098,7 +4098,7 @@ write-host "Network security: Minimum session security for NTLM SSP based (inclu
 }
    elseif ( $minsesssecserver  -eq  '537395200' )
 {
-write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is configured correctly" -ForegroundColor Green
+write-host "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is set to Require NTLMv2 session security and Require 128-bit encryption" -ForegroundColor Green
 }
   else
 {
@@ -4148,7 +4148,7 @@ write-host "There are $numberofservices services present on this machine, howeve
 }
 elseif($numberofdisabledservices -gt '30')
 {
-write-host "There are $numberofservices services present on this machine and $numberofdisabledservices have been disabled. This incidicates that reduction in operating system functionality has likely been performed." -Foregroundcolour Green
+write-host "There are $numberofservices services present on this machine and $numberofdisabledservices have been disabled. This incidicates that reduction in operating system functionality has likely been performed." -ForegroundColur Green
 }
 
 
