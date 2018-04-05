@@ -6176,6 +6176,61 @@ outputanswer -answer "Determine if interactive users can generate Resultant Set 
 outputanswer -answer "Determine if interactive users can generate Resultant Set of Policy data is set to an unknown setting" -color Red
 }
 
+
+#ask questions, make them compare, check filepaths, make comparison something easily understandable
+
+$comparecheck = Read-Host 'Would you like to compare your results to a previously saved check? You can only do this if you chose to save your results at the beginning.'
+
+If ($comparecheck -eq 'y')
+{
+    $baselinefilelocation = Read-Host "Please specify the full file path of the previously saved check here e.g. C:\logs\output.txt"
+    
+    $comparesave = Read-Host 'Would you like to save the results of this comparison? (y for Yes or n for No)'
+    If ($comparesave -eq 'y')
+    {
+    $comparelocation = Get-Location
+    $comparelocationok = Read-Host "The output file will be output to the following location $comparelocation\comparison.txt, is this ok? (y for Yes or n for No)"
+
+         If ($comparelocationok -eq 'y')
+            {
+             $filepathcompare = "$comparelocation\comparison.txt"
+             }
+        else
+            {
+            $filepathcompare = Read-Host "Please specify the full output file path here e.g. C:\logs\output.txt"
+             }
+    }
+    else
+    {
+    #donothing
+    }
+
+    $previousresults = Get-Content $baselinefilelocation
+    $currentresults = Get-Content $filepath
+    #$thecomparison = 
+    Compare-object $previousresults $currentresults
+    #$thecomparison |Out-File $filepathcompare
+
+
+}
+else 
+{
+#donothing
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
 
 pause
