@@ -6205,12 +6205,15 @@ If ($comparecheck -eq 'y')
     #donothing
     }
 
-    $previousresults = Get-Content $baselinefilelocation
+        $previousresults = Get-Content $baselinefilelocation
     $currentresults = Get-Content $filepath
-    #$thecomparison = 
-    Compare-object $previousresults $currentresults
-    #$thecomparison |Out-File $filepathcompare
+    $thecomparison = Compare-object $previousresults $currentresults |Format-list
 
+    Get-Content $thecomparison -replace '<=','this existed in baseline but is not present in current results' | Set-Content $thecomparison
+    Get-Content $thecomparison -replace '=>','this did not exist in baseline but is present in current results' | Set-Content $thecomparison  
+
+   
+    $thecomparison |Out-File $filepathcompare
 
 }
 else 
