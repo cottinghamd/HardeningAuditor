@@ -80,7 +80,7 @@ Function Get-MachineType
 
 
 
-Write-Host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script" -ForegroundColor Green
+Write-Host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script`r`n" -ForegroundColor Green
 Write-Host -answer "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
 Write-Host -answer "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
 
@@ -95,18 +95,18 @@ Write-Host "exiting"
 break
 }
 }
-
+$report = @()
 $writetype = Read-Host 'Do you want to output this scripts results to a file? (y for Yes or n for No)'
 
 If ($writetype -eq 'y')
 {
 $tooutput = 'y'
 $working = Get-Location
-$workingdirok = Read-Host "The output file will be output to the following location $working\results.txt, is this ok? (y for Yes or n for No)"
+$workingdirok = Read-Host "The output file will be output to the following location $working\results.csv, is this ok? (y for Yes or n for No)"
 
     If ($workingdirok -eq 'y')
     {
-    $filepath = "$working\results.txt"
+    $filepath = "$working\results.csv"
     }
     else
     {
@@ -116,29 +116,47 @@ $workingdirok = Read-Host "The output file will be output to the following locat
 
 Function outputanswer($answer,$color)
 {
-write-host $answer -ForegroundColor $color
+if ($color -eq 'White')
+    {
+    write-host "`r`n#######################" $answer "#######################`r`n" -ForegroundColor $color
+    }
+    else
+    {
+    write-host $answer -ForegroundColor $color
+    }
 
 if ($global:tooutput -ne $null)
 {
     if ($color -eq 'Yellow')
     {
-        $compliance = ', this setting has not been configured and is therefore non-compliant'
+        $compliance = 'Non-Compliant (Due to Non-Configuration)'
     }
         elseif ($color -eq 'Green')
     {
-        $compliance = ', this setting is compliant'
+        $compliance = 'Compliant'
     }
         elseif ($color -eq 'Red')
     {
-        $compliance = ', this setting is non-compliant'
+        $compliance = 'Non-Compliant'
     }
-$tofile = $answer + $compliance
-$tofile | Out-File -Append $global:filepath
+        elseif ($color -eq 'White')
+    {
+        $global:chapter = $answer
+        $answer = $null
+    }
+if ($answer -ne $null)
+{
+$global:report += New-Object psobject -Property @{Chapter=$chapter;Compliance=$compliance;Setting=$answer}
+}
+else
+{
+#donothing
+}
 }
 }
 
 
-outputanswer -answer "`r`n####################### CREDENTIAL CACHING #######################`r`n" -color White
+outputanswer -answer "CREDENTIAL CACHING" -color White
 outputanswer -answer "This script is unable to check Number of Previous Logons to cache, this is because the setting is in the security registry hive, please check the GPO located at Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive Logon" -color Cyan
 
 #Check Network Access: Do not allow storage of passwords and credentials for network authentication
@@ -221,7 +239,7 @@ outputanswer -answer "Virtualisation Based Protection of Code Integrity with UEF
         outputanswer -answer "Virtualisation Based Protection of Code Integrity with UEFI lock is set to something non compliant" -color Red
     }
 
-outputanswer -answer "`r`n####################### CONTROLLED FOLDER ACCESS #######################`r`n" -color White
+outputanswer -answer "CONTROLLED FOLDER ACCESS" -color White
 
 #Check Controlled Folder Access for Exploit Guard is Enabled
 $cfaccess = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exploit Guard\Controlled Folder Access" -Name EnableControlledFolderAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableControlledFolderAccess
@@ -239,7 +257,7 @@ outputanswer -answer "Controlled Folder Access for Exploit Guard is not configur
         outputanswer -answer "Controlled Folder Access for Exploit Guard is disabled" -color Red
     }
 
-outputanswer -answer "`r`n####################### CREDENTIAL ENTRY #######################`r`n" -color White
+outputanswer -answer "CREDENTIAL ENTRY" -color White
 
 #Check Do not display network selection UI
 
@@ -396,7 +414,7 @@ outputanswer -answer "Interactive logon: Don't display username at sign-in is no
     }
 
 
-outputanswer -answer "`r`n####################### EARLY LAUNCH ANTI MALWARE #######################`r`n" -color White
+outputanswer -answer "EARLY LAUNCH ANTI MALWARE" -color White
 
 #Check ELAM Configuration
 
@@ -428,7 +446,7 @@ outputanswer -answer "ELAM Boot-Start Driver Initialization Policy is not config
     }
 
 
-outputanswer -answer "`r`n####################### ELEVATING PRIVILEGES #######################`r`n" -color White
+outputanswer -answer "ELEVATING PRIVILEGES" -color White
 
 
 
@@ -617,7 +635,7 @@ outputanswer -answer "Virtualize file and registry write failures to per-user lo
     }
 
 
-outputanswer -answer "`r`n####################### EXPLOIT PROTECTION #######################`r`n" -color White
+outputanswer -answer "EXPLOIT PROTECTION" -color White
 
 
 
@@ -686,7 +704,7 @@ outputanswer -answer "Enabled Structured Exception Handling Overwrite Protection
     }
 
 
-outputanswer -answer "`r`n####################### LOCAL ADMINISTRATOR ACCOUNTS #######################`r`n" -color White
+outputanswer -answer "LOCAL ADMINISTRATOR ACCOUNTS" -color White
 
 # Accounts: Administrator account status
 # This is apparently not a registry key, need to implement a check using another method later
@@ -710,7 +728,7 @@ outputanswer -answer "Apply UAC restrictions to local accounts on network logons
     }
 
 
-outputanswer -answer "`r`n####################### MICROSOFT EDGE #######################`r`n" -color White
+outputanswer -answer "MICROSOFT EDGE" -color White
 
 
 #Allow Adobe Flash 
@@ -1012,13 +1030,13 @@ outputanswer -answer "Prevent bypassing Windows Defender SmartScreen prompts for
 }
 
 
-outputanswer -answer "`r`n####################### MULTI-FACTOR AUTHENTICATION #######################`r`n" -color White
+outputanswer -answer "MULTI-FACTOR AUTHENTICATION" -color White
 
 outputanswer -answer "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -color Cyan
 
 
 
-outputanswer -answer "`r`n####################### OPERATING SYSTEM ARCHITECTURE #######################`r`n" -color White
+outputanswer -answer "OPERATING SYSTEM ARCHITECTURE" -color White
 
 #Operating System Architecture
 $architecture = $ENV:PROCESSOR_ARCHITECTURE
@@ -1036,7 +1054,7 @@ outputanswer -answer "Operating System Architecture was unable to be determined"
 }
 
 
-outputanswer -answer "`r`n####################### OPERATING SYSTEM PATCHING #######################`r`n" -color White
+outputanswer -answer "OPERATING SYSTEM PATCHING" -color White
 
 
 
@@ -1188,7 +1206,7 @@ outputanswer -answer "Specify intranet Microsoft update service location is set 
 
 
 
-outputanswer -answer "`r`n####################### PASSWORD POLICY #######################`r`n" -color White
+outputanswer -answer "PASSWORD POLICY" -color White
 
 
 
@@ -1265,13 +1283,13 @@ outputanswer -answer "Limit local account use of blank passwords to console logo
 }
 
 
-outputanswer -answer "`r`n####################### RESTRICTING PRIVILEGED ACCOUNTS #######################`r`n" -color White
+outputanswer -answer "RESTRICTING PRIVILEGED ACCOUNTS" -color White
 
 outputanswer -answer "There are no controls in this section that can be checked by a PowerShell script, this control requires manual auditing" -color Cyan
 
 
 
-outputanswer -answer "`r`n####################### SECURE BOOT #######################`r`n" -color White
+outputanswer -answer "SECURE BOOT" -color White
 
 
 #Secure Boot status
@@ -1293,7 +1311,7 @@ elseIf($SecureBootStatus -eq 'False')
 }
 
 
-outputanswer -answer "`r`n####################### ACCOUNT LOCKOUT POLICIES #######################`r`n" -color White
+outputanswer -answer "ACCOUNT LOCKOUT POLICIES" -color White
 
 #Account Lockout Duration
 outputanswer -answer "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
@@ -1305,7 +1323,7 @@ outputanswer -answer "Account Lockout Threshold is unable to be checked using Po
 outputanswer -answer "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
 
 
-outputanswer -answer "`r`n####################### ANONYMOUS CONNECTIONS #######################`r`n" -color White
+outputanswer -answer "ANONYMOUS CONNECTIONS" -color White
 
 
 #Enable insecure guest logons
@@ -1482,7 +1500,7 @@ outputanswer -answer "Access this computer from the network is unable to be chec
 outputanswer -answer "Deny Access to this computer from the network is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\. ASD Recommendation is to only have 'Guests & NT AUTHORITY\Local Account' present" -color Cyan
 
 
-outputanswer -answer "`r`n####################### ANTI-VIRUS SOFTWARE #######################`r`n" -color White
+outputanswer -answer "ANTI-VIRUS SOFTWARE" -color White
 
 
 
@@ -1887,7 +1905,7 @@ outputanswer -answer "Turn on heuristics is set to an unknown setting" -color Re
 }
 
 
-outputanswer -answer "`r`n####################### ATTACHMENT MANAGER #######################`r`n" -color White
+outputanswer -answer "ATTACHMENT MANAGER" -color White
 
 $SaveZoneInformation = Get-ItemProperty -Path Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments\ -Name SaveZoneInformation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SaveZoneInformation
 if ( $SaveZoneInformation -eq $null)
@@ -1925,7 +1943,7 @@ outputanswer -answer "Hide mechanisms to remove zone information is disabled" -c
 outputanswer -answer "Hide mechanisms to remove zone information is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### AUDIT EVENT MANAGEMENT #######################`r`n" -color White
+outputanswer -answer "AUDIT EVENT MANAGEMENT" -color White
 
 $ProcessCreationIncludeCmdLine_Enabled = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit\'  -Name ProcessCreationIncludeCmdLine_Enabled -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ProcessCreationIncludeCmdLine_Enabled
 if ( $ProcessCreationIncludeCmdLine_Enabled -eq $null)
@@ -2034,11 +2052,11 @@ outputanswer -answer "Specify the maximum log file size (KB) for the Setup Log i
 outputanswer -answer "Specify the maximum log file size (KB) for the Setup Log is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`nManage Auditing and Security Log is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to only have 'Administrators' present" -color Cyan
+outputanswer -answer "Manage Auditing and Security Log is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to only have 'Administrators' present" -color Cyan
 
-outputanswer -answer "`r`nAudit Credential Validation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
+outputanswer -answer "Audit Credential Validation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management"  -color Cyan
 outputanswer -answer "   Audit Computer Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
 outputanswer -answer "   Audit Other Account Management Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
@@ -2047,7 +2065,7 @@ outputanswer -answer "   Audit Security Group Management is unable to be checked
 
 outputanswer -answer "   Audit User Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking"  -color Cyan
 
 outputanswer -answer "   Audit PNP Activity is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
@@ -2055,7 +2073,7 @@ outputanswer -answer "   Audit Process Creation is unable to be checked using Po
 
 outputanswer -answer "   Audit Process Termination is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff"  -color Cyan
 
 outputanswer -answer "   Audit Account Lockout is unable to be checked using PowerShell, as the setting is not a registry key. Please check. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -2069,7 +2087,7 @@ outputanswer -answer "   Audit Other Logon/Logoff Events is unable to be checked
 
 outputanswer -answer "   Audit Audit Special Logon is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access"  -color Cyan
 
 outputanswer -answer "   Audit File Share is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -2079,7 +2097,7 @@ outputanswer -answer "   Audit Other Object Access Events is unable to be checke
 
 outputanswer -answer "   Audit Removable Storage is unable to be checked using PowerShell, as the setting is not a registry key ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change"  -color Cyan
 
 outputanswer -answer "   Audit Audit Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -2087,9 +2105,9 @@ outputanswer -answer "   Audit Authentication Policy Change is unable to be chec
 
 outputanswer -answer "   Audit Authorization Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
-outputanswer -answer "`r`nAudit Sensitive Privilege Use is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
+outputanswer -answer "Audit Sensitive Privilege Use is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "`r`nFor the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System"  -color Cyan
+outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System"  -color Cyan
 
 outputanswer -answer "   Audit IPsec Driver is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -2119,7 +2137,7 @@ outputanswer -answer "Audit: Force audit policy subcategory settings (Windows Vi
 outputanswer -answer "Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### AUTOPLAY AND AUTORUN #######################`r`n" -color White
+outputanswer -answer "AUTOPLAY AND AUTORUN" -color White
 
 $LMNoAutoplayfornonVolume = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\Explorer\' -Name NoAutoplayfornonVolume -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoplayfornonVolume
 $UPNoAutoplayfornonVolume = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\Explorer\' -Name NoAutoplayfornonVolume -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoAutoplayfornonVolume
@@ -2190,15 +2208,15 @@ if ( $UPNoDriveTypeAutoRun  -eq  '181' )
 outputanswer -answer "Turn off Autoplay is disabled in User GP" -color Red
 }
 
-outputanswer -answer "`r`n####################### BIOS AND UEFI PASSWORDS #######################`r`n" -color White
+outputanswer -answer "BIOS AND UEFI PASSWORDS" -color White
 
 outputanswer -answer "Unable to confirm that a BIOS password is set via PowerShell. Please manually check if a BIOS password is set (if applicable)" -color Cyan
 
-outputanswer -answer "`r`n####################### BOOT DEVICES #######################`r`n" -color White
+outputanswer -answer "BOOT DEVICES" -color White
 
 outputanswer -answer "Unable to confirm the BIOS device boot order. Please manually check to ensure that the hard disk of this device is the primary boot device and the machine is unable to be booted off removable media (if applicable)" -color Cyan
 
-outputanswer -answer "`r`n####################### BRIDGING NETWORKS #######################`r`n" -color White
+outputanswer -answer "BRIDGING NETWORKS" -color White
 
 $NC_AllowNetBridge_NLA = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Network Connections\'  -Name NC_AllowNetBridge_NLA -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NC_AllowNetBridge_NLA
 if ( $NC_AllowNetBridge_NLA -eq $null)
@@ -2255,7 +2273,7 @@ outputanswer -answer "Prohibit connection to non-domain networks when connected 
 }
 
 
-outputanswer -answer "`r`n####################### BUILT-IN GUEST ACCOUNTS #######################`r`n" -color White
+outputanswer -answer "BUILT-IN GUEST ACCOUNTS" -color White
 
 
 $accounts = Get-WmiObject -Class Win32_UserAccount -Filter "LocalAccount='$true'"|Select-Object Name,Disabled|Select-String 'Guest'
@@ -2276,12 +2294,12 @@ outputanswer -answer "The local guest account status was unable to be determined
 
 outputanswer -answer "Deny Logon Locally is unable to be checked realiably using PowerShell. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment. ASD Recommendation is to have 'Guests' present." -color Cyan
 
-outputanswer -answer "`r`n####################### CASE LOCKS #######################`r`n" -color White
+outputanswer -answer "CASE LOCKS" -color White
 
 outputanswer -answer "Unable to check if this computer has a physical case lock with a PowerShell script! Ensure the physical workstation is secured to prevent tampering, such as adding / removing hardware or removing CMOS battery." -color Cyan
 
 
-outputanswer -answer "`r`n####################### CD BURNER ACCESS #######################`r`n" -color White
+outputanswer -answer "CD BURNER ACCESS" -color White
 
 $NoCDBurning = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoCDBurning -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoCDBurning
 if ( $NoCDBurning -eq $null)
@@ -2301,11 +2319,11 @@ outputanswer -answer "Remove CD Burning features is disabled" -color Red
 outputanswer -answer "Remove CD Burning features is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### CENTRALISED AUDIT EVENT LOGGING #######################`r`n" -color White
+outputanswer -answer "CENTRALISED AUDIT EVENT LOGGING" -color White
 
 outputanswer -answer "Centralised Audit Event Logging is unable to be checked with PowerShell. Ensure the organisation is using Centralised Event Logging, please confirm events from endpoint computers are being sent to a central location." -color Cyan
 
-outputanswer -answer "`r`n####################### COMMAND PROMPT #######################`r`n" -color White
+outputanswer -answer "COMMAND PROMPT" -color White
 
 $DisableCMD = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\'  -Name DisableCMD -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCMD
 if ( $DisableCMD -eq $null)
@@ -2325,7 +2343,7 @@ outputanswer -answer "Prevent access to the command prompt is disabled" -color R
 outputanswer -answer "Prevent access to the command prompt is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### DIRECT MEMORY ACCESS #######################`r`n" -color White
+outputanswer -answer "DIRECT MEMORY ACCESS" -color White
 
 $deviceidbanlol = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\'  -Name DenyDeviceIDs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyDeviceIDs
 if ( $deviceidbanlol -eq $null)
@@ -2434,7 +2452,7 @@ foreach($_ in 1..50)
 }
 
 
-outputanswer -answer "`r`n####################### ENDPOINT DEVICE CONTROL #######################`r`n" -color White
+outputanswer -answer "ENDPOINT DEVICE CONTROL" -color White
 
 
 $Deny_All = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\RemovableStorageDevices\'  -Name Deny_All -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Deny_All
@@ -2991,7 +3009,7 @@ outputanswer -answer "WPD Devices: Deny write access is set to an unknown settin
 }
 
 
-outputanswer -answer "`r`n####################### FILE AND PRINT SHARING #######################`r`n" -color White
+outputanswer -answer "FILE AND PRINT SHARING" -color White
 
 $DisableHomeGroup = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\HomeGroup\'  -Name DisableHomeGroup -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableHomeGroup
 if ( $DisableHomeGroup -eq $null)
@@ -3029,7 +3047,7 @@ outputanswer -answer "Prevent users from sharing files within their profile is d
 outputanswer -answer "Prevent users from sharing files within their profile is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### GROUP POLICY PROCESSING #######################`r`n" -color White
+outputanswer -answer "GROUP POLICY PROCESSING" -color White
 $hardenedpaths = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" -ErrorAction SilentlyContinue
 
 if ($hardenedpaths -eq $null)
@@ -3121,7 +3139,7 @@ outputanswer -answer "Turn off Local Group Policy Objects processing is disabled
 outputanswer -answer "Turn off Local Group Policy Objects processing is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### HARD DRIVE ENCRYPTION #######################`r`n" -color White
+outputanswer -answer "HARD DRIVE ENCRYPTION" -color White
 
 $driveencryption = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsOs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsOs
 $driveencryption3 = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" -Name EncryptionMethodWithXtsFdv -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EncryptionMethodWithXtsFdv
@@ -3755,7 +3773,7 @@ outputanswer -answer "Enforce drive encryption type on removable data drive  is 
 outputanswer -answer "Enforce drive encryption type on removable data drive  is set to Allow user to choose" -color Red
 }
 
-outputanswer -answer "`r`n####################### INSTALLING APPLICATIONS #######################`r`n" -color White
+outputanswer -answer "INSTALLING APPLICATIONS" -color White
 
 $EnableSmartScreen = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System\'  -Name EnableSmartScreen -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableSmartScreen
 if ( $EnableSmartScreen -eq $null)
@@ -3850,7 +3868,7 @@ outputanswer -answer "Always install with elevated privileges is enabled in user
 outputanswer -answer "Always install with elevated privileges is set to an unknown setting in user policy" -color Red
 }
 
-outputanswer -answer "`r`n####################### INTERNET PRINTING #######################`r`n" -color White
+outputanswer -answer "INTERNET PRINTING" -color White
 
 $DisableWebPnPDownload = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows NT\Printers\'  -Name DisableWebPnPDownload -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableWebPnPDownload
 if ( $DisableWebPnPDownload -eq $null)
@@ -3888,7 +3906,7 @@ outputanswer -answer "Turn off printing over HTTP is disabled" -color Red
 outputanswer -answer "Turn off printing over HTTP is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### LEGACY AND RUN ONCE LISTS #######################`r`n" -color White
+outputanswer -answer "LEGACY AND RUN ONCE LISTS" -color White
 
 $UN6ehVpmakAXClE = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name DisableCurrentUserRun -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableCurrentUserRun
 if ( $UN6ehVpmakAXClE -eq $null)
@@ -3952,7 +3970,7 @@ If ($runkeys -eq $null -and $runkeys2 -eq $runkeys2)
 
 
 
-outputanswer -answer "`r`n####################### MICROSOFT ACCOUNTS #######################`r`n" -color White
+outputanswer -answer "MICROSOFT ACCOUNTS" -color White
 
 $7u6bAiHSjEa1L9F = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\MicrosoftAccount\'  -Name DisableUserAuth -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableUserAuth
 if ( $7u6bAiHSjEa1L9F -eq $null)
@@ -3992,7 +4010,7 @@ outputanswer -answer "Prevent the usage of OneDrive for file storage is set to a
 
 outputanswer -answer "This setting is unable to be checked with PowerShell as it is a registry key, please manually check Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options" -color Cyan
 
-outputanswer -answer "`r`n####################### MSS SETTINGS #######################`r`n" -color White
+outputanswer -answer "MSS SETTINGS" -color White
 
 $fYg2RApMS8B3z4o = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters\'  -Name DisableIPSourceRouting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableIPSourceRouting
 if ( $fYg2RApMS8B3z4o -eq $null)
@@ -4066,7 +4084,7 @@ outputanswer -answer "MSS: (NoNameReleaseOnDemand) Allow the computer to ignore 
 outputanswer -answer "MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### NETBIOS OVER TCP/IP #######################`r`n" -color White
+outputanswer -answer "NETBIOS OVER TCP/IP" -color White
 
 $servicenetbt = get-service netbt
 
@@ -4089,7 +4107,7 @@ else
 
 
 
-outputanswer -answer "`r`n####################### NETWORK AUTHENTICATION #######################`r`n" -color White
+outputanswer -answer "NETWORK AUTHENTICATION" -color White
 
 $encryptiontypeskerb = Get-ItemProperty -Path  'Registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters\'  -Name SupportedEncryptionTypes -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SupportedEncryptionTypes
 if ( $encryptiontypeskerb -eq $null)
@@ -4148,7 +4166,7 @@ outputanswer -answer "Network security: Minimum session security for NTLM SSP ba
 outputanswer -answer "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is configured with a non-compliant setting, it must be set to Require NTLMv2 session security and Require 128-bit encryption" -color Red
 }
 
-outputanswer -answer "`r`n####################### NOLM HASH POLICY #######################`r`n" -color White
+outputanswer -answer "NOLM HASH POLICY" -color White
 
 $noLMhash = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\'  -Name noLMHash -ErrorAction SilentlyContinue|Select-Object -ExpandProperty noLMHash
 
@@ -4177,7 +4195,7 @@ outputanswer -answer "Network security: Do not store LAN Manager hash value on n
 
 
 
-outputanswer -answer "`r`n####################### OPERATING SYSTEM FUNCTIONALITY #######################`r`n" -color White
+outputanswer -answer "OPERATING SYSTEM FUNCTIONALITY" -color White
 
 $numberofservices = (Get-Service | Measure-Object).Count
 $numberofdisabledservices = (Get-WmiObject Win32_Service | Where-Object {$_.StartMode -eq 'Disabled'}).count
@@ -4191,11 +4209,11 @@ outputanswer -answer "There are $numberofservices services present on this machi
 }
 elseif($numberofdisabledservices -gt '30')
 {
-outputanswer -answer "There are $numberofservices services present on this machine and $numberofdisabledservices have been disabled. This incidicates that reduction in operating system functionality has likely been performed." -ForegroundColur Green
+outputanswer -answer "There are $numberofservices services present on this machine and $numberofdisabledservices have been disabled. This incidicates that reduction in operating system functionality has likely been performed." -color Green
 }
 
 
-outputanswer -answer "`r`n####################### POWER MANAGEMENT #######################`r`n" -color White
+outputanswer -answer "POWER MANAGEMENT" -color White
 
 $p86A1e2VhcGQKas = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab\'  -Name DCSettingIndex -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DCSettingIndex
 if ( $p86A1e2VhcGQKas -eq $null)
@@ -4427,7 +4445,7 @@ outputanswer -answer "Show sleep in the power options menu is enabled" -color Re
 outputanswer -answer "Show sleep in the power options menu is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### POWERSHELL #######################`r`n" -color White
+outputanswer -answer "POWERSHELL" -color White
 
 $LMCJtZgR8FhxmbGke = Get-ItemProperty -Path  'Registry::HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockLogging
 $UPCJtZgR8FhxmbGke = Get-ItemProperty -Path  'Registry::HKCU\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\' -Name EnableScriptBlockLogging -ErrorAction SilentlyContinue|Select-Object -ExpandProperty EnableScriptBlockLogging
@@ -4523,7 +4541,7 @@ outputanswer -answer "Powershell scripts are set to allow all scripts or allow l
 }
 
 
-outputanswer -answer "`r`n####################### REGISTRY EDITING TOOLS #######################`r`n" -color White
+outputanswer -answer "REGISTRY EDITING TOOLS" -color White
 
 $ne3X0uL4lhqB1Ga = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name DisableRegistryTools -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableRegistryTools
 if ( $ne3X0uL4lhqB1Ga -eq $null)
@@ -4543,7 +4561,7 @@ outputanswer -answer "Prevent access to registry editing tools is disabled" -col
 outputanswer -answer "Prevent access to registry editing tools is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### REMOTE ASSISTANCE #######################`r`n" -color White
+outputanswer -answer "REMOTE ASSISTANCE" -color White
 
 $4KQi6CmJpGgqVAs = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\policies\Microsoft\Windows NT\Terminal Services\'  -Name fAllowUnsolicited -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fAllowUnsolicited
 if ( $4KQi6CmJpGgqVAs -eq $null)
@@ -4581,7 +4599,7 @@ outputanswer -answer "Configure Solicited Remote Assistance is enabled" -color R
 outputanswer -answer "Configure Solicited Remote Assistance is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### REMOTE DESKTOP SERVICES #######################`r`n" -color White
+outputanswer -answer "REMOTE DESKTOP SERVICES" -color White
 
 $kQwHe03XYWy17KG = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDenyTSConnections -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDenyTSConnections
 if ( $kQwHe03XYWy17KG -eq $null)
@@ -4860,7 +4878,7 @@ outputanswer -answer "Set client connection encryption level is set to an unknow
 }
 
 
-outputanswer -answer "`r`n####################### REMOTE PROCEDURE CALL #######################`r`n" -color White
+outputanswer -answer "REMOTE PROCEDURE CALL" -color White
 
 $HWPLG72S8TrAqKk = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Rpc\'  -Name RestrictRemoteClients -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictRemoteClients
 if ( $HWPLG72S8TrAqKk -eq $null)
@@ -4881,7 +4899,7 @@ outputanswer -answer "Restrict Unauthenticated RPC clients is set to an unknown 
 }
 
 
-outputanswer -answer "`r`n####################### REPORTING SYSTEM INFORMATION #######################`r`n" -color White
+outputanswer -answer "REPORTING SYSTEM INFORMATION" -color White
 
 $PNH7sOv6IUqTLd0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\ScriptedDiagnosticsProvider\Policy\'  -Name DisableQueryRemoteServer -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableQueryRemoteServer
 if ( $PNH7sOv6IUqTLd0 -eq $null)
@@ -4985,7 +5003,7 @@ outputanswer -answer "Connect using SSL is enabled" -color Green
 outputanswer -answer "Connect using SSL is disabled" -color Red
 }
 
-outputanswer -answer "`r`n####################### SAFE MODE #######################`r`n" -color White
+outputanswer -answer "SAFE MODE" -color White
 
 
 $HhF0z6Ccr3LGPx = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name SafeModeBlockNonAdmins -ErrorAction SilentlyContinue|Select-Object -ExpandProperty SafeModeBlockNonAdmins
@@ -5006,7 +5024,7 @@ outputanswer -answer "Block Non-Administrators in Safe Mode is disabled" -color 
 outputanswer -answer "Block Non-Administrators in Safe Mode is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### SECURE CHANNEL COMMUNICATIONS #######################`r`n" -color White
+outputanswer -answer "SECURE CHANNEL COMMUNICATIONS" -color White
 
 $securechannel = Get-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Services\Netlogon\Parameters\" -Name RequireSignOrSeal -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RequireSignOrSeal
 
@@ -5085,7 +5103,7 @@ outputanswer -answer "Domain member: Require strong (Windows 2000 or later) sess
     }
 
 
-outputanswer -answer "`r`n####################### SECURITY POLICIES #######################`r`n" -color White
+outputanswer -answer "SECURITY POLICIES" -color White
 
 $ZCprfnJQOVLF4wT = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\wcmsvc\wifinetworkmanager\config\'  -Name AutoConnectAllowedOEM -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AutoConnectAllowedOEM
 if ( $ZCprfnJQOVLF4wT -eq $null)
@@ -5341,7 +5359,7 @@ outputanswer -answer "System objects: Strengthen default permissions of internal
 }
 
 
-outputanswer -answer "`r`n####################### SERVER MESSAGE BLOCK SESSIONS #######################`r`n" -color White
+outputanswer -answer "SERVER MESSAGE BLOCK SESSIONS" -color White
 
 
 $JZyMnHu1K3IXh40 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MrxSmb10\'  -Name Start -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Start
@@ -5488,7 +5506,7 @@ outputanswer -answer "Microsoft network server: Digitally sign communications (i
 outputanswer -answer "Microsoft network server: Digitally sign communications (if client agrees) is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### SESSION LOCKING #######################`r`n" -color White
+outputanswer -answer "SESSION LOCKING" -color White
 
 $tMm2f35wdzqlIkg = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization\'  -Name NoLockScreenCamera -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoLockScreenCamera
 if ( $tMm2f35wdzqlIkg -eq $null)
@@ -5695,10 +5713,10 @@ outputanswer -answer "Do not suggest third-party content in Windows spotlight is
 }
 
 
-outputanswer -answer "`r`n####################### SOFTWARE-BASED FIREWALLS #######################`r`n" -color White
+outputanswer -answer "SOFTWARE-BASED FIREWALLS" -color White
 
 outputanswer -answer "Unable to confirm if an effective, application based software firewall is in use on this endpoint. Please confirm that a software firewall is in use on this host, listing explicitly which applications can generate inbound and outbound network traffic." -color Cyan
-outputanswer -answer "`r`n####################### SOUND RECORDER #######################`r`n" -color White
+outputanswer -answer "SOUND RECORDER" -color White
 
 $IAtVlOZ8HnEGCq5 = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\SoundRecorder\'  -Name Soundrec -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Soundrec
 if ( $IAtVlOZ8HnEGCq5 -eq $null)
@@ -5718,11 +5736,11 @@ outputanswer -answer "Do not allow Sound Recorder to run is disabled" -color Red
 outputanswer -answer "Do not allow Sound Recorder to run is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### STANDARD OPERATING ENVIRONMENT #######################`r`n" -color White
+outputanswer -answer "STANDARD OPERATING ENVIRONMENT" -color White
 
 outputanswer -answer "This script is unable to check if a Standard Operating Environment (SOE) was used to build this image. Please manually confirm if the computer was built using a SOE image process" -color Cyan
 
-outputanswer -answer "`r`n####################### SYSTEM BACKUP AND RESTORE #######################`r`n" -color White
+outputanswer -answer "SYSTEM BACKUP AND RESTORE" -color White
 
 $admins3 = @()
 $group3 =[ADSI]"WinNT://localhost/Backup Operators" 
@@ -5750,7 +5768,7 @@ outputanswer -answer "The following members are added to the Backup Operators gr
 
 outputanswer -answer "Unable to check Restore Files and Directories setting at this time, please check manually Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Restore Files and Directories. Only Administrators should be members of this setting" -color Cyan
 
-outputanswer -answer "`r`n####################### SYSTEM CRYPTOGRAPHY #######################`r`n" -color White
+outputanswer -answer "SYSTEM CRYPTOGRAPHY" -color White
 
 $forceprotection = Get-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Cryptography" -Name ForceKeyProtection -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ForceKeyProtection
 
@@ -5789,11 +5807,11 @@ outputanswer -answer "Use FIPS compliant algorithms for encryption, hashing and 
 outputanswer -answer "Use FIPS compliant algorithms for encryption, hashing and signing is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### USER RIGHTS POLICIES #######################`r`n" -color White
+outputanswer -answer "USER RIGHTS POLICIES" -color White
 
 outputanswer -answer "Unable to check this chapter as it requires a GPO export to view the settings (they are not stored locally). Please check policies located at 'Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment'" -color Cyan
 
-outputanswer -answer "`r`n####################### VIRTUALISED WEB AND EMAIL ACCESS #######################`r`n" -color White
+outputanswer -answer "VIRTUALISED WEB AND EMAIL ACCESS" -color White
 
 $Physicalorvirtual = Get-MachineType
 If ($physicalorvirtual -eq $null)
@@ -5809,7 +5827,7 @@ elseif ($Physicalorvirtual -match "Virtual")
 outputanswer -answer "This machine was detected to be a virtual machine, if this machine is used to browse the web and check e-mail and the machine is non-persistent (new upon every reboot) you are compliant with this chapter of the guide" -color Cyan
 }
 
-outputanswer -answer "`r`n####################### WINDOWS REMOTE MANAGEMENT #######################`r`n" -color White
+outputanswer -answer "WINDOWS REMOTE MANAGEMENT" -color White
 
 $q8Y9g4oz6TAULkJ = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client\'  -Name AllowBasic -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowBasic
 if ( $q8Y9g4oz6TAULkJ -eq $null)
@@ -5921,7 +5939,7 @@ outputanswer -answer "Disallow WinRM from storing RunAs credentials is set to an
 }
 
 
-outputanswer -answer "`r`n####################### WINDOWS REMOTE SHELL ACCESS #######################`r`n" -color White
+outputanswer -answer "WINDOWS REMOTE SHELL ACCESS" -color White
 
 $traYJW4x86uMjUG = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS\'  -Name AllowRemoteShellAccess -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowRemoteShellAccess
 if ( $traYJW4x86uMjUG -eq $null)
@@ -5941,7 +5959,7 @@ outputanswer -answer "Allow Remote Shell Access is enabled" -color Red
 outputanswer -answer "Allow Remote Shell Access is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### WINDOWS SEARCH AND CORTANA #######################`r`n" -color White
+outputanswer -answer "WINDOWS SEARCH AND CORTANA" -color White
 
 $nCf3tP6YSFhcpD0 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search\'  -Name AllowCortana -ErrorAction SilentlyContinue|Select-Object -ExpandProperty AllowCortana
 if ( $nCf3tP6YSFhcpD0 -eq $null)
@@ -5979,7 +5997,7 @@ outputanswer -answer "Don't search the web or display web results in Search is d
 outputanswer -answer "Don't search the web or display web results in Search is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### WINDOWS TO GO #######################`r`n" -color White
+outputanswer -answer "WINDOWS TO GO" -color White
 
 $rbWyQvlG5TAVoS7 = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\PortableOperatingSystem\'  -Name Launcher -ErrorAction SilentlyContinue|Select-Object -ExpandProperty Launcher
 if ( $rbWyQvlG5TAVoS7 -eq $null)
@@ -5999,7 +6017,7 @@ outputanswer -answer "Windows To Go Default Startup Options is enabled" -color R
 outputanswer -answer "Windows To Go Default Startup Options is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### DISPLAYING FILE EXTENSIONS #######################`r`n" -color White
+outputanswer -answer "DISPLAYING FILE EXTENSIONS" -color White
 
 $rbWyQvlG5TAVoS = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'  -Name HideFileExt -ErrorAction SilentlyContinue|Select-Object -ExpandProperty HideFileExt
 if ( $rbWyQvlG5TAVoS -eq $null)
@@ -6019,7 +6037,7 @@ outputanswer -answer "Display file extensions is disabled" -color Red
 outputanswer -answer "Display file extensions is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### FILE AND FOLDER SECURITY PROPERTIES #######################`r`n" -color White
+outputanswer -answer "FILE AND FOLDER SECURITY PROPERTIES" -color White
 
 $7DTmwyr9KIcjvMi = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoSecurityTab -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoSecurityTab
 if ( $7DTmwyr9KIcjvMi -eq $null)
@@ -6039,7 +6057,7 @@ outputanswer -answer "Remove Security tab is disabled" -color Red
 outputanswer -answer "Remove Security tab is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### LOCATION AWARENESS #######################`r`n" -color White
+outputanswer -answer "LOCATION AWARENESS" -color White
 
 $L0t3zDQOWT82Yjk = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocation
 if ( $L0t3zDQOWT82Yjk -eq $null)
@@ -6096,7 +6114,7 @@ outputanswer -answer "Turn off Windows Location Provider is set to an unknown se
 }
 
 
-outputanswer -answer "`r`n####################### MICROSOFT STORE #######################`r`n" -color White
+outputanswer -answer "MICROSOFT STORE" -color White
 
 $64GduoTfcmp2iqY = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer\'  -Name NoUseStoreOpenWith -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoUseStoreOpenWith
 if ( $64GduoTfcmp2iqY -eq $null)
@@ -6135,7 +6153,7 @@ outputanswer -answer "Turn off the Store application is set to an unknown settin
 }
 
 
-outputanswer -answer "`r`n####################### PUBLISHING INFORMATION TO THE WEB #######################`r`n" -color White
+outputanswer -answer "PUBLISHING INFORMATION TO THE WEB" -color White
 
 
 $8Ak7NpxH5Vs3bWE = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\'  -Name NoWebServices -ErrorAction SilentlyContinue|Select-Object -ExpandProperty NoWebServices
@@ -6156,7 +6174,7 @@ outputanswer -answer "Turn off Internet download for Web publishing and online o
 outputanswer -answer "Turn off Internet download for Web publishing and online ordering wizards is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "`r`n####################### RESULTANT SET OF POLICY REPORTING #######################`r`n" -color White
+outputanswer -answer "RESULTANT SET OF POLICY REPORTING" -color White
 
 $dc04uCRS6vJGiNf = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System\'  -Name DenyRsopToInteractiveUser -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DenyRsopToInteractiveUser
 if ( $dc04uCRS6vJGiNf -eq $null)
@@ -6176,6 +6194,8 @@ outputanswer -answer "Determine if interactive users can generate Resultant Set 
 outputanswer -answer "Determine if interactive users can generate Resultant Set of Policy data is set to an unknown setting" -color Red
 }
 
+
+$report | Export-CSV -NoTypeInformation $filepath
 
 #ask questions, make them compare, check filepaths, make comparison something easily understandable
 
@@ -6205,17 +6225,28 @@ If ($comparecheck -eq 'y')
     #donothing
     }
 
-        $previousresults = Get-Content $baselinefilelocation
+    $previousresults = Get-Content $baselinefilelocation
     $currentresults = Get-Content $filepath
     $thecomparison = Compare-object $previousresults $currentresults |Format-list
 
-    Get-Content $thecomparison -replace '<=','this existed in baseline but is not present in current results' | Set-Content $thecomparison
-    Get-Content $thecomparison -replace '=>','this did not exist in baseline but is present in current results' | Set-Content $thecomparison  
-
-   
+    if($thecomparison -ne $null)
+    {
+ 
+    $thecomparison -match "=>","this did not exist in baseline but is present in current results"
+    $thecomparison.replace("<=","this existed in baseline but is not present in current results")
+     
     $thecomparison |Out-File $filepathcompare
-
+    }
+    else
+    {
+    write-host "The baselines were the same, no settings have been changed" -ForegroundColor Green
+    }
+    
 }
+
+#importcsv
+
+
 else 
 {
 #donothing
@@ -6234,6 +6265,6 @@ else
 
 
 
-Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
+#Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
 
 pause
