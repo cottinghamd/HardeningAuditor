@@ -6231,10 +6231,7 @@ write-host "$notconfigured Not-Configured (therefore treated as Non-Compliant) s
 write-host "$noncompliant Non-Compliant settings" -ForegroundColor Magenta
 write-host "$unabletobechecked settings that were unable to be checked due to various limitations" -ForegroundColor Magenta
 
-if ($displayconsole -eq 'y')
-{
 pause
-}
 
 Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
 
