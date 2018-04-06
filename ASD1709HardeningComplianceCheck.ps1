@@ -1,7 +1,7 @@
-#Authors: David Cottingham & Huda Minhaj
-#Purpose: This script checks for compliance with the ASD Hardening Guide 1709 by checking registry keys on the local machine. Where checks are unable to be performed in this manner, either other methods of scanning are used or the user is prompted for manual checking.
-#This script is designed to be used as a simple spot check of a endpoint to ensure the correct settings are applied, regardless of how complex an organisations group policy may be.
-#The ASD hardening guide can be downloaded here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf 
+#ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script
+#This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf
+#Created by github.com/cottinghamd and github.com/huda008
+#Note for this script to execute correctly, please ensure the script is dot sourced e.g. use . .\ASD1709HardeningComplianceCheck.ps1
 
 Function Get-MachineType 
 { 
@@ -45,12 +45,7 @@ Function Get-MachineType
                     "VirtualBox" { 
                         $MachineType="VM" 
                         } 
- 
-                    # Check for Xen 
-                    # I need the values for the Model for which to check. 
- 
-                    # Check for KVM 
-                    # I need the values for the Model for which to check. 
+  
  
                     # Otherwise it is a physical Box 
                     default { 
@@ -78,43 +73,10 @@ Function Get-MachineType
     } 
 }
 
-
-
-Write-Host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script`r`n" -ForegroundColor Green
-Write-Host -answer "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
-Write-Host -answer "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
-
-If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
- 
-{
-$CheckSecureBoot = Read-Host 'Administrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)'
-
-If ($CheckSecureBoot -eq 'n')
-{
-Write-Host "exiting"
-break
-}
-}
-$report = @()
-$writetype = Read-Host 'Do you want to output this scripts results to a file? (y for Yes or n for No)'
-
-If ($writetype -eq 'y')
-{
-$tooutput = 'y'
-$working = Get-Location
-$workingdirok = Read-Host "The output file will be output to the following location $working\results.csv, is this ok? (y for Yes or n for No)"
-
-    If ($workingdirok -eq 'y')
-    {
-    $filepath = "$working\results.csv"
-    }
-    else
-    {
-    $filepath = Read-Host "Please specify the full output file path here e.g. C:\logs\output.txt"
-    }
-}
-
 Function outputanswer($answer,$color)
+{
+
+if($global:displayconsole -eq 'y')
 {
 if ($color -eq 'White')
     {
@@ -124,6 +86,7 @@ if ($color -eq 'White')
     {
     write-host $answer -ForegroundColor $color
     }
+}
 
 if ($global:tooutput -ne $null)
 {
@@ -144,6 +107,11 @@ if ($global:tooutput -ne $null)
         $global:chapter = $answer
         $answer = $null
     }
+        elseif ($color -eq 'Cyan')
+    {
+        $compliance = 'Unknown'
+    }
+
 if ($answer -ne $null)
 {
 $global:report += New-Object psobject -Property @{Chapter=$chapter;Compliance=$compliance;Setting=$answer}
@@ -154,6 +122,44 @@ else
 }
 }
 }
+
+Write-Host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script" -ForegroundColor Green
+Write-Host "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
+Write-Host "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
+Write-Host "Please ensure this script is run dot sourced e.g. . .\ASDHardeningComplianceCheck.ps1 or no results will be displayed" -ForegroundColor Green
+
+If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+ 
+{
+$CheckSecureBoot = Read-Host "`r`nAdministrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)"
+
+If ($CheckSecureBoot -eq 'n')
+{
+Write-Host "exiting"
+break
+}
+}
+
+$report = @()
+$writetype = Read-Host "`r`nDo you want to output this scripts results to a file? (y for Yes or n for No)"
+
+If ($writetype -eq 'y')
+{
+$tooutput = 'y'
+$working = Get-Location
+$workingdirok = Read-Host "`r`nThe output file will be output to the following location $working\results.csv, is this ok? (y for Yes or n for No)"
+
+    If ($workingdirok -eq 'y')
+    {
+    $filepath = "$working\results.csv"
+    }
+    else
+    {
+    $filepath = Read-Host "`r`naPlease specify the full output file path here e.g. C:\logs\output.csv"
+    }
+}
+
+$displayconsole = Read-Host "`r`nDo you want the output to also be displayed in the console? (y for Yes or n for No)"
 
 
 outputanswer -answer "CREDENTIAL CACHING" -color White
@@ -6194,77 +6200,43 @@ outputanswer -answer "Determine if interactive users can generate Resultant Set 
 outputanswer -answer "Determine if interactive users can generate Resultant Set of Policy data is set to an unknown setting" -color Red
 }
 
+outputanswer -answer "" -color White
 
-$report | Export-CSV -NoTypeInformation $filepath
-
-#ask questions, make them compare, check filepaths, make comparison something easily understandable
-
-$comparecheck = Read-Host 'Would you like to compare your results to a previously saved check? You can only do this if you chose to save your results at the beginning.'
-
-If ($comparecheck -eq 'y')
+if ($displayconsole -ne 'y')
 {
-    $baselinefilelocation = Read-Host "Please specify the full file path of the previously saved check here e.g. C:\logs\output.txt"
-    
-    $comparesave = Read-Host 'Would you like to save the results of this comparison? (y for Yes or n for No)'
-    If ($comparesave -eq 'y')
-    {
-    $comparelocation = Get-Location
-    $comparelocationok = Read-Host "The output file will be output to the following location $comparelocation\comparison.txt, is this ok? (y for Yes or n for No)"
-
-         If ($comparelocationok -eq 'y')
-            {
-             $filepathcompare = "$comparelocation\comparison.txt"
-             }
-        else
-            {
-            $filepathcompare = Read-Host "Please specify the full output file path here e.g. C:\logs\output.txt"
-             }
-    }
-    else
-    {
-    #donothing
-    }
-
-    $previousresults = Get-Content $baselinefilelocation
-    $currentresults = Get-Content $filepath
-    $thecomparison = Compare-object $previousresults $currentresults |Format-list
-
-    if($thecomparison -ne $null)
-    {
- 
-    $thecomparison -match "=>","this did not exist in baseline but is present in current results"
-    $thecomparison.replace("<=","this existed in baseline but is not present in current results")
-     
-    $thecomparison |Out-File $filepathcompare
-    }
-    else
-    {
-    write-host "The baselines were the same, no settings have been changed" -ForegroundColor Green
-    }
-    
+clear
 }
 
-#importcsv
 
-
+#export report to specified file if chosen to write
+if ($filepath -ne $null)
+{
+$report | Export-CSV -NoTypeInformation $filepath
+write-host "`r`nAudit results have been written to $filepath`r`n" -ForegroundColor Green
+}
 else 
 {
 #donothing
 }
 
+$totals = $report.Compliance | group | % { $h = @{} } { $h[$_.Name] = $_.Count } { $h }
+$compliant = $totals.Values | Select-Object -Index 0
+$notconfigured = $totals.Values | Select-Object -Index 1
+$noncompliant = $totals.Values | Select-Object -Index 2
+$unabletobechecked = $totals.Values | Select-Object -Index 3
 
+write-host "`r`nOut of a total of 346 controls checked there were:"
+write-host "$compliant compliant settings" -ForegroundColor Magenta
+write-host "$notconfigured Not-Configured (therefore treated as Non-Compliant) settings" -ForegroundColor Magenta
+write-host "$noncompliant Non-Compliant settings" -ForegroundColor Magenta
+write-host "$unabletobechecked settings that were unable to be checked due to various limitations" -ForegroundColor Magenta
 
-
-
-
-
-
-
-
-
-
-
-
-#Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
-
+if ($displayconsole -eq 'y')
+{
 pause
+}
+
+Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
+
+
+
