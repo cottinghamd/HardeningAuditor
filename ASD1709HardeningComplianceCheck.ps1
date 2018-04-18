@@ -6231,8 +6231,52 @@ write-host "$notconfigured Not-Configured (therefore treated as Non-Compliant) s
 write-host "$noncompliant Non-Compliant settings" -ForegroundColor Magenta
 write-host "$unabletobechecked settings that were unable to be checked due to various limitations" -ForegroundColor Magenta
 
-pause
+$writetype = Read-Host "`r`nDo you want to compare these results to an existing results file? (y for Yes or n for No)"
 
+If ($writetype -eq 'y')
+{
+$filepath2 = Read-Host "`r`nPlease specify the full output file path here e.g. C:\logs\output.csv"
+
+        If ($filepath2 -ne $null)
+        {
+        $working3 = Get-Location
+        $workingdirok3 = Read-Host "`r`nThe comparison output file will be output to the following location $working3\comparison.csv, is this ok? (y for Yes or n for No)"
+
+            If ($workingdirok3 -eq 'y')
+            {
+            $filepath3 = "$working3\comparison.csv"
+            }
+            elseif ($workingdirok3 -eq 'n')
+            {
+            $filepath3 = Read-Host "`r`nPlease specify the full output file path here e.g. C:\logs\output.csv"
+            }
+            else
+            {
+            #donothing
+            }
+        }
+}
+else
+{
+#donothing
+}
+
+$Results1 = import-csv -Path $filepath
+$Results2 = import-csv -Path $filepath2
+
+$CompareResults = Compare-Object $Results1 $Results2 -property Compliance -passthru
+
+if ($filepath3 -ne $null)
+{
+$CompareResults | Where-Object {($_.SideIndicator -eq "=>")}|select Chapter, Setting, Compliance,Difference | ForEach-Object { $_.Difference = "Appears in the new version, but different in the previous version"; return $_ }|Export-Csv -Path $filepath3
+write-host "`r`nAudit comparison results have been written to $filepath3`r`n" -ForegroundColor Green
+}
+else 
+{
+#donothing
+}
+
+pause
 Get-Variable -Exclude PWD,*Preference | Remove-Variable -EA 0
 
 
