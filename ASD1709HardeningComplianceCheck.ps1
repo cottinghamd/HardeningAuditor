@@ -347,7 +347,7 @@ $sasgeneration = Get-ItemProperty -Path "Registry::HKEY_LOCAL_MACHINE\Software\M
 
 if ($sasgeneration -eq $null)
 {
-outputanswer -answer "Disable or enable software Secure Attention Sequence is not configured" -color Yellow
+outputanswer -answer "Disable or enable software Secure Attention Sequence is not configured or disabled" -color Green
 }
     elseif ($sasgeneration -eq '0')
     {
@@ -366,7 +366,7 @@ if ($systeminitiated -eq $null)
 {
 outputanswer -answer "Sign-in last interactive user automatically after a system-initiated restart is not configured" -color Yellow
 }
-    elseif ($systeminitiated -eq '0')
+    elseif ($systeminitiated -eq '1')
     {
         outputanswer -answer "Sign-in last interactive user automatically after a system-initiated restart is disabled" -color Green
     }
