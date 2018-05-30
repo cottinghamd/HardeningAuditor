@@ -1359,11 +1359,38 @@ elseIf($SecureBootStatus -eq 'False')
 
 outputanswer -answer "ACCOUNT LOCKOUT POLICIES" -color White
 
+if ( $accountSettings -eq $null)
+{
 #Account Lockout Duration
-outputanswer -answer "Account Lockout Duration is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
+outputanswer -answer "Account Lockout Duration is unable to be checked due to an error calling net.exe" -color Cyan
 
 #Account Lockout Threshold
-outputanswer -answer "Account Lockout Threshold is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
+outputanswer -answer "Account Lockout Threshold is unable to be checked due to an error calling net.exe" -color Cyan
+}
+else
+{
+$accountlockoutduration = $accountsettings.item(6).value
+$accountlockoutthreshold = $accountsettings.item(5).value
+
+    if ($accountlockoutduration -eq '0')
+    {
+    outputanswer -answer "Account Lockout Duration is set to $accountlockoutduration which is a compliant setting" -color Green
+    }
+    else
+    {
+    outputanswer -answer "Account Lockout Duration is set to $accountlockoutduration which is a non-compliant setting" -color Red
+    }
+
+    if ($accountlockoutthreshold -le '5')
+    {
+    outputanswer -answer "Account Lockout Threshold is set to $accountlockoutthreshold which is a compliant setting" -color Green
+    }
+    else
+    {
+    outputanswer -answer "Account Lockout Threshold is set to $accountlockoutthreshold which is a non-compliant setting" -color Red
+    }
+
+}
 
 #Reset Account Lockout Counter
 outputanswer -answer "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
