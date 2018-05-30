@@ -1245,18 +1245,68 @@ outputanswer -answer "Turn on convenience PIN sign-in is enabled" -color Red
 outputanswer -answer "Turn on convenience PIN sign-in is set to an unknown setting" -color Red
 }
 
+$accountSettings = net.exe accounts | ForEach-Object {ConvertFrom-String -InputObject $_ -Delimiter ": +" -PropertyNames Setting, Value}
+
+if ( $accountSettings -eq $null)
+{
 #Enforce Password History
-outputanswer -answer "Enforce Password History is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -color Cyan
+outputanswer -answer "Enforce Password History is unable to be checked due to an error calling net.exe" -color Cyan
 
 #Maximum password age
-outputanswer -answer "Maximum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -color Cyan
+outputanswer -answer "Maximum password age is unable to be checked due to an error calling net.exe" -color Cyan
 
 #Minimum password age
-outputanswer -answer "Minimum password age is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -color Cyan
+outputanswer -answer "Minimum password age is unable to be checked due to an error calling net.exe" -color Cyan
 
+#Minimum password length
+outputanswer -answer "Minimum password length is unable to be checked due to an error calling net.exe" -color Cyan
+}
+else
+{
+$enforcehistory = $accountsettings.item(4).value
+$maximumpasswordage = $accountsettings.item(2).value
+$minimumpasswordage = $accountsettings.item(1).value
+$minimumpasswordlength = $accountsettings.item(3).value
+
+    if ($enforcehistory -le '8' -or $enforcehistory -eq 'None')
+    {
+    outputanswer -answer "Enforce Password History is set to $enforcehistory which is a compliant setting" -color Green
+    }
+    elseif ($enforcehistory -gt '8')
+    {
+    outputanswer -answer "Enforce Password History is set to $enforcehistory which is a non-compliant setting" -color Red
+    }
+
+    if ($maximumpasswordage -le '90')
+    {
+    outputanswer -answer "Maximum password age is set to $maximumpasswordage which is a compliant setting" -color Green
+    }
+    elseif ($maximumpasswordage -gt '90')
+    {
+    outputanswer -answer "Maximum password age is set to $maximumpasswordage which is a non-compliant setting" -color Red
+    }
+
+    if ($minimumpasswordage -le '1')
+    {
+    outputanswer -answer "Minimum password age is set to $minimumpasswordage which is a compliant setting" -color Green
+    }
+    elseif ($minimumpasswordage -gt '1')
+    {
+    outputanswer -answer "Minimum password age is set to $minimumpasswordage which is a non-compliant setting" -color Red
+    }
+
+    if ($minimumpasswordlength -ge '10')
+    {
+    outputanswer -answer "Minimum password length is set to $minimumpasswordlength which is a compliant setting" -color Green
+    }
+    elseif ($minimumpasswordlength -le '9')
+    {
+    outputanswer -answer "Minimum password length is set to $minimumpasswordlength which is a non-compliant setting" -color Red
+    }
+    
+}
 #Store passwords using reversible encryption
 outputanswer -answer "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -color Cyan
-
 
 
 #Check: Limit local account use of blank passwords to console logon only
