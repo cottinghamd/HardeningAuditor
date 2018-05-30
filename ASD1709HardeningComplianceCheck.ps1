@@ -1366,11 +1366,16 @@ outputanswer -answer "Account Lockout Duration is unable to be checked due to an
 
 #Account Lockout Threshold
 outputanswer -answer "Account Lockout Threshold is unable to be checked due to an error calling net.exe" -color Cyan
+
+#Reset Account Lockout Counter
+outputanswer -answer "Reset Account Lockout Counter After is unable to be checked due to an error calling net.exe" -color Cyan
+
 }
 else
 {
 $accountlockoutduration = $accountsettings.item(6).value
 $accountlockoutthreshold = $accountsettings.item(5).value
+$accountlockoutcounter = $accountsettings.item(7).value
 
     if ($accountlockoutduration -eq '0' -or $accountlockoutduration -eq 'Never')
     {
@@ -1390,10 +1395,17 @@ $accountlockoutthreshold = $accountsettings.item(5).value
     outputanswer -answer "Account Lockout Threshold is set to $accountlockoutthreshold which is a non-compliant setting" -color Red
     }
 
+    if ($accountlockoutcounter -ge '15')
+    {
+    outputanswer -answer "Account Lockout Threshold is set to $accountlockoutcounter minutes which is a compliant setting" -color Green
+    }
+    else
+    {
+    outputanswer -answer "Account Lockout Threshold is set to $accountlockoutcounter minutes which is a non-compliant setting" -color Red
+    }
+
 }
 
-#Reset Account Lockout Counter
-outputanswer -answer "Reset Account Lockout Counter After is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy" -color Cyan
 
 
 outputanswer -answer "ANONYMOUS CONNECTIONS" -color White
@@ -1445,7 +1457,7 @@ outputanswer -answer "Network access: Do not allow anonymous enumeration of SAM 
 
 
 #Check configuration: Network access: Do not allow anonymous enumeration of SAM accounts and shares
-$RestrictAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name RestrictAnonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymous
+$RestrictAnonymous = Get-ItemProperty -Path Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\ -Name restrictanonymous -ErrorAction SilentlyContinue|Select-Object -ExpandProperty RestrictAnonymous
 if ( $RestrictAnonymous -eq $null)
 {
 outputanswer -answer "Network access: Do not allow anonymous enumeration of SAM accounts and shares is not configured" -color Yellow
