@@ -1372,7 +1372,7 @@ else
 $accountlockoutduration = $accountsettings.item(6).value
 $accountlockoutthreshold = $accountsettings.item(5).value
 
-    if ($accountlockoutduration -eq '0')
+    if ($accountlockoutduration -eq '0' -or $accountlockoutduration -eq 'Never')
     {
     outputanswer -answer "Account Lockout Duration is set to $accountlockoutduration which is a compliant setting" -color Green
     }
