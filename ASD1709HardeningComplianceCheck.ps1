@@ -1,4 +1,4 @@
-#ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script
+#ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script. This script will check the applied settings in the current user context.
 #This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf
 #Created by github.com/cottinghamd and github.com/huda008
 #Note for this script to execute correctly, please ensure the script is dot sourced e.g. use . .\ASD1709HardeningComplianceCheck.ps1
@@ -119,15 +119,12 @@ Write-Host "Created by github.com/cottinghamd and github.com/huda008" -Foregroun
 Write-Host "Please ensure this script is run dot sourced e.g. . .\ASDHardeningComplianceCheck.ps1 or no results will be displayed" -ForegroundColor Green
 
 If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
- 
 {
-$CheckSecureBoot = Read-Host "`r`nAdministrative privileges have not been detected, the script will not be able to check the computers SecureBoot status. Do you want to continue? (y for Yes or n for No)"
-
-If ($CheckSecureBoot -eq 'n')
-{
-Write-Host "exiting"
-break
+Write-Host "`r`nAdministrative privileges have not been detected, the script will not check the computers SecureBoot status" -ForegroundColor Green
 }
+else
+{
+$CheckSecureBoot = 'y'
 }
 
 $report = @()
@@ -4691,11 +4688,11 @@ if ( $kQwHe03XYWy17KG -eq $null)
 {
 outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is not configured" -color Yellow
 }
-   elseif ( $kQwHe03XYWy17KG  -eq  '1' )
+   elseif ( $kQwHe03XYWy17KG  -eq  '0' )
 {
 outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is disabled" -color Green
 }
-  elseif ( $kQwHe03XYWy17KG  -eq  '0' )
+  elseif ( $kQwHe03XYWy17KG  -eq  '1' )
 {
 outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is enabled" -color Red
 }
