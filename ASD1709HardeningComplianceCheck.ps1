@@ -3185,6 +3185,7 @@ outputanswer -answer "Configure security policy processing is disabled" -color R
 outputanswer -answer "Configure security policy processing is set to an unknown setting" -color Red
 }
 
+#THIS CONTROL HAS AN ISSUE, THE REGISTRY KEY DOESN'T ALWAYS EXIST
 $DisableBkGndGroupPolicy = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name DisableBkGndGroupPolicy -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableBkGndGroupPolicy
 if ( $DisableBkGndGroupPolicy -eq $null)
 {
@@ -4778,23 +4779,6 @@ outputanswer -answer "Do not allow passwords to be saved is disabled" -color Red
 outputanswer -answer "Do not allow passwords to be saved is set to an unknown setting" -color Red
 }
 
-$7Zz8LPwJN6ky4gX = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDenyTSConnections -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDenyTSConnections
-if ( $7Zz8LPwJN6ky4gX -eq $null)
-{
-outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is not configured" -color Yellow
-}
-   elseif ( $7Zz8LPwJN6ky4gX  -eq  '0' )
-{
-outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is enabled" -color Green
-}
-  elseif ( $7Zz8LPwJN6ky4gX  -eq  '1' )
-{
-outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is disabled" -color Red
-}
-  else
-{
-outputanswer -answer "Allow users to connect remotely by using Remote Desktop Services is set to an unknown setting" -color Red
-}
 
 $fYIVuDva8ER2A9M = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name fDisableForcibleLogoff -ErrorAction SilentlyContinue|Select-Object -ExpandProperty fDisableForcibleLogoff
 if ( $fYIVuDva8ER2A9M -eq $null)
