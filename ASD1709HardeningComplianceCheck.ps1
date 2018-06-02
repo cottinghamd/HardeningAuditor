@@ -1,7 +1,17 @@
 #ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script. This script will check the applied settings in the current user context.
 #This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf
 #Created by github.com/cottinghamd and github.com/huda008
-#Note for this script to execute correctly, please ensure the script is dot sourced e.g. use . .\ASD1709HardeningComplianceCheck.ps1
+
+If ($isDotSourced = $MyInvocation.InvocationName -eq '.' -or $MyInvocation.Line -eq '')
+{
+#donothingandcontinue
+}
+else
+{
+write-host "This script was not run 'dot sourced'. For this script to execute correctly, please ensure the script is dot sourced e.g. use . .\ASD1709HardeningComplianceCheck.ps1" -Foregroundcolor Red
+write-host "This script will now exit" -Foregroundcolor Red
+break
+}
 
 Function Get-MachineType 
 { 
