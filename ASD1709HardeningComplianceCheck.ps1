@@ -2138,7 +2138,6 @@ outputanswer -answer "Manage Auditing and Security Log is unable to be checked u
 
 outputanswer -answer "Audit Credential Validation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management"  -color Cyan
 outputanswer -answer "Audit Computer Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
 outputanswer -answer "Audit Other Account Management Events is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
@@ -2147,15 +2146,11 @@ outputanswer -answer "Audit Security Group Management is unable to be checked us
 
 outputanswer -answer "Audit User Account Management is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking"  -color Cyan
-
 outputanswer -answer "Audit PNP Activity is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
 outputanswer -answer "Audit Process Creation is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
 outputanswer -answer "Audit Process Termination is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
-
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff"  -color Cyan
 
 outputanswer -answer "Audit Account Lockout is unable to be checked using PowerShell, as the setting is not a registry key. Please check. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -2169,8 +2164,6 @@ outputanswer -answer "Audit Other Logon/Logoff Events is unable to be checked us
 
 outputanswer -answer "Audit Audit Special Logon is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access"  -color Cyan
-
 outputanswer -answer "Audit File Share is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
 outputanswer -answer "Audit Kernel Object is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
@@ -2179,8 +2172,6 @@ outputanswer -answer "Audit Other Object Access Events is unable to be checked u
 
 outputanswer -answer "Audit Removable Storage is unable to be checked using PowerShell, as the setting is not a registry key ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change"  -color Cyan
-
 outputanswer -answer "Audit Audit Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
 outputanswer -answer "Audit Authentication Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
@@ -2188,8 +2179,6 @@ outputanswer -answer "Audit Authentication Policy Change is unable to be checked
 outputanswer -answer "Audit Authorization Policy Change is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success' Present" -color Cyan
 
 outputanswer -answer "Audit Sensitive Privilege Use is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
-
-outputanswer -answer "For the below controls please check: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System"  -color Cyan
 
 outputanswer -answer "Audit IPsec Driver is unable to be checked using PowerShell, as the setting is not a registry key. ASD Recommendation is to have 'Success and Failure' Present" -color Cyan
 
@@ -4761,7 +4750,7 @@ outputanswer -answer "Configure server authentication for client is set to a non
 outputanswer -answer "Configure server authentication for client is set to an unknown setting" -color Red
 }
 
-$USPueEgdnK6yjIL = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name DisablePasswordSaving -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePasswordSaving
+$USPueEgdnK6yjIL = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\'  -Name DisablePasswordSaving -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisablePasswordSaving
 if ( $USPueEgdnK6yjIL -eq $null)
 {
 outputanswer -answer "Do not allow passwords to be saved is not configured" -color Yellow
@@ -5682,7 +5671,23 @@ outputanswer -answer "Allow Windows Ink Workspace is disabled or turned on, both
 outputanswer -answer "Allow Windows Ink Workspace is set to an unknown setting" -color Red
 }
 
-outputanswer -answer "Unable to check the machine inactivity limit with PowerShell as this setting is not a registry key, please manually check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options and ensure this is configured to at least 900 seconds or lower" -color Cyan
+$bKErRNAU3b4k6hI = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\'  -Name inactivitytimeoutsecs -ErrorAction SilentlyContinue|Select-Object -ExpandProperty inactivitytimeoutsecs
+if ( $bKErRNAU3b4k6hI -eq $null)
+{
+outputanswer -answer "No inactivity timeout has been configured" -color Yellow
+}
+   elseif ( $bKErRNAU3b4k6hI  -le  '900' )
+{
+outputanswer -answer "The machine inactivity limit has been set to $bKErRNAU3b4k6hI seconds which is a compliant setting" -color Green
+}
+  elseif ( $bKErRNAU3b4k6hI  -gt  '900' )
+{
+outputanswer -answer "The machine inactivity limit has been set to $bKErRNAU3b4k6hI seconds which is a non-compliant setting" -color Red
+}
+  else
+{
+outputanswer -answer "The machine inactivity limit is set to an unknown setting" -color Red
+}
 
 $nKErRNAU3b4k6hI = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop\'  -Name ScreenSaveActive -ErrorAction SilentlyContinue|Select-Object -ExpandProperty ScreenSaveActive
 if ( $nKErRNAU3b4k6hI -eq $null)
@@ -5808,29 +5813,7 @@ outputanswer -answer "This script is unable to check if a Standard Operating Env
 
 outputanswer -answer "SYSTEM BACKUP AND RESTORE" -color White
 
-$admins3 = @()
-$group3 =[ADSI]"WinNT://localhost/Backup Operators" 
-$members3 = @($group2.psbase.Invoke("Members"))
-$members3 | foreach {
- $obj3 = new-object psobject -Property @{
- Member = $_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)
- }
- $admins3 += $obj3
- } 
-$members3 = $admins3.Member
-
-If ($members3 -eq $null)
-{
-outputanswer -answer "No members have been added to the Backup Operators group, Administrators should members of this group" -color Red
-}
-elseif ($members3 -eq 'Administrators')
-{
-outputanswer -answer "Administrators are the only members of the Backup Operators group, this setting is compliant" -color Green
-}
-else
-{
-outputanswer -answer "The following members are added to the Backup Operators group: $members3. Only Administrators should be members of this group." -color Red
-}
+outputanswer -answer "Unable to check Backup Files and Directories setting at this time, please check manually Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Backup Files and Directories. Only Administrators should be members of this setting" -color Cyan
 
 outputanswer -answer "Unable to check Restore Files and Directories setting at this time, please check manually Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Restore Files and Directories. Only Administrators should be members of this setting" -color Cyan
 
@@ -6125,7 +6108,7 @@ outputanswer -answer "Remove Security tab is set to an unknown setting" -color R
 
 outputanswer -answer "LOCATION AWARENESS" -color White
 
-$L0t3zDQOWT82Yjk = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocation
+$L0t3zDQOWT82Yjk = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocation -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocation
 if ( $L0t3zDQOWT82Yjk -eq $null)
 {
 outputanswer -answer "Turn off location is not configured" -color Yellow
@@ -6143,7 +6126,7 @@ outputanswer -answer "Turn off location is disabled" -color Red
 outputanswer -answer "Turn off location is set to an unknown setting" -color Red
 }
 
-$wOWZP5iF8Ah2HLn = Get-ItemProperty -Path  'Registry::HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocationScripting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocationScripting
+$wOWZP5iF8Ah2HLn = Get-ItemProperty -Path  'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\LocationAndSensors\'  -Name DisableLocationScripting -ErrorAction SilentlyContinue|Select-Object -ExpandProperty DisableLocationScripting
 if ( $wOWZP5iF8Ah2HLn -eq $null)
 {
 outputanswer -answer "Turn off location scripting is not configured" -color Yellow
