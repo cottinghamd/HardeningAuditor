@@ -1,6 +1,7 @@
 #ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script. This script will check the applied settings in the current user context.
 #This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf
 #Created by github.com/cottinghamd and github.com/huda008
+#Incorporated Invoke-ElevatedCommand by TaoK https://gist.github.com/TaoK/1582185
 
 If ($isDotSourced = $MyInvocation.InvocationName -eq '.' -or $MyInvocation.Line -eq '')
 {
@@ -11,6 +12,98 @@ else
 write-host "This script was not run 'dot sourced'. For this script to execute correctly, please ensure the script is dot sourced e.g. use . .\ASD1709HardeningComplianceCheck.ps1" -Foregroundcolor Red
 write-host "This script will now exit" -Foregroundcolor Red
 break
+}
+
+Function Invoke-ElevatedCommand {
+
+	param
+	(
+		## The script block to invoke elevated. NOTE: to access the InputObject/pipeline data from the script block, use "$input"!
+		[Parameter(Mandatory = $true)]
+		[ScriptBlock] $Scriptblock,
+	 
+		## Any input to give the elevated process
+		[Parameter(ValueFromPipeline = $true)]
+		$InputObject,
+	 
+		## Switch to enable the user profile
+		[switch] $EnableProfile,
+	 
+		## Switch to display the spawned window (as interactive)
+		[switch] $DisplayWindow
+	)
+	 
+	begin
+	{
+		Set-StrictMode -Version Latest
+		$inputItems = New-Object System.Collections.ArrayList
+	}
+	 
+	process
+	{
+		$null = $inputItems.Add($inputObject)
+	}
+	 
+	end
+	{
+
+		## Create some temporary files for streaming input and output
+		$outputFile = [IO.Path]::GetTempFileName()	
+		$inputFile = [IO.Path]::GetTempFileName()
+		$errorFile = [IO.Path]::GetTempFileName()
+
+		## Stream the input into the input file
+		$inputItems.ToArray() | Export-CliXml -Depth 1 $inputFile
+	 
+		## Start creating the command line for the elevated PowerShell session
+		$commandLine = ""
+		if(-not $EnableProfile) { $commandLine += "-NoProfile " }
+
+		if(-not $DisplayWindow) { 
+			$commandLine += "-Noninteractive " 
+			$processWindowStyle = "Hidden" 
+		}
+		else {
+			$processWindowStyle = "Normal" 
+		}
+	 
+		## Convert the command into an encoded command for PowerShell
+		$commandString = "Set-Location '$($pwd.Path)'; " +
+			"`$output = Import-CliXml '$inputFile' | " +
+			"& {" + $scriptblock.ToString() + "} 2>&1 ; " +
+			"Out-File -filepath '$errorFile' -inputobject `$error;" +
+			"Export-CliXml -Depth 1 -In `$output '$outputFile';"
+	 
+		$commandBytes = [System.Text.Encoding]::Unicode.GetBytes($commandString)
+		$encodedCommand = [Convert]::ToBase64String($commandBytes)
+		$commandLine += "-EncodedCommand $encodedCommand"
+
+		## Start the new PowerShell process
+		$process = Start-Process -FilePath (Get-Command powershell).Definition `
+			-ArgumentList $commandLine `
+			-Passthru `
+			-Verb RunAs `
+			-WindowStyle $processWindowStyle
+
+		$process.WaitForExit()
+
+		$errorMessage = $(gc $errorFile | Out-String)
+		if($errorMessage) {
+			Write-Error -Message $errorMessage
+		}
+		else {
+			## Return the output to the user
+			if((Get-Item $outputFile).Length -gt 0)
+			{
+				Import-CliXml $outputFile
+			}
+		}
+
+		## Clean up
+		Remove-Item $outputFile
+		Remove-Item $inputFile
+		Remove-Item $errorFile
+	}
 }
 
 Function Get-MachineType 
@@ -83,6 +176,7 @@ Function Get-MachineType
     } 
 }
 
+
 Function outputanswer($answer,$color)
 {
 
@@ -122,20 +216,50 @@ if ($color -eq 'White')
 $global:report += New-Object psobject -Property @{Chapter=$chapter;Compliance=$compliance;Setting=$answer}
 }
 
-
 Write-Host "ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script" -ForegroundColor Green
 Write-Host "This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf" -ForegroundColor Green
 Write-Host "Created by github.com/cottinghamd and github.com/huda008" -ForegroundColor Green
-Write-Host "Please ensure this script is run dot sourced e.g. . .\ASDHardeningComplianceCheck.ps1 or no results will be displayed" -ForegroundColor Green
 
 If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
-Write-Host "`r`nAdministrative privileges have not been detected, the script will not check the computers SecureBoot status" -ForegroundColor Green
+    $adminprivs = Read-Host "`r`nAdministrative privileges have not been detected, do you want to elevate now and pre-check controls that require administrative privileges? (y/n)"
+        If ($adminprivs -eq 'y')
+        {
+        $Checkelevateditems = 'y'
+        }
+    else
+        {
+        #donothing
+        }
 }
 else
 {
-$CheckSecureBoot = 'y'
+    $Checkelevateditems = 'y'
 }
+
+If ($Checkelevateditems -eq 'y')
+{
+#Get Current User Temp Directory For Writing Between Contexts
+$userenvironmenttemp = ${env:TEMP}
+
+#this statement is now ready to check multiple elevated controls
+$secureboottemp = $userenvironmenttemp
+Invoke-ElevatedCommand -InputObject $userenvironmenttemp {
+$temppath = "$input"
+
+#check secure boot Elevated
+$secureboot = "$temppath" + '\secureboot.txt'
+Confirm-SecureBootUEFI | Out-File $secureboot
+
+#check Allow Anonymous SID / Name Translation Elevated
+$lsaanonymousnamelookup = "$temppath" + '\lsaanonymousnamelookup.txt'
+$null = secedit /export /cfg $temppath/secexport.cfg
+$(gc $temppath/secexport.cfg | Select-String "LSAAnonymousNameLookup").ToString().Split('=')[1].Trim() | Out-File $lsaanonymousnamelookup
+Remove-Item $temppath/secexport.cfg
+}
+}
+
+
 
 $report = @()
 $writetype = Read-Host "`r`nDo you want to output this scripts results to a file? (y for Yes or n for No)"
@@ -1346,23 +1470,24 @@ outputanswer -answer "SECURE BOOT" -color White
 
 
 #Secure Boot status
-If ($CheckSecureBoot -eq 'y')
+If ($Checkelevateditems -eq $null)
 {
-    outputanswer -answer "Secure Boot status was unable to be checked due to no administrative privileges, please run this script with administrative privileges to check Secureboot" -color Cyan
+    outputanswer -answer "Secure Boot status was unable to be checked due to no administrative privileges" -color Cyan
 }
-elseif ($CheckSecureBoot -eq $null)
+elseif ($Checkelevateditems -eq 'y')
 {
-$SecureBootStatus = Confirm-SecureBootUEFI
+$secureboottemp = "$userenvironmenttemp" + '\secureboot.txt'
+$SecureBootStatus = Get-Content $secureboottemp
 If ($SecureBootStatus -eq 'True')
     {
     outputanswer -answer "Secure Boot is Enabled On This Computer" -color Green
     }
 elseIf($SecureBootStatus -eq 'False')
     {
-    outputanswer -answer "Secure Boot status was unable to be determined" -color Red
+    outputanswer -answer "Secure Boot status was unable to be determined" -color Red 
     }
+Remove-Item $secureboottemp
 }
-
 
 outputanswer -answer "ACCOUNT LOCKOUT POLICIES" -color White
 
@@ -1439,7 +1564,25 @@ outputanswer -answer "Enable insecure guest logons is set to an unknown setting"
 
 
 #Network access: Allow anonymous SID/Name translation
-outputanswer -answer "Network access: Allow anonymous SID/Name translation is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Windows Settings\Local Policies\Security Options\" -color Cyan
+If ($Checkelevateditems -eq $null)
+{
+    outputanswer -answer "Allow anonymous SID/Name translation was unable to be checked due to no administrative privileges" -color Cyan
+}
+elseif ($Checkelevateditems -eq 'y')
+{
+$lsaanonymousnamelookup = "$userenvironmenttemp" + '\lsaanonymousnamelookup.txt'
+$lsaanonymousstatus = Get-Content $lsaanonymousnamelookup
+If ($lsaanonymousstatus -eq '0')
+    {
+    outputanswer -answer "Allow anonymous SID/Name translation is disabled" -color Green
+    }
+elseIf($lsaanonymousstatus -eq '1')
+    {
+    outputanswer -answer "Allow anonymous SID/Name translation is enabled" -color Red 
+    }
+Remove-Item $lsaanonymousnamelookup
+
+}
 
 
 #Check configuration: Network access: Do not allow anonymous enumeration of SAM accounts
