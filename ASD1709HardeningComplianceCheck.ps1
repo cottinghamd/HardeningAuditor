@@ -1,5 +1,5 @@
 #ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script. This script will check the applied settings in the current user context.
-#This script is based on the settings recommended in the ASD Hardening Guide here: https://www.asd.gov.au/publications/protect/Hardening_Win10.pdf
+#This script is based on the settings recommended in the ASD Hardening Guide here: https://acsc.gov.au/publications/protect/Hardening_Win10.pdf
 #Created by github.com/cottinghamd and github.com/huda008
 #Incorporated Invoke-ElevatedCommand by TaoK https://gist.github.com/TaoK/1582185
 
