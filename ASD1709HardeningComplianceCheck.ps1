@@ -1,6 +1,7 @@
 #ASD Hardening Microsoft Windows 10, version 1709 Workstations compliance script. This script will check the applied settings in the current user context.
 #This script is based on the settings recommended in the ASD Hardening Guide here: https://acsc.gov.au/publications/protect/Hardening_Win10.pdf
 #Created by github.com/cottinghamd and github.com/huda008
+#NOTE: This script will also work on other versions of Windows, including Windows Server + Server 2019 etc, however not all options checked may be comparable / relevant to Windows 10 1709
 #Incorporated Invoke-ElevatedCommand by TaoK https://gist.github.com/TaoK/1582185
 
 If ($isDotSourced = $MyInvocation.InvocationName -eq '.' -or $MyInvocation.Line -eq '')
@@ -1437,7 +1438,7 @@ $minimumpasswordlength = $accountsettings.item(3).value
     
 }
 #Store passwords using reversible encryption
-outputanswer -answer "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Policies\Administrative Templates\System\Logon" -color Cyan
+outputanswer -answer "Store passwords using reversible encryption is unable to be checked using PowerShell, as the setting is not a registry key. Please check Computer Configuration\Windows Settings\Security Settings\Account Policies\Password Policy\Store passwords using reversible encryption" -color Cyan
 
 
 #Check: Limit local account use of blank passwords to console logon only
