@@ -6227,11 +6227,11 @@ if ( $rbWyQvlG5TAVoS -eq $null)
 {
 outputanswer -answer "Display file extensions is not configured" -color Yellow
 }
-   elseif ( $rbWyQvlG5TAVoS  -eq  '1' )
+   elseif ( $rbWyQvlG5TAVoS  -eq  '0' )
 {
 outputanswer -answer "Display file extensions is enabled" -color Green
 }
-  elseif ( $rbWyQvlG5TAVoS  -eq  '0' )
+  elseif ( $rbWyQvlG5TAVoS  -eq  '1' )
 {
 outputanswer -answer "Display file extensions is disabled" -color Red
 }
